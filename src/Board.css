@@ -1,0 +1,42 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.board-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.board-square {
+    width: 80px;
+    height: 80px;
+
+    &.white {
+        background-color: #EEEED2;
+    }
+
+    &.black {
+        background-color: #769656;
+    }
+}
+
+.board-wall {
+    background-color: #040a5a;
+
+    &.vertical {
+        width: 8px;
+        height: 80px;
+    }
+
+    &.horizontal {
+        width: 80px;
+        height: 8px;
+    }
+}
+
+.board-corner-space {
+    width: 8px;
+    height: 8px;
+}
