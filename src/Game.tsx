@@ -1,6 +1,6 @@
 import React from 'react';
-import { GameDataProvider } from './GameData/GameDataProvider';
-import Board from './Board';
+import { GameDataProvider } from './Data/GameData/GameDataProvider';
+import Board from './Components/Board/Board';
 
 type GameProps = {};
 

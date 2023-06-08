@@ -1,0 +1,13 @@
+.board-square {
+    width: 80px;
+    height: 80px;
+    display: flex;
+
+    &.white {
+        background-color: #EEEED2;
+    }
+
+    &.black {
+        background-color: #769656;
+    }
+}

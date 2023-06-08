@@ -1,23 +1,16 @@
 import React from 'react';
 import {
-    Piece as PieceData,
     SquareCoordinate,
     WallCoordinate,
-    getPieceFromPosition,
-    getWallFromPosition
-} from './GameData/Model';
-import { useGameData } from './GameData/GameDataProvider';
-import blueRookImage from './img/bluerook.svg';
-import greenRookImage from './img/greenrook.svg';
-import redRookImage from './img/redrook.svg';
-import yellowRookImage from './img/yellowrook.svg'
+} from '../../Data/GameData/Model';
+import Square from './Square';
+import Wall from './Wall';
 import './Board.css';
 
 type BoardProps = {
     rows: number,
     columns: number,
 };
-
 export default function Board(props : BoardProps) {
 
     const components: React.ReactElement[][] = [];
@@ -86,49 +79,8 @@ export default function Board(props : BoardProps) {
     );
 };
 
-type SquareProps = {
-    color: 'black' | 'white',
-    coordinate: SquareCoordinate,
-};
-function Square({ color, coordinate }: SquareProps) {
-    const gameData = useGameData();
-    const piece = getPieceFromPosition(gameData, coordinate);
-
-    return (
-        <div className={`board-square ${color}`}>
-            { piece !== undefined && <Piece piece={piece}/> }
-        </div>
-    );
-};
-
-type WallProps = {
-    coordinate: WallCoordinate,
-};
-function Wall({ coordinate }: WallProps) {
-    const gameData = useGameData();
-    const wall = getWallFromPosition(gameData, coordinate);
-    const isVertical = coordinate.square1.row === coordinate.square2.row;
-    return (
-        <div className={`board-wall ${isVertical ? 'vertical' : 'horizontal'} ${wall !== undefined ? `filled` : ''} `}>
-
-        </div>
-    );
-};
-
 function CornerSpace() {
     return (
         <div className='board-corner-space'/>
     );
 }
-
-const rookImages = [ blueRookImage, yellowRookImage, redRookImage, greenRookImage ];
-type PieceProps = {
-    piece: PieceData,
-};
-function Piece({ piece }: PieceProps) {
-
-    return (
-        <div className='piece'
-             style={{ backgroundImage: `url(${rookImages[piece.owner]})` }}/>
-    );
-};
