@@ -1,17 +1,4 @@
-.board-wall {
-    background-color: #dcedf1;
-
-    &.filled {
-        background-color: firebrick;
-    }
-
-    &.vertical {
-        width: 8px;
-        height: 80px;
-    }
-
-    &.horizontal {
-        width: 80px;
-        height: 8px;
-    }
+.wall {
+    flex: 1;
+    background-color: brown;
 }

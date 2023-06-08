@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-    SquareCoordinate,
-    WallCoordinate,
-} from '../../Data/GameData/Model';
+import { SquareCoordinate, WallCoordinate } from '../../Data/GameData/Model';
 import Square from './Square';
-import Wall from './Wall';
+import WallPlaceholder from './WallPlaceholder';
 import './Board.css';
 
 type BoardProps = {
@@ -33,8 +30,8 @@ export default function Board(props : BoardProps) {
                     square2: { row: r, column: c + 1 },
                 };
                 componentsRow.push(
-                    <Wall key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
-                          coordinate={wallCoordinate} />
+                    <WallPlaceholder key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
+                                     coordinate={wallCoordinate} />
                 );
             }
         }
@@ -53,8 +50,8 @@ export default function Board(props : BoardProps) {
             };
 
             componentsRow.push(
-                <Wall key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
-                      coordinate={wallCoordinate}/>
+                <WallPlaceholder key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
+                                 coordinate={wallCoordinate}/>
             );
 
             if (c !== props.columns - 1) {
