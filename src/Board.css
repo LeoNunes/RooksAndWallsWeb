@@ -12,6 +12,7 @@
 .board-square {
     width: 80px;
     height: 80px;
+    display: flex;
 
     &.white {
         background-color: #EEEED2;
@@ -23,7 +24,11 @@
 }
 
 .board-wall {
-    background-color: #040a5a;
+    background-color: #dcedf1;
+
+    &.filled {
+        background-color: firebrick;
+    }
 
     &.vertical {
         width: 8px;
@@ -39,4 +44,10 @@
 .board-corner-space {
     width: 8px;
     height: 8px;
+}
+
+.piece {
+    flex: 1;;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
