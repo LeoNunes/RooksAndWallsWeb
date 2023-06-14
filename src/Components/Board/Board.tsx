@@ -1,5 +1,6 @@
 import React from 'react';
-import { SquareCoordinate, WallCoordinate } from '../../Data/GameData/Model';
+import { SquareCoordinate, EdgeCoordinate } from '../../Data/GameData/Model';
+import { BoardEventHandlers } from '../../Data/BoardStateData/Model';
 import Square from './Square';
 import Edge from './Edge';
 import './Board.css';
@@ -7,8 +8,27 @@ import './Board.css';
 type BoardProps = {
     rows: number,
     columns: number,
+    eventHandlers: BoardEventHandlers
 };
 export default function Board(props : BoardProps) {
+
+    function createSquare(coordinate: SquareCoordinate) {
+        const { row, column } = coordinate;
+        return (
+            <Square key={`${row}-${column}`}
+                    color={ (row + column) % 2 === 0 ? 'black' : 'white'}
+                    coordinate={coordinate}
+                    clicked={props.eventHandlers.squareClicked}/>
+        );
+    };
+
+    function createEdge(coordinate: EdgeCoordinate) {
+        const { square1: { row: row1, column: column1 }, square2: { row: row2, column: column2 } } = coordinate;
+        return (
+            <Edge key={`${row1}-${column1}-${row2}-${column2}`}
+                  coordinate={coordinate} />
+        );
+    }
 
     const components: React.ReactElement[][] = [];
 
@@ -17,22 +37,14 @@ export default function Board(props : BoardProps) {
         
         for (let c = 0; c < props.columns; c++) {
             const squareCoordinate: SquareCoordinate = { row: r, column: c };
-            
-            componentsRow.push(
-                <Square key={`${r}-${c}`}
-                        color={ (r + c) % 2 === 0 ? 'black' : 'white'}
-                        coordinate={squareCoordinate}/>
-            );
+            componentsRow.push(createSquare(squareCoordinate));
 
             if (c !== props.columns - 1) {
-                const wallCoordinate: WallCoordinate = {
+                const edgeCoordinate: EdgeCoordinate = {
                     square1: { row: r, column: c },
                     square2: { row: r, column: c + 1 },
                 };
-                componentsRow.push(
-                    <Edge key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
-                          coordinate={wallCoordinate} />
-                );
+                componentsRow.push(createEdge(edgeCoordinate));
             }
         }
         components.push(componentsRow);
@@ -44,15 +56,12 @@ export default function Board(props : BoardProps) {
         componentsRow = [];
 
         for (let c = 0; c < props.columns; c++) {
-            const wallCoordinate: WallCoordinate = {
+            const edgeCoordinate: EdgeCoordinate = {
                 square1: { row: r, column: c },
                 square2: { row: r + 1, column: c}
             };
 
-            componentsRow.push(
-                <Edge key={`${wallCoordinate.square1.row}-${wallCoordinate.square1.column}-${wallCoordinate.square2.row}-${wallCoordinate.square2.column}`}
-                      coordinate={wallCoordinate}/>
-            );
+            componentsRow.push(createEdge(edgeCoordinate));
 
             if (c !== props.columns - 1) {
                 componentsRow.push(

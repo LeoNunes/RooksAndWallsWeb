@@ -1,4 +1,4 @@
-import { Piece, SquareCoordinate, WallCoordinate } from "./Model";
+import { Piece, SquareCoordinate, EdgeCoordinate } from "./Model";
 
 export type GameDataAction = MovePieceActionType | AddWallActionType;
 
@@ -17,9 +17,9 @@ export function movePieceActionCreator(piece: Piece, newPosition: SquareCoordina
 
 export type AddWallActionType = {
     type: 'add-wall',
-    position: WallCoordinate,
+    position: EdgeCoordinate,
 };
-export function addWallActionCreator(position: WallCoordinate) : AddWallActionType {
+export function addWallActionCreator(position: EdgeCoordinate) : AddWallActionType {
     return {
         type: 'add-wall',
         position: position,
