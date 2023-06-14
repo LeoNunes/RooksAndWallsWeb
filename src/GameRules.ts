@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { GameData, canMoveTo, getPieceFromPosition, possibleDestinations } from './Data/GameData/Model';
-import { GameDataAction, movePieceActionCreator } from './Data/GameData/Actions';
+import { GameDataAction, addWallActionCreator, movePieceActionCreator } from './Data/GameData/Actions';
 import { BoardEventHandlers, BoardStateData } from './Data/BoardStateData/Model';
 import {
     BoardStateAction,
@@ -9,7 +9,7 @@ import {
     highlighActionCreator,
     selectPieceActionCreator
 } from './Data/BoardStateData/Actions';
-import { SquareCoordinate } from './Data/Common/Coordinates';
+import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
 
 export function BoardRules(gameState: GameData,
                            boardState: BoardStateData,
@@ -32,8 +32,13 @@ export function BoardRules(gameState: GameData,
         }
     }
 
+    function edgeClicked(coordinate: EdgeCoordinate) {
+        gameDispatch(addWallActionCreator(coordinate));
+    };
+
     return {
         squareClicked,
+        edgeClicked,
     };
 };
 

@@ -26,7 +26,8 @@ export default function Board(props : BoardProps) {
         const { square1: { row: row1, column: column1 }, square2: { row: row2, column: column2 } } = coordinate;
         return (
             <Edge key={`${row1}-${column1}-${row2}-${column2}`}
-                  coordinate={coordinate} />
+                  coordinate={coordinate}
+                  clicked={props.eventHandlers.edgeClicked}/>
         );
     }
 
