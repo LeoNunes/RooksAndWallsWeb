@@ -1,5 +1,5 @@
 import React from 'react';
-import { SquareCoordinate, EdgeCoordinate } from '../../Data/GameData/Model';
+import { SquareCoordinate, EdgeCoordinate } from '../../Data/Common/Coordinates';
 import { BoardEventHandlers } from '../../Data/BoardStateData/Model';
 import Square from './Square';
 import Edge from './Edge';

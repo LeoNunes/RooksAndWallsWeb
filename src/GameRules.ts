@@ -1,8 +1,15 @@
 import { Dispatch } from 'react';
-import { GameData, SquareCoordinate, canMoveTo, getPieceFromPosition, possibleDestinations } from './Data/GameData/Model';
+import { GameData, canMoveTo, getPieceFromPosition, possibleDestinations } from './Data/GameData/Model';
 import { GameDataAction, movePieceActionCreator } from './Data/GameData/Actions';
 import { BoardEventHandlers, BoardStateData } from './Data/BoardStateData/Model';
-import { BoardStateAction, clearHighlightActionCreator, clearPieceSelectionActionCreator, highlighActionCreator, selectPieceActionCreator } from './Data/BoardStateData/Actions';
+import {
+    BoardStateAction,
+    clearHighlightActionCreator,
+    clearPieceSelectionActionCreator,
+    highlighActionCreator,
+    selectPieceActionCreator
+} from './Data/BoardStateData/Actions';
+import { SquareCoordinate } from './Data/Common/Coordinates';
 
 export function BoardRules(gameState: GameData,
                            boardState: BoardStateData,

@@ -9,14 +9,13 @@ export function BoardStateDataRaducer(data: BoardStateData, action: BoardStateAc
                 ...data,
                 selectedPiece: act.piece,
             };
-        }
+        };
         case 'highlight': {
             const act = action as HighlighActionType;
             return {
                 ...data,
                 highlightedSquares: act.squares,
             };
-        }
+        };
     }
-    return data;
 }

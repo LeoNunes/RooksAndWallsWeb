@@ -1,4 +1,5 @@
-import { Piece, SquareCoordinate, areSquareCoordinatesEqual } from "../GameData/Model";
+import { Piece } from "../GameData/Model";
+import { SquareCoordinate, areSquareCoordinatesEqual } from "../Common/Coordinates";
 
 export type BoardStateData = {
     selectedPiece?: Piece,
@@ -14,4 +15,4 @@ export type BoardEventHandlers = {
 
 export function isSquareHighlighted(data: BoardStateData, coordinate: SquareCoordinate) {
     return data.highlightedSquares?.find(c => areSquareCoordinatesEqual(c, coordinate)) !== undefined;
-}
+};

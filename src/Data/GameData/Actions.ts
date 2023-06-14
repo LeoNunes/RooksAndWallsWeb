@@ -1,4 +1,5 @@
-import { Piece, SquareCoordinate, EdgeCoordinate } from "./Model";
+import { Piece } from "./Model";
+import { SquareCoordinate, EdgeCoordinate } from "../Common/Coordinates";
 
 export type GameDataAction = MovePieceActionType | AddWallActionType;
 

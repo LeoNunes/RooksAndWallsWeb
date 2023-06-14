@@ -1,8 +1,9 @@
 import React from 'react';
-import { SquareCoordinate, getPieceFromPosition } from '../../Data/GameData/Model';
+import { getPieceFromPosition } from '../../Data/GameData/Model';
 import { isSquareHighlighted } from '../../Data/BoardStateData/Model';
 import { useGameData } from '../../Data/GameData/GameDataProvider';
 import { useBoardStateData } from '../../Data/BoardStateData/BoardStateDataProvider';
+import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import Piece from './Piece';
 import './Square.css';
 

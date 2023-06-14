@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameData } from '../../Data/GameData/GameDataProvider';
-import { EdgeCoordinate, getWallFromPosition } from '../../Data/GameData/Model';
+import { getWallFromPosition } from '../../Data/GameData/Model';
+import { EdgeCoordinate } from '../../Data/Common/Coordinates';
 import Wall from './Wall';
 import './Edge.css';
 

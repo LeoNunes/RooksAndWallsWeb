@@ -11,7 +11,7 @@ export function gameDataReducer(data: GameData, action: GameDataAction) : GameDa
                     ...data.walls,
                     { coordinate: act.position }
                 ],
-            }
+            };
         };
         case "move-piece": {
             const act: MovePieceActionType = action as MovePieceActionType;
