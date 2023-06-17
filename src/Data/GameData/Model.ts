@@ -6,27 +6,30 @@ import {
 } from "../Common/Coordinates";
 import GameConfig from "../../GameConfig";
 
-export type Piece = {
+export type GamePiece = {
+    id: number,
     owner: number,
     coordinate: SquareCoordinate,
-}
+};
 
-export type Wall = {
+export type GameWall = {
     coordinate: EdgeCoordinate,
 };
 
 export type GameData = {
-    pieces: Piece[],
-    walls: Wall[],
+    pieces: GamePiece[],
+    walls: GameWall[],
 };
 
 export const gameDataInitialValue: GameData = {
     pieces: [
         {
+            id: 0,
             owner: 0,
             coordinate: { row: 0, column: 0 }
         },
         {
+            id: 1,
             owner: 1,
             coordinate: { row: 7, column: 7 }
         }
@@ -47,13 +50,21 @@ export const gameDataInitialValue: GameData = {
     ],
 };
 
-export function getPieceFromPosition(data: GameData, position: SquareCoordinate) {
-    return data.pieces.find(p => areSquareCoordinatesEqual(p.coordinate, position));
-}
+export function getGamePieceById(data: GameData, id: number) {
+    const piece = data.pieces.find(p => p.id === id);
+    if (piece === undefined) {
+        throw new Error(`Piece with id ${id} was not found`);
+    }
+    return piece;
+};
 
-export function getWallFromPosition(data: GameData, position: EdgeCoordinate) {
+export function getGamePieceFromPosition(data: GameData, position: SquareCoordinate) {
+    return data.pieces.find(p => areSquareCoordinatesEqual(p.coordinate, position));
+};
+
+export function getGameWallFromPosition(data: GameData, position: EdgeCoordinate) {
     return data.walls.find(w => areEdgeCoordinatesEqual(w.coordinate, position));
-}
+};
 
 export function isSquareInsideBoard(coordinate: SquareCoordinate) {
     if (coordinate.row < 0 || coordinate.row > GameConfig.boardSize.rows - 1 ||
@@ -61,9 +72,9 @@ export function isSquareInsideBoard(coordinate: SquareCoordinate) {
         return false;
     }
     return true;
-}
+};
 
-export function possibleDestinations(data: GameData, piece: Piece) : SquareCoordinate[] {
+export function possibleDestinations(data: GameData, piece: GamePiece) : SquareCoordinate[] {
     const destinations: SquareCoordinate[] = [];
     const directions = [[0,1], [0,-1], [1,0], [-1,0]];
     for (let [deltaRow, deltaColumn] of directions) {
@@ -78,11 +89,11 @@ export function possibleDestinations(data: GameData, piece: Piece) : SquareCoord
                 break;
             }
 
-            if (getWallFromPosition(data, { square1: currentSquare, square2: nextSquare })) {
+            if (getGameWallFromPosition(data, { square1: currentSquare, square2: nextSquare })) {
                 break;
             }
 
-            if (getPieceFromPosition(data, nextSquare)) {
+            if (getGamePieceFromPosition(data, nextSquare)) {
                 break;
             }
 
@@ -92,8 +103,8 @@ export function possibleDestinations(data: GameData, piece: Piece) : SquareCoord
         }
     }
     return destinations;
-}
+};
 
-export function canMoveTo(data: GameData, piece: Piece, destination: SquareCoordinate) {
+export function canMoveTo(data: GameData, piece: GamePiece, destination: SquareCoordinate) {
     return possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !== undefined;
-}
+};

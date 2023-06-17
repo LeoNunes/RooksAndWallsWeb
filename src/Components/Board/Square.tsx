@@ -1,7 +1,5 @@
 import React from 'react';
-import { getPieceFromPosition } from '../../Data/GameData/Model';
-import { isSquareHighlighted } from '../../Data/BoardStateData/Model';
-import { useGameData } from '../../Data/GameData/GameDataProvider';
+import { getBoardPieceFromPosition, isSquareHighlighted } from '../../Data/BoardStateData/Model';
 import { useBoardStateData } from '../../Data/BoardStateData/BoardStateDataProvider';
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import Piece from './Piece';
@@ -13,9 +11,8 @@ type SquareProps = {
     clicked?: (coordinate: SquareCoordinate) => void,
 };
 export default function Square(props: SquareProps) {
-    const gameData = useGameData();
     const boardStateData = useBoardStateData();
-    const piece = getPieceFromPosition(gameData, props.coordinate);
+    const piece = getBoardPieceFromPosition(boardStateData, props.coordinate);
 
     const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (props.clicked) {

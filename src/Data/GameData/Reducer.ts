@@ -27,4 +27,4 @@ export function gameDataReducer(data: GameData, action: GameDataAction) : GameDa
             };
         };
     }
-}
+};

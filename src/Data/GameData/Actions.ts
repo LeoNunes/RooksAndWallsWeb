@@ -1,20 +1,20 @@
-import { Piece } from "./Model";
+import { GamePiece } from "./Model";
 import { SquareCoordinate, EdgeCoordinate } from "../Common/Coordinates";
 
 export type GameDataAction = MovePieceActionType | AddWallActionType;
 
 export type MovePieceActionType = {
     type: 'move-piece',
-    piece: Piece,
+    piece: GamePiece,
     newPosition: SquareCoordinate,
 };
-export function movePieceActionCreator(piece: Piece, newPosition: SquareCoordinate) : MovePieceActionType {
+export function movePieceActionCreator(piece: GamePiece, newPosition: SquareCoordinate) : MovePieceActionType {
     return {
         type: 'move-piece',
         piece: piece,
         newPosition: newPosition,
     };
-}
+};
 
 export type AddWallActionType = {
     type: 'add-wall',
@@ -25,4 +25,4 @@ export function addWallActionCreator(position: EdgeCoordinate) : AddWallActionTy
         type: 'add-wall',
         position: position,
     };
-}
+};

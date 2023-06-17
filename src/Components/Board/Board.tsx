@@ -76,11 +76,13 @@ export default function Board(props : BoardProps) {
 
     return (
         <div className='board'>
-            {components.map((row, rowIndex) => 
-                <div key={`row-${rowIndex}`} className='board-row'>
-                    {row}
-                </div>
-            )}
+            {
+                components.map((row, rowIndex) => 
+                    <div key={`row-${rowIndex}`} className='board-row'>
+                        {row}
+                    </div>
+                )
+            }
 
         </div>
     );
