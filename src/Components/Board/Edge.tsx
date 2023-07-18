@@ -1,6 +1,6 @@
 import React from 'react';
-import { getBoardWallFromPosition } from '../../Data/BoardStateData/Model';
-import { useBoardStateData } from '../../Data/BoardStateData/BoardStateDataProvider';
+import { getBoardWallFromPosition } from '../../Data/BoardData/Model';
+import { useBoardData } from '../../Data/BoardData/BoardDataProvider';
 import { EdgeCoordinate } from '../../Data/Common/Coordinates';
 import Wall from './Wall';
 import './Edge.css';
@@ -10,7 +10,7 @@ type EdgeProps = {
     clicked?: (coordinate: EdgeCoordinate) => void,
 };
 export default function Edge({ coordinate, clicked }: EdgeProps) {
-    const boardStateData = useBoardStateData();
+    const boardStateData = useBoardData();
     const wall = getBoardWallFromPosition(boardStateData, coordinate);
     const isVertical = coordinate.square1.row === coordinate.square2.row;
 

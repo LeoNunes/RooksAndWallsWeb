@@ -3,7 +3,7 @@ import useWebSocket from 'react-use-websocket';
 import { isGameState } from './Data/GameWS/Model';
 import { WSAction } from './Data/GameWS/Actions';
 import { useGameData, useGameDataDispatch } from './Data/GameData/GameDataProvider';
-import { useBoardStateData, useBoardStateDataDispatch } from './Data/BoardStateData/BoardStateDataProvider';
+import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
 import { BoardRules, updateBoardElementsFromGameData, updateGameFromWebSocket } from './GameRules';
 import { gameConfig, webSocketConfig } from './GameConfig';
 import Board from './Components/Board/Board';
@@ -14,8 +14,8 @@ type GameProps = {
 export default function Game(props: GameProps) {
     const gameData = useGameData();
     const gameDataDispatch = useGameDataDispatch();
-    const boardStateData = useBoardStateData();
-    const boardStateDataDispatch = useBoardStateDataDispatch();
+    const boardStateData = useBoardData();
+    const boardStateDataDispatch = useBoardDataDispatch();
 
     const { lastJsonMessage, sendJsonMessage } = useWebSocket(webSocketConfig.urlForGame(props.gameId), {
         onOpen() {

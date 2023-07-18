@@ -1,6 +1,6 @@
 import React from 'react';
 import { SquareCoordinate, EdgeCoordinate } from '../../Data/Common/Coordinates';
-import { BoardEventHandlers } from '../../Data/BoardStateData/Model';
+import { BoardEventHandlers } from '../../Data/BoardData/Model';
 import Square from './Square';
 import Edge from './Edge';
 import './Board.css';

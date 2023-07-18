@@ -1,16 +1,16 @@
 import { Dispatch } from 'react';
 import { GameData, canMoveTo, getGamePieceById, getGameWallFromPosition, possibleDestinations } from './Data/GameData/Model';
 import { GameDataAction, addWallActionCreator, movePieceActionCreator, updateFromServerActionCreator } from './Data/GameData/Actions';
-import { BoardEventHandlers, BoardStateData, getBoardPieceFromPosition } from './Data/BoardStateData/Model';
+import { BoardEventHandlers, BoardData, getBoardPieceFromPosition } from './Data/BoardData/Model';
 import {
-    BoardStateAction,
+    BoardAction,
     clearHighlightActionCreator,
     clearPieceSelectionActionCreator,
     highlighActionCreator,
     selectPieceActionCreator,
     setPiecesActionCreator,
     setWallsActionCreator
-} from './Data/BoardStateData/Actions';
+} from './Data/BoardData/Actions';
 import { WSGameState } from './Data/GameWS/Model';
 import { WSAction } from './Data/GameWS/Actions';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
@@ -21,7 +21,7 @@ export function updateGameFromWebSocket(gameState: WSGameState, gameDispatch: Di
 };
 
 export function updateBoardElementsFromGameData(gameState: GameData,
-                                                boardDispatch: Dispatch<BoardStateAction>) {
+                                                boardDispatch: Dispatch<BoardAction>) {
     boardDispatch(setPiecesActionCreator(gameState.pieces.map(p => ({
         id: p.id,
         position: p.position,
@@ -34,9 +34,9 @@ export function updateBoardElementsFromGameData(gameState: GameData,
 };
 
 export function BoardRules(gameState: GameData,
-                           boardState: BoardStateData,
+                           boardState: BoardData,
                            gameDispatch: Dispatch<GameDataAction>,
-                           boardDispatch: Dispatch<BoardStateAction>,
+                           boardDispatch: Dispatch<BoardAction>,
                            serverDispatch: Dispatch<WSAction>) : BoardEventHandlers {
     
     function squareClicked(coordinate: SquareCoordinate) {

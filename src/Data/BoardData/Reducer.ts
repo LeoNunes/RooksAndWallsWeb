@@ -1,7 +1,7 @@
-import { BoardStateAction, HighlighActionType, SelectPieceActionType, SetPiecesActionType, SetWallsActionType } from './Actions';
-import { BoardStateData } from './Model';
+import { BoardAction, HighlighActionType, SelectPieceActionType, SetPiecesActionType, SetWallsActionType } from './Actions';
+import { BoardData } from './Model';
 
-export function BoardStateDataRaducer(data: BoardStateData, action: BoardStateAction): BoardStateData {
+export function BoardDataRaducer(data: BoardData, action: BoardAction): BoardData {
     switch (action.type) {
         case 'select-piece': {
             const act = action as SelectPieceActionType;

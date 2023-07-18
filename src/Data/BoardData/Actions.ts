@@ -1,7 +1,7 @@
 import { BoardPiece, BoardWall } from "./Model";
 import { SquareCoordinate } from "../Common/Coordinates";
 
-export type BoardStateAction = HighlighActionType | SelectPieceActionType | SetPiecesActionType | SetWallsActionType;
+export type BoardAction = HighlighActionType | SelectPieceActionType | SetPiecesActionType | SetWallsActionType;
 
 export type SelectPieceActionType = {
     type: 'select-piece',

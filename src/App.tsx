@@ -1,16 +1,16 @@
 import React from 'react';
 import Game from './Game';
 import { GameDataProvider } from './Data/GameData/GameDataProvider';
-import { BoardStateDataProvider } from './Data/BoardStateData/BoardStateDataProvider';
+import { BoardDataProvider } from './Data/BoardData/BoardDataProvider';
 import './App.css';
 
 function App() {
     return (
         <div className="App">
             <GameDataProvider>
-                <BoardStateDataProvider>
+                <BoardDataProvider>
                     <Game gameId={0}/>
-                </BoardStateDataProvider>
+                </BoardDataProvider>
             </GameDataProvider>
         </div>
     );

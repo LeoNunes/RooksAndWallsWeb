@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoardPiece as PieceData } from '../../Data/BoardStateData/Model';
+import { BoardPiece as PieceData } from '../../Data/BoardData/Model';
 import './Piece.css';
 
 type PieceProps = {
