@@ -1,6 +1,6 @@
 import { EdgeCoordinate, SquareCoordinate } from "../Common/Coordinates";
 
-export type WSAction = {
+export type ServerAction = {
     addPiece?: AddPieceAction;
     move?: MoveAction;
 };
@@ -15,7 +15,7 @@ export type MoveAction = {
     wallPosition: EdgeCoordinate;
 };
 
-export function addPieceActionCreator(position: SquareCoordinate): WSAction {
+export function addPieceActionCreator(position: SquareCoordinate): ServerAction {
     return {
         addPiece: {
             position: position,
@@ -23,7 +23,7 @@ export function addPieceActionCreator(position: SquareCoordinate): WSAction {
     };
 }
 
-export function moveActionCreator(pieceId: number, destination: SquareCoordinate, wallPosition: EdgeCoordinate): WSAction {
+export function moveActionCreator(pieceId: number, destination: SquareCoordinate, wallPosition: EdgeCoordinate): ServerAction {
     return {
         move: {
             pieceId: pieceId,

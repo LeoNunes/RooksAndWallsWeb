@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { isGameState } from './Data/GameWS/Model';
-import { WSAction } from './Data/GameWS/Actions';
+import { isGameState } from './Data/ServerData/Model';
+import { ServerAction } from './Data/ServerData/Actions';
 import { useGameData, useGameDataDispatch } from './Data/GameData/GameDataProvider';
 import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
 import { BoardRules, updateBoardElementsFromGameData, updateGameFromWebSocket } from './GameRules';
@@ -34,7 +34,7 @@ export default function Game(props: GameProps) {
         }
     }, [lastJsonMessage, gameDataDispatch]);
 
-    function websocketDispatch(action: WSAction) { sendJsonMessage(action); }
+    function websocketDispatch(action: ServerAction) { sendJsonMessage(action); }
 
     return (
         <Board rows={gameConfig.boardSize.rows}

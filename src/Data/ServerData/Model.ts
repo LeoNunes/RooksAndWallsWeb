@@ -1,6 +1,6 @@
 import { EdgeCoordinate, SquareCoordinate } from "../Common/Coordinates";
 
-export type WSGameState = {
+export type ServerGameState = {
     gameId: number;
     config: GameConfig;
     stage: GameStage;
@@ -35,8 +35,8 @@ type Wall = {
     position: EdgeCoordinate;
 };
 
-export function isGameState(obj: any): obj is WSGameState {
-    const gameState = obj as WSGameState;
+export function isGameState(obj: any): obj is ServerGameState {
+    const gameState = obj as ServerGameState;
     return gameState.gameId !== undefined &&
            gameState.config !== undefined &&
            gameState.stage !== undefined &&

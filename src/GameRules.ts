@@ -11,12 +11,12 @@ import {
     setPiecesActionCreator,
     setWallsActionCreator
 } from './Data/BoardData/Actions';
-import { WSGameState } from './Data/GameWS/Model';
-import { WSAction } from './Data/GameWS/Actions';
+import { ServerGameState } from './Data/ServerData/Model';
+import { ServerAction } from './Data/ServerData/Actions';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
 import { gameConfig } from './GameConfig';
 
-export function updateGameFromWebSocket(gameState: WSGameState, gameDispatch: Dispatch<GameDataAction>) {
+export function updateGameFromWebSocket(gameState: ServerGameState, gameDispatch: Dispatch<GameDataAction>) {
     gameDispatch(updateFromServerActionCreator(gameState));
 };
 
@@ -37,7 +37,7 @@ export function BoardRules(gameState: GameData,
                            boardState: BoardData,
                            gameDispatch: Dispatch<GameDataAction>,
                            boardDispatch: Dispatch<BoardAction>,
-                           serverDispatch: Dispatch<WSAction>) : BoardEventHandlers {
+                           serverDispatch: Dispatch<ServerAction>) : BoardEventHandlers {
     
     function squareClicked(coordinate: SquareCoordinate) {
         if (boardState.selectedPiece) {
