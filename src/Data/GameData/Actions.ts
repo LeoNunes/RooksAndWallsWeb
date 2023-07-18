@@ -1,7 +1,8 @@
 import { GamePiece } from "./Model";
 import { SquareCoordinate, EdgeCoordinate } from "../Common/Coordinates";
+import { WSGameState } from "../GameWS/Model";
 
-export type GameDataAction = MovePieceActionType | AddWallActionType;
+export type GameDataAction = MovePieceActionType | AddWallActionType | UpdateFromServerActionType;
 
 export type MovePieceActionType = {
     type: 'move-piece',
@@ -24,5 +25,16 @@ export function addWallActionCreator(position: EdgeCoordinate) : AddWallActionTy
     return {
         type: 'add-wall',
         position: position,
+    };
+};
+
+export type UpdateFromServerActionType = {
+    type: 'update-from-server',
+    serverData: WSGameState,
+};
+export function updateFromServerActionCreator(data: WSGameState) : UpdateFromServerActionType {
+    return {
+        type: "update-from-server",
+        serverData: data,
     };
 };

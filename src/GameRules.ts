@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { GameData, canMoveTo, getGamePieceById, getGameWallFromPosition, possibleDestinations } from './Data/GameData/Model';
-import { GameDataAction, addWallActionCreator, movePieceActionCreator } from './Data/GameData/Actions';
+import { GameDataAction, addWallActionCreator, movePieceActionCreator, updateFromServerActionCreator } from './Data/GameData/Actions';
 import { BoardEventHandlers, BoardStateData, getBoardPieceFromPosition } from './Data/BoardStateData/Model';
 import {
     BoardStateAction,
@@ -11,26 +11,33 @@ import {
     setPiecesActionCreator,
     setWallsActionCreator
 } from './Data/BoardStateData/Actions';
+import { WSGameState } from './Data/GameWS/Model';
+import { WSAction } from './Data/GameWS/Actions';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
-import gameConfig from './GameConfig';
+import { gameConfig } from './GameConfig';
+
+export function updateGameFromWebSocket(gameState: WSGameState, gameDispatch: Dispatch<GameDataAction>) {
+    gameDispatch(updateFromServerActionCreator(gameState));
+};
 
 export function updateBoardElementsFromGameData(gameState: GameData,
                                                 boardDispatch: Dispatch<BoardStateAction>) {
     boardDispatch(setPiecesActionCreator(gameState.pieces.map(p => ({
         id: p.id,
-        position: p.coordinate,
+        position: p.position,
         config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
     }))));
     boardDispatch(setWallsActionCreator(gameState.walls.map((w, index) => ({
         id: index,
-        position: w.coordinate,
+        position: w.position,
     }))));
 };
 
 export function BoardRules(gameState: GameData,
                            boardState: BoardStateData,
                            gameDispatch: Dispatch<GameDataAction>,
-                           boardDispatch: Dispatch<BoardStateAction>) : BoardEventHandlers {
+                           boardDispatch: Dispatch<BoardStateAction>,
+                           serverDispatch: Dispatch<WSAction>) : BoardEventHandlers {
     
     function squareClicked(coordinate: SquareCoordinate) {
         if (boardState.selectedPiece) {
@@ -59,5 +66,3 @@ export function BoardRules(gameState: GameData,
         edgeClicked,
     };
 };
-
-export function WebSocketRules() {};

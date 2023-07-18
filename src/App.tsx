@@ -9,7 +9,7 @@ function App() {
         <div className="App">
             <GameDataProvider>
                 <BoardStateDataProvider>
-                    <Game/>
+                    <Game gameId={0}/>
                 </BoardStateDataProvider>
             </GameDataProvider>
         </div>

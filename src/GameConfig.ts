@@ -19,7 +19,8 @@ type GameConfig = {
     pieces: Record<PieceColor, { default: PieceConfig, disabled: PieceConfig }>,
     players: { [number: number]: PlayerConfig },
 };
-const gameConfig: GameConfig = {
+
+export const gameConfig: GameConfig = {
     numberOfPlayers: 3,
     boardSize: {
         rows: 8,
@@ -51,4 +52,9 @@ const gameConfig: GameConfig = {
     },
 };
 
-export default gameConfig;
+// const wsBaseUrl = 'ws://beta.api.rw.leonunes.me';
+const wsBaseUrl = 'ws://127.0.0.1:5000';
+const wsGamePath = '/rw/game/{gameId}';
+export const webSocketConfig = {
+    urlForGame: (gameId: number) => `${wsBaseUrl}${wsGamePath.replace('{gameId}', gameId.toString())}`,
+}
