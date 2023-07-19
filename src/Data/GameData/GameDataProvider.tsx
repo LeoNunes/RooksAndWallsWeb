@@ -23,7 +23,6 @@ export function useGameDataDispatch() : Dispatch<GameDataAction> {
 }
 
 type GameDataProviderProps = PropsWithChildren<{}>;
-
 export function GameDataProvider(props: GameDataProviderProps) {
     const [gameData, gameDataDispatch] = useReducer(gameDataReducer, gameDataInitialValue);
 
@@ -34,4 +33,4 @@ export function GameDataProvider(props: GameDataProviderProps) {
             </GameDataDispatchContext.Provider>
         </GameDataContext.Provider>
     );
-};
+}

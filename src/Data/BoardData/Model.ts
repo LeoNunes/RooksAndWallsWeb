@@ -37,7 +37,7 @@ export function getBoardPieceById(data: BoardData, id: number) {
         throw new Error(`Piece with id ${id} was not found`);
     }
     return piece;
-};
+}
 
 export function getBoardWallById(data: BoardData, id: number) {
     const wall = data.walls.find(p => p.id === id);
@@ -45,16 +45,25 @@ export function getBoardWallById(data: BoardData, id: number) {
         throw new Error(`Wall with id ${id} was not found`);
     }
     return wall;
-};
+}
 
 export function getBoardPieceFromPosition(data: BoardData, position: SquareCoordinate) {
     return data.pieces.find(p => areSquareCoordinatesEqual(p.position, position));
-};
+}
 
 export function getBoardWallFromPosition(data: BoardData, position: EdgeCoordinate) {
     return data.walls.find(w => areEdgeCoordinatesEqual(w.position, position));
-};
+}
 
 export function isSquareHighlighted(data: BoardData, coordinate: SquareCoordinate) {
     return data.highlightedSquares?.find(c => areSquareCoordinatesEqual(c, coordinate)) !== undefined;
-};
+}
+
+export function canPlacePiece(data: BoardData, coordinate: SquareCoordinate) {
+    return data.piecePlacement?.piece !== undefined &&
+           data.piecePlacement?.availableSquares?.find(square => areSquareCoordinatesEqual(square, coordinate)) !== undefined;
+}
+
+export function getPieceForPiecePlacement(data: BoardData) {
+    return data.piecePlacement?.piece;
+}

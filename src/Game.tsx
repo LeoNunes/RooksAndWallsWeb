@@ -4,7 +4,8 @@ import { isGameState } from './Data/ServerData/Model';
 import { ServerAction } from './Data/ServerData/Actions';
 import { useGameData, useGameDataDispatch } from './Data/GameData/GameDataProvider';
 import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
-import { BoardRules, updateBoardElementsFromGameData, updateGameFromWebSocket } from './GameRules';
+import { boardDispatcher } from './Data/BoardData/Actions';
+import { boardRules, updateBoardElementsFromGameData, updateGameFromServer } from './GameRules';
 import { gameConfig, webSocketConfig } from './GameConfig';
 import Board from './Components/Board/Board';
 
@@ -14,31 +15,35 @@ type GameProps = {
 export default function Game(props: GameProps) {
     const gameData = useGameData();
     const gameDataDispatch = useGameDataDispatch();
-    const boardStateData = useBoardData();
-    const boardStateDataDispatch = useBoardDataDispatch();
+    const boardData = useBoardData();
+    const boardDataDispatch = useBoardDataDispatch();
+    const boardDataDispatcher = boardDispatcher(boardDataDispatch);
 
     const { lastJsonMessage, sendJsonMessage } = useWebSocket(webSocketConfig.urlForGame(props.gameId), {
         onOpen() {
             console.log("Connected to websocket");
         },
+        onClose() {
+            console.log("Disconnected from websocket");
+        }
     });
 
     useEffect(() => console.log("GameData", gameData), [gameData]);
-    useEffect(() => console.log("BoardStateData", boardStateData), [boardStateData]);
-    useEffect(
-        () => updateBoardElementsFromGameData(gameData, boardStateDataDispatch)
-    , [gameData.pieces, gameData.walls, boardStateDataDispatch]);
+    useEffect(() => console.log("BoardStateData", boardData), [boardData]);
+
+    useEffect(() => updateBoardElementsFromGameData(gameData, boardDataDispatcher), [gameData]);
     useEffect(() => {
         if (lastJsonMessage !== null && isGameState(lastJsonMessage)) {
-            updateGameFromWebSocket(lastJsonMessage, gameDataDispatch);
+            console.log('Message received', lastJsonMessage);
+            updateGameFromServer(lastJsonMessage, gameDataDispatch);
         }
-    }, [lastJsonMessage, gameDataDispatch]);
+    }, [lastJsonMessage]);
 
     function websocketDispatch(action: ServerAction) { sendJsonMessage(action); }
 
     return (
         <Board rows={gameConfig.boardSize.rows}
                columns={gameConfig.boardSize.columns}
-               eventHandlers={BoardRules(gameData, boardStateData, gameDataDispatch, boardStateDataDispatch, websocketDispatch)}/>
+               eventHandlers={boardRules(gameData, boardData, gameDataDispatch, boardDataDispatcher, websocketDispatch)}/>
     );
 }

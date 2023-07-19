@@ -1,6 +1,6 @@
 import { GamePiece } from "./Model";
 import { SquareCoordinate, EdgeCoordinate } from "../Common/Coordinates";
-import { ServerGameState } from "../ServerData/Model";
+import { ServerData } from "../ServerData/Model";
 
 export type GameDataAction = MovePieceActionType | AddWallActionType | UpdateFromServerActionType;
 
@@ -15,7 +15,7 @@ export function movePieceActionCreator(piece: GamePiece, newPosition: SquareCoor
         piece: piece,
         newPosition: newPosition,
     };
-};
+}
 
 export type AddWallActionType = {
     type: 'add-wall',
@@ -26,15 +26,15 @@ export function addWallActionCreator(position: EdgeCoordinate) : AddWallActionTy
         type: 'add-wall',
         position: position,
     };
-};
+}
 
 export type UpdateFromServerActionType = {
     type: 'update-from-server',
-    serverData: ServerGameState,
+    serverData: ServerData,
 };
-export function updateFromServerActionCreator(data: ServerGameState) : UpdateFromServerActionType {
+export function updateFromServerActionCreator(data: ServerData) : UpdateFromServerActionType {
     return {
         type: "update-from-server",
         serverData: data,
     };
-};
+}

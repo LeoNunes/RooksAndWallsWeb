@@ -1,4 +1,11 @@
-import { BoardAction, HighlighActionType, SelectPieceActionType, SetPiecesActionType, SetWallsActionType } from './Actions';
+import {
+    BoardAction,
+    EnablePiecePlacementMode,
+    HighlighActionType,
+    SelectPieceActionType,
+    SetPiecesActionType,
+    SetWallsActionType
+} from './Actions';
 import { BoardData } from './Model';
 
 export function BoardDataRaducer(data: BoardData, action: BoardAction): BoardData {
@@ -29,6 +36,22 @@ export function BoardDataRaducer(data: BoardData, action: BoardAction): BoardDat
             return {
                 ...data,
                 walls: act.walls,
+            };
+        };
+        case 'enable-piece-placement-mode': {
+            const act = action as EnablePiecePlacementMode;
+            return {
+                ...data,
+                piecePlacement: {
+                    piece: act.pieceConfig,
+                    availableSquares: act.availableSquares
+                }
+            };
+        };
+        case 'disable-piece-placement-mode': {
+            return {
+                ...data,
+                piecePlacement: undefined,
             };
         };
     }

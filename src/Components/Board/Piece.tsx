@@ -1,13 +1,14 @@
 import React from 'react';
-import { BoardPiece as PieceData } from '../../Data/BoardData/Model';
+import { PieceConfig } from '../../GameConfig';
 import './Piece.css';
 
 type PieceProps = {
-    piece: PieceData,
+    pieceConfig: PieceConfig;
+    isPlacementMode: boolean;
 };
-export default function Piece({ piece }: PieceProps) {
+export default function Piece({ pieceConfig, isPlacementMode }: PieceProps) {
     return (
-        <div className='piece'
-             style={{ backgroundImage: `url(${piece.config.uri})` }}/>
+        <div className={'piece' + (isPlacementMode ? ' placing' : '')}
+             style={{ backgroundImage: `url(${pieceConfig.uri})` }}/>
     );
 };

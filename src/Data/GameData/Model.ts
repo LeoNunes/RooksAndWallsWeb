@@ -37,32 +37,8 @@ export const gameDataInitialValue: GameData = {
     playerId: 0,
     currentPlayer: undefined,
     players: [],
-    pieces: [
-        {
-            id: 0,
-            owner: 0,
-            position: { row: 0, column: 0 }
-        },
-        {
-            id: 1,
-            owner: 1,
-            position: { row: 7, column: 7 }
-        }
-    ],
-    walls: [
-        {
-            position: {
-                square1: { row: 0, column: 0 },
-                square2: { row: 0, column: 1 }
-            }
-        },
-        {
-            position: {
-                square1: { row: 5, column: 5 },
-                square2: { row: 6, column: 5 }
-            }
-        }
-    ],
+    pieces: [],
+    walls: [],
     deadPieces: [],
 };
 
@@ -72,15 +48,15 @@ export function getGamePieceById(data: GameData, id: number) {
         throw new Error(`Piece with id ${id} was not found`);
     }
     return piece;
-};
+}
 
 export function getGamePieceFromPosition(data: GameData, position: SquareCoordinate) {
     return data.pieces.find(p => areSquareCoordinatesEqual(p.position, position));
-};
+}
 
 export function getGameWallFromPosition(data: GameData, position: EdgeCoordinate) {
     return data.walls.find(w => areEdgeCoordinatesEqual(w.position, position));
-};
+}
 
 export function isSquareInsideBoard(coordinate: SquareCoordinate) {
     if (coordinate.row < 0 || coordinate.row > gameConfig.boardSize.rows - 1 ||
@@ -88,7 +64,7 @@ export function isSquareInsideBoard(coordinate: SquareCoordinate) {
         return false;
     }
     return true;
-};
+}
 
 export function possibleDestinations(data: GameData, piece: GamePiece) : SquareCoordinate[] {
     const destinations: SquareCoordinate[] = [];
@@ -119,8 +95,28 @@ export function possibleDestinations(data: GameData, piece: GamePiece) : SquareC
         }
     }
     return destinations;
-};
+}
+
+export function isPlayersTurn(data: GameData) {
+    return data.currentPlayer === data.playerId;
+}
+
+export function availableSquaresForPlacingPiece(data: GameData) {
+    const result: SquareCoordinate[] = [];
+    for (let r = 0; r < gameConfig.boardSize.rows; r++) {
+        for (let c = 0; c < gameConfig.boardSize.columns; c++) {
+            if (getGamePieceFromPosition(data, { row: r, column: c }) === undefined) {
+                result.push({ row: r, column: c });
+            }
+        }
+    }
+    return result;
+}
+
+export function canPlacePiece(data: GameData, position: SquareCoordinate) {
+    return getGamePieceFromPosition(data, position) === undefined;
+}
 
 export function canMoveTo(data: GameData, piece: GamePiece, destination: SquareCoordinate) {
     return possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !== undefined;
-};
+}

@@ -52,8 +52,8 @@ export const gameConfig: GameConfig = {
     },
 };
 
-// const wsBaseUrl = 'ws://beta.api.rw.leonunes.me';
-const wsBaseUrl = 'ws://127.0.0.1:5000';
+const wsBaseUrl = 'ws://beta.api.rw.leonunes.me';
+// const wsBaseUrl = 'ws://127.0.0.1:5000';
 const wsGamePath = '/rw/game/{gameId}';
 export const webSocketConfig = {
     urlForGame: (gameId: number) => `${wsBaseUrl}${wsGamePath.replace('{gameId}', gameId.toString())}`,
