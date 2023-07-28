@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { isGameState } from './Data/ServerData/Model';
+import { isServerData } from './Data/ServerData/Model';
 import { ServerAction } from './Data/ServerData/Actions';
 import { useGameData, useGameDataDispatch } from './Data/GameData/GameDataProvider';
 import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
@@ -19,7 +19,7 @@ export default function Game(props: GameProps) {
     const boardDataDispatch = useBoardDataDispatch();
     const boardDataDispatcher = boardDispatcher(boardDataDispatch);
 
-    const { lastJsonMessage, sendJsonMessage } = useWebSocket(webSocketConfig.urlForGame(props.gameId), {
+    const { lastMessage, lastJsonMessage, sendJsonMessage } = useWebSocket(webSocketConfig.urlForGame(props.gameId), {
         onOpen() {
             console.log("Connected to websocket");
         },
@@ -33,17 +33,19 @@ export default function Game(props: GameProps) {
 
     useEffect(() => updateBoardElementsFromGameData(gameData, boardDataDispatcher), [gameData]);
     useEffect(() => {
-        if (lastJsonMessage !== null && isGameState(lastJsonMessage)) {
+        if (lastJsonMessage !== null && isServerData(lastJsonMessage)) {
             console.log('Message received', lastJsonMessage);
             updateGameFromServer(lastJsonMessage, gameDataDispatch);
+        } else {
+            console.log('Raw message received', lastMessage);
         }
-    }, [lastJsonMessage]);
+    }, [lastJsonMessage, lastMessage]);
 
-    function websocketDispatch(action: ServerAction) { sendJsonMessage(action); }
+    function serverDispatch(action: ServerAction) { sendJsonMessage(action); }
 
     return (
         <Board rows={gameConfig.boardSize.rows}
                columns={gameConfig.boardSize.columns}
-               eventHandlers={boardRules(gameData, boardData, gameDataDispatch, boardDataDispatcher, websocketDispatch)}/>
+               eventHandlers={boardRules(gameData, boardData, gameDataDispatch, boardDataDispatcher, serverDispatch)}/>
     );
 }

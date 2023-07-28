@@ -1,5 +1,5 @@
 import { GameData } from './Model';
-import { GameDataAction, AddWallActionType, MovePieceActionType, UpdateFromServerActionType } from './Actions';
+import { GameDataAction, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
 
 export function gameDataReducer(data: GameData, action: GameDataAction) : GameData {
     switch (action.type) {
@@ -49,6 +49,37 @@ export function gameDataReducer(data: GameData, action: GameDataAction) : GameDa
                     owner: p.owner,
                     position: p.position,
                 })),
+            };
+        };
+        case 'set-next-move-piece': {
+            const act = action as SetNextMovePiece;
+            return {
+                ...data,
+                nextMove: {
+                    ...data.nextMove,
+                    piece: act.piece,
+                    piecePosition: act.position,
+                }
+            };
+        };
+        case 'set-next-move-wall': {
+            const act = action as SetNextMoveWall;
+            return {
+                ...data,
+                nextMove: {
+                    ...data.nextMove,
+                    wall: act.position,
+                }
+            };
+        };
+        case 'reset-next-move': {
+            return {
+                ...data,
+                nextMove: {
+                    piece: undefined,
+                    piecePosition: undefined,
+                    wall: undefined,
+                }
             };
         };
     }

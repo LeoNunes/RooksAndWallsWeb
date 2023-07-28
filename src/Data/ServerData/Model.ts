@@ -35,7 +35,7 @@ type Wall = {
     position: EdgeCoordinate;
 };
 
-export function isGameState(obj: any): obj is ServerData {
+export function isServerData(obj: any): obj is ServerData {
     const gameState = obj as ServerData;
     return gameState.gameId !== undefined &&
            gameState.config !== undefined &&

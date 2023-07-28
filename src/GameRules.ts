@@ -5,15 +5,16 @@ import {
     canMoveTo,
     canPlacePiece,
     getGamePieceById,
+    getGamePieceFromPosition,
     getGameWallFromPosition,
     isPlayersTurn,
     possibleDestinations
 } from './Data/GameData/Model';
-import { GameDataAction, addWallActionCreator, movePieceActionCreator, updateFromServerActionCreator } from './Data/GameData/Actions';
-import { BoardEventHandlers, BoardData, getBoardPieceFromPosition } from './Data/BoardData/Model';
+import { GameDataAction, addWallActionCreator, resetNextMoveActionCreator, setNextMovePieceActionCreator, updateFromServerActionCreator } from './Data/GameData/Actions';
+import { BoardEventHandlers, BoardData, getBoardPieceFromPosition, getBoardPieceById } from './Data/BoardData/Model';
 import { BoardDispatcher } from './Data/BoardData/Actions';
 import { ServerData } from './Data/ServerData/Model';
-import { ServerAction, addPieceActionCreator } from './Data/ServerData/Actions';
+import { ServerAction, addPieceActionCreator, moveActionCreator } from './Data/ServerData/Actions';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
 import { gameConfig } from './GameConfig';
 
@@ -23,10 +24,25 @@ export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispa
 
 export function updateBoardElementsFromGameData(gameData: GameData,
                                                 boardDispatcher: BoardDispatcher) {
-    boardDispatcher.setPieces(gameData.pieces.map(p => ({
-        id: p.id,
-        position: p.position,
-        config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
+    boardDispatcher.setPieces(gameData.pieces.map(p => {
+        if (p.id === gameData.nextMove.piece?.id) {
+            return {
+                id: p.id,
+                position: gameData.nextMove.piecePosition!!,
+                config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
+            };
+        }
+        return {
+            id: p.id,
+            position: p.position,
+            config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
+        };
+    }).concat(gameData.deadPieces.map(p => {
+        return {
+            id: p.id,
+            position: p.position,
+            config: gameConfig.pieces[gameConfig.players[p.owner].color].disabled,
+        };
     })));
     boardDispatcher.setWalls(gameData.walls.map((w, index) => ({
         id: index,
@@ -38,9 +54,9 @@ export function updateBoardElementsFromGameData(gameData: GameData,
             boardDispatcher.enablePiecePlacementMode(
                 gameConfig.pieces[gameConfig.players[gameData.playerId].color].default,
                 availableSquaresForPlacingPiece(gameData),
-                );
-            }
+            );
         }
+    }
     else {
         boardDispatcher.disablePiecePlacementMode();
     }
@@ -88,25 +104,37 @@ function boardRulesForMovesStage(gameState: GameData,
                                  serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
 
     function squareClicked(coordinate: SquareCoordinate) {
-        if (boardState.selectedPiece) {
-            boardDispatcher.clearPieceSelection();
-            boardDispatcher.clearHighlight();
-            if (canMoveTo(gameState, getGamePieceById(gameState, boardState.selectedPiece.id), coordinate)) {
-                gameDispatch(movePieceActionCreator(getGamePieceById(gameState, boardState.selectedPiece.id), coordinate));
-            }
+        if (!isPlayersTurn(gameState)) {
+            return;
         }
-        else {
-            const piece = getBoardPieceFromPosition(boardState, coordinate);
-            if (piece) {
-                boardDispatcher.selectPiece(piece);
-                boardDispatcher.highligh(possibleDestinations(gameState, getGamePieceById(gameState, piece.id)));
+        if (!gameState.nextMove.piece) {
+            if (boardState.selectedPiece) {
+                boardDispatcher.clearPieceSelection();
+                boardDispatcher.clearHighlight();
+                const gamePiece = getGamePieceById(gameState, boardState.selectedPiece.id);
+                if (canMoveTo(gameState, gamePiece, coordinate)) {
+                    gameDispatch(setNextMovePieceActionCreator(gamePiece, coordinate));
+                }
+            }
+            else {
+                const gamePiece = getGamePieceFromPosition(gameState, coordinate);
+                if (gamePiece && gamePiece.owner === gameState.playerId) {
+                    boardDispatcher.selectPiece(getBoardPieceById(boardState, gamePiece.id));
+                    boardDispatcher.highligh(possibleDestinations(gameState, gamePiece));
+                }
             }
         }
     };
 
     function edgeClicked(coordinate: EdgeCoordinate) {
-        if (getGameWallFromPosition(gameState, coordinate) === undefined) {
-            gameDispatch(addWallActionCreator(coordinate));
+        if (!isPlayersTurn(gameState)) {
+            return;
+        }
+        if (gameState.nextMove.piece) {
+            if (getGameWallFromPosition(gameState, coordinate) === undefined) {
+                gameDispatch(resetNextMoveActionCreator());
+                serverDispatch(moveActionCreator(gameState.nextMove.piece.id, gameState.nextMove.piecePosition!!, coordinate))
+            }
         }
     };
 

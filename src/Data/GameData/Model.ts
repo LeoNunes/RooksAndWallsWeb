@@ -3,8 +3,8 @@ import {
     EdgeCoordinate,
     areSquareCoordinatesEqual,
     areEdgeCoordinatesEqual
-} from "../Common/Coordinates";
-import { gameConfig } from "../../GameConfig";
+} from '../Common/Coordinates';
+import { gameConfig } from '../../GameConfig';
 
 export type GameStage = 'waiting_for_players' | 'piece_placement' | 'moves' | 'completed';
 
@@ -22,6 +22,12 @@ export type GameWall = {
     position: EdgeCoordinate;
 };
 
+type NextMove = {
+    piece?: GamePiece;
+    piecePosition?: SquareCoordinate;
+    wall?: EdgeCoordinate;
+};
+
 export type GameData = {
     gameStage: GameStage;
     playerId: number;
@@ -30,6 +36,7 @@ export type GameData = {
     pieces: GamePiece[];
     walls: GameWall[];
     deadPieces: GamePiece[];
+    nextMove: NextMove;
 };
 
 export const gameDataInitialValue: GameData = {
@@ -40,6 +47,7 @@ export const gameDataInitialValue: GameData = {
     pieces: [],
     walls: [],
     deadPieces: [],
+    nextMove: {},
 };
 
 export function getGamePieceById(data: GameData, id: number) {
