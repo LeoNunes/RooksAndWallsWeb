@@ -1,0 +1,12 @@
+.click-movement {
+    display: flex;
+    flex: 1;
+
+    &.selected {
+        background-color: #AAAA77AA;
+    }
+
+    &.highlighted {
+        background-color: #AAAAAA88;
+    }
+}

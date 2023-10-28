@@ -7,7 +7,7 @@ import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataPr
 import { boardDispatcher } from './Data/BoardData/Actions';
 import { boardRules, updateBoardElementsFromGameData, updateGameFromServer } from './GameRules';
 import { gameConfig, webSocketConfig } from './GameConfig';
-import Board from './Components/Board/Board';
+import Board from './Components/Board_old/Board';
 
 type GameProps = {
     gameId: number;
