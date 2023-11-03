@@ -4,9 +4,9 @@ import {
     availableSquaresForPlacingPiece,
     canMoveTo,
     canPlacePiece,
-    getGamePieceById,
-    getGamePieceFromPosition,
-    getGameWallFromPosition,
+    getPieceById,
+    getPieceFromPosition,
+    getWallFromPosition,
     isPlayersTurn,
     possibleDestinations
 } from './Data/GameData/Model';
@@ -111,13 +111,13 @@ function boardRulesForMovesStage(gameState: GameData,
             if (boardState.selectedPiece) {
                 boardDispatcher.clearPieceSelection();
                 boardDispatcher.clearHighlight();
-                const gamePiece = getGamePieceById(gameState, boardState.selectedPiece.id);
+                const gamePiece = getPieceById(gameState, boardState.selectedPiece.id);
                 if (canMoveTo(gameState, gamePiece, coordinate)) {
                     gameDispatch(setNextMovePieceActionCreator(gamePiece, coordinate));
                 }
             }
             else {
-                const gamePiece = getGamePieceFromPosition(gameState, coordinate);
+                const gamePiece = getPieceFromPosition(gameState, coordinate);
                 if (gamePiece && gamePiece.owner === gameState.playerId) {
                     boardDispatcher.selectPiece(getBoardPieceById(boardState, gamePiece.id));
                     boardDispatcher.highligh(possibleDestinations(gameState, gamePiece));
@@ -131,7 +131,7 @@ function boardRulesForMovesStage(gameState: GameData,
             return;
         }
         if (gameState.nextMove.piece) {
-            if (getGameWallFromPosition(gameState, coordinate) === undefined) {
+            if (getWallFromPosition(gameState, coordinate) === undefined) {
                 gameDispatch(resetNextMoveActionCreator());
                 serverDispatch(moveActionCreator(gameState.nextMove.piece.id, gameState.nextMove.piecePosition!!, coordinate))
             }

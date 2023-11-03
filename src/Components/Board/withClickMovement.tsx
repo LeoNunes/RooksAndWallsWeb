@@ -2,10 +2,10 @@ import React, { PropsWithChildren, ReactNode, useState } from 'react';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
 import './withClickMovement.css';
 
-type RequiredBoardProps = {
+export type RequiredBoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode,
 };
-type WithClickMovementProps<TBoardProps> = TBoardProps & {
+export type WithClickMovementProps<TBoardProps> = TBoardProps & {
     moveblePositions: SquareCoordinate[],
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[],
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void,

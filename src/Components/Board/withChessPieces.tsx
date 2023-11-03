@@ -2,14 +2,14 @@ import React from 'react';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
 import ChessPiece, { ChessPieceProps } from './ChessPiece';
 
-type RequiredBoardProps = {
+export type RequiredBoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => React.ReactNode,
 };
 
-type PieceData = ChessPieceProps & {
+export type PieceData = ChessPieceProps & {
     coordinate: SquareCoordinate,
 };
-type WithChessPiecesProps<TBoardProps> = TBoardProps & {
+export type WithChessPiecesProps<TBoardProps> = TBoardProps & {
     piecesData: PieceData[],
 };
 export default function withChessPieces<TBoardProps extends RequiredBoardProps>(

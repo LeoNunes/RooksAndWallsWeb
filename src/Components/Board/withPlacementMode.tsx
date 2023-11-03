@@ -3,10 +3,10 @@ import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/C
 import ChessPiece, { ChessPieceProps } from './ChessPiece';
 import './withPlacementMode.css';
 
-type RequiredBoardProps = {
+export type RequiredBoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode,
 };
-type WithPlacementModeProps<TBoardProps> = TBoardProps & {
+export type WithPlacementModeProps<TBoardProps> = TBoardProps & {
     placebleCoordinates: SquareCoordinate[],
     placeblePiece: ChessPieceProps,
     onPlace: (coord: SquareCoordinate) => void,

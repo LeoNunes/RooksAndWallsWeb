@@ -3,13 +3,26 @@ import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
 import { ServerData } from '../ServerData/Model';
 
 export type GameDataAction =
-    MovePieceActionType |
+    AddPieceActionType |
     AddWallActionType |
+    MovePieceActionType |
     UpdateFromServerActionType |
     SetNextMovePiece |
     SetNextMoveWall |
     ResetNextMove;
 
+export type AddPieceActionType = {
+    type: 'add-piece';
+    owner: number,
+    position: SquareCoordinate;
+};
+export function addPieceActionCreator(owner: number, position: SquareCoordinate): AddPieceActionType {
+    return {
+        type: 'add-piece',
+        owner: owner,
+        position: position,
+    };
+}
 export type MovePieceActionType = {
     type: 'move-piece';
     piece: GamePiece;

@@ -50,7 +50,20 @@ export const gameDataInitialValue: GameData = {
     nextMove: {},
 };
 
-export function getGamePieceById(data: GameData, id: number) {
+export const modelBuilder = (data: GameData) => ({
+    getPlayerId: () => data.playerId,
+    getPieceById: (id: number) => getPieceById(data, id),
+    getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(data, position),
+    getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(data, position),
+    getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(data, playerId),
+    possibleDestinations: (piece: GamePiece) => possibleDestinations(data, piece),
+    isPlayersTurn: () => isPlayersTurn(data),
+    availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(data),
+    canPlacePiece: (position: SquareCoordinate) => canPlacePiece(data, position),
+    canMoveTo: (piece: GamePiece, destination: SquareCoordinate) => canMoveTo(data, piece, destination),
+});
+
+export function getPieceById(data: GameData, id: number) {
     const piece = data.pieces.find(p => p.id === id);
     if (piece === undefined) {
         throw new Error(`Piece with id ${id} was not found`);
@@ -58,20 +71,16 @@ export function getGamePieceById(data: GameData, id: number) {
     return piece;
 }
 
-export function getGamePieceFromPosition(data: GameData, position: SquareCoordinate) {
+export function getPieceFromPosition(data: GameData, position: SquareCoordinate) {
     return data.pieces.find(p => areSquareCoordinatesEqual(p.position, position));
 }
 
-export function getGameWallFromPosition(data: GameData, position: EdgeCoordinate) {
+export function getWallFromPosition(data: GameData, position: EdgeCoordinate) {
     return data.walls.find(w => areEdgeCoordinatesEqual(w.position, position));
 }
 
-export function isSquareInsideBoard(coordinate: SquareCoordinate) {
-    if (coordinate.row < 0 || coordinate.row > gameConfig.boardSize.rows - 1 ||
-        coordinate.column < 0 || coordinate.column > gameConfig.boardSize.columns - 1) {
-        return false;
-    }
-    return true;
+export function getPiecesFromPlayer(data: GameData, playerId: number) {
+    return data.pieces.filter(p => p.owner === playerId);
 }
 
 export function possibleDestinations(data: GameData, piece: GamePiece) : SquareCoordinate[] {
@@ -89,11 +98,11 @@ export function possibleDestinations(data: GameData, piece: GamePiece) : SquareC
                 break;
             }
 
-            if (getGameWallFromPosition(data, { square1: currentSquare, square2: nextSquare })) {
+            if (getWallFromPosition(data, { square1: currentSquare, square2: nextSquare })) {
                 break;
             }
 
-            if (getGamePieceFromPosition(data, nextSquare)) {
+            if (getPieceFromPosition(data, nextSquare)) {
                 break;
             }
 
@@ -113,7 +122,7 @@ export function availableSquaresForPlacingPiece(data: GameData) {
     const result: SquareCoordinate[] = [];
     for (let r = 0; r < gameConfig.boardSize.rows; r++) {
         for (let c = 0; c < gameConfig.boardSize.columns; c++) {
-            if (getGamePieceFromPosition(data, { row: r, column: c }) === undefined) {
+            if (getPieceFromPosition(data, { row: r, column: c }) === undefined) {
                 result.push({ row: r, column: c });
             }
         }
@@ -122,9 +131,17 @@ export function availableSquaresForPlacingPiece(data: GameData) {
 }
 
 export function canPlacePiece(data: GameData, position: SquareCoordinate) {
-    return getGamePieceFromPosition(data, position) === undefined;
+    return getPieceFromPosition(data, position) === undefined;
 }
 
 export function canMoveTo(data: GameData, piece: GamePiece, destination: SquareCoordinate) {
     return possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !== undefined;
+}
+
+function isSquareInsideBoard(coordinate: SquareCoordinate) {
+    if (coordinate.row < 0 || coordinate.row > gameConfig.boardSize.rows - 1 ||
+        coordinate.column < 0 || coordinate.column > gameConfig.boardSize.columns - 1) {
+        return false;
+    }
+    return true;
 }

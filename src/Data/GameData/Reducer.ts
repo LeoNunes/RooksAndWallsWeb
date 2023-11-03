@@ -1,8 +1,19 @@
 import { GameData } from './Model';
-import { GameDataAction, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
+import { GameDataAction, AddPieceActionType, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
 
 export function gameDataReducer(data: GameData, action: GameDataAction) : GameData {
     switch (action.type) {
+        case 'add-piece': {
+            const act = action as AddPieceActionType;
+            return {
+                ...data,
+                pieces: [...data.pieces, {
+                    id: data.pieces.map(piece => piece.id).reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
+                    owner: act.owner,
+                    position: act.position,
+                }]
+            }
+        };
         case 'add-wall': {
             const act = action as AddWallActionType;
             return {
@@ -72,6 +83,7 @@ export function gameDataReducer(data: GameData, action: GameDataAction) : GameDa
                 }
             };
         };
+        // eslint-disable-next-line
         case 'reset-next-move': {
             return {
                 ...data,
