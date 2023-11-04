@@ -8,6 +8,7 @@ function App() {
 
     return (
         <div className="App">
+            <h1>Rooks And Walls</h1>
             <RnWGame />
         </div>
     );

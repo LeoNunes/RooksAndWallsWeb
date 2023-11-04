@@ -6,6 +6,7 @@ import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addClickMovement from './addClickMovement';
 import addChessPieces from './addChessPieces';
 import addPlacementMode from './addPlacementMode';
+import addWalls from './addWalls';
 import { gameConfig } from '../../GameConfig';
 
 export type RnWGameProps = RnWGameControllerProps;
@@ -35,6 +36,7 @@ function buildBoardComponent(gameData: GameData, gameDataDispatch: React.Dispatc
 
     Board = addClickMovement(Board, gameData, gameDataDispatch);
     Board = addPlacementMode(Board, gameData, gameDataDispatch);
+    Board = addWalls(Board, gameData);
     Board = addChessPieces(Board, gameData);
     
     return Board;

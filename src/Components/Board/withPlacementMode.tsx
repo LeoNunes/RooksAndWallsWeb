@@ -19,7 +19,7 @@ export default function withPlacementMode<TBoardProps extends RequiredBoardProps
         
         function createPlacebleAreas(coord: SquareCoordinate) {
             if (props.placebleCoordinates.find(c => areSquareCoordinatesEqual(c, coord)) === undefined) {
-                return props.createSquareContent?.(coord);
+                return props.createSquareContent;
             }
 
             return (

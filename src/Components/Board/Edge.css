@@ -1,6 +1,6 @@
 .board-edge {
     display: flex;
-    background-color: #dcedf1;
+    background-color: #d5d5c6;
 
     &.vertical {
         flex: 1;

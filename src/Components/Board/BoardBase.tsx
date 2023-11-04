@@ -34,8 +34,8 @@ export default function BoardBase(props: BoardBaseProps) {
         );
     }
 
-    function createCornerSpace() {
-        return <div className='board-corner-space'/>
+    function createCornerSpace(coordinate: SquareCoordinate) {
+        return <div key={`corner-${coordinate.row}-${coordinate.column}`} className='board-corner-space'/>;
     }
 
     function buildRow(row: number) {
@@ -63,7 +63,7 @@ export default function BoardBase(props: BoardBaseProps) {
                 const squareCoord = { row, column };
                 components.push(createEdge(edgeBelow(squareCoord)));
                 if (column !== props.columns - 1) {
-                    components.push(createCornerSpace());
+                    components.push(createCornerSpace(squareCoord));
                 }
             }
             return (
@@ -78,8 +78,12 @@ export default function BoardBase(props: BoardBaseProps) {
 
     const rows = Array.from({ length: props.rows }, (_, i) => i);
     return (
-        <div className='board'>
-            { rows.flatMap(row => buildRow(row)) }
+        <div className='board-container'>
+            <div className='board-wrapper'>
+                <div className='board'>
+                    { rows.flatMap(row => buildRow(row)) }
+                </div>
+            </div>
         </div>
     );
 }

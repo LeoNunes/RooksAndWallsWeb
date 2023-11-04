@@ -5,7 +5,6 @@ import ChessPiece, { ChessPieceProps } from './ChessPiece';
 export type RequiredBoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => React.ReactNode,
 };
-
 export type PieceData = ChessPieceProps & {
     coordinate: SquareCoordinate,
 };
@@ -20,7 +19,7 @@ export default function withChessPieces<TBoardProps extends RequiredBoardProps>(
 
         function createPieces(coord: SquareCoordinate) {
             const pieceData = props.piecesData.find(p => areSquareCoordinatesEqual(p.coordinate, coord));
-            if (!pieceData) return props.createSquareContent?.(coord);
+            if (!pieceData) return props.createSquareContent;
 
             return (
                 <ChessPiece {...pieceData}>
