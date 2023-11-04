@@ -2,14 +2,25 @@
     display: flex;
     flex-direction: column;
     background-color: white;
+
+    width: 696px;
+    height: 696px;
 }
 
 .board-row {
     display: flex;
     flex-direction: row;
+
+    &.square-row {
+        flex: 10;
+    }
+
+    &.edge-row {
+        flex: 1;
+    }
 }
 
 .board-corner-space {
-    width: 8px;
-    height: 8px;
+    flex: 1;
+    background-color: #769656;
 }

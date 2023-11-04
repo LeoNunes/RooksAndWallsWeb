@@ -1,0 +1,12 @@
+.board-edge {
+    display: flex;
+    background-color: #dcedf1;
+
+    &.vertical {
+        flex: 1;
+    }
+
+    &.horizontal {
+        flex: 10;
+    }
+}

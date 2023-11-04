@@ -4,9 +4,9 @@ import { GameDataAction } from '../../Data/GameData/Actions';
 import { GameDataProvider, useGameData, useGameDataDispatch } from '../../Data/GameData/GameDataProvider';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addClickMovement from './addClickMovement';
-import { gameConfig } from '../../GameConfig';
 import addChessPieces from './addChessPieces';
 import addPlacementMode from './addPlacementMode';
+import { gameConfig } from '../../GameConfig';
 
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
@@ -25,7 +25,8 @@ function RnWGameController(props: RnWGameControllerProps) {
     const Board = buildBoardComponent(gameData, gameDataDispatch);
     return (
         <Board rows={gameConfig.boardSize.rows}
-               columns={gameConfig.boardSize.columns}/>
+               columns={gameConfig.boardSize.columns}
+               haveEdges={true}/>
     );
 }
 
@@ -33,8 +34,8 @@ function buildBoardComponent(gameData: GameData, gameDataDispatch: React.Dispatc
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
     Board = addClickMovement(Board, gameData, gameDataDispatch);
-    Board = addChessPieces(Board, gameData);
     Board = addPlacementMode(Board, gameData, gameDataDispatch);
+    Board = addChessPieces(Board, gameData);
     
     return Board;
 }

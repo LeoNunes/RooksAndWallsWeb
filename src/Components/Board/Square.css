@@ -1,7 +1,6 @@
 .board-square {
-    width: 80px;
-    height: 80px;
     display: flex;
+    flex: 10;
 
     &.white {
         background-color: #EEEED2;
