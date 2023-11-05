@@ -1,5 +1,6 @@
 import React from 'react';
 import RnWGame from './Controllers/RnWGame';
+import { gameConfig } from './GameConfig';
 import './App.css';
 
 function App() {
@@ -7,9 +8,9 @@ function App() {
     const gameId = Number(Object.fromEntries(new URLSearchParams(window.location.search))['gameId']) || 0;
 
     return (
-        <div className="App">
+        <div className='App'>
             <h1>Rooks And Walls</h1>
-            <RnWGame />
+            <RnWGame board={gameConfig.boardSize} />
         </div>
     );
 }

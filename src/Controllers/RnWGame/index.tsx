@@ -7,7 +7,6 @@ import addClickMovement from './addClickMovement';
 import addChessPieces from './addChessPieces';
 import addPlacementMode from './addPlacementMode';
 import addWalls from './addWalls';
-import { gameConfig } from '../../GameConfig';
 
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
@@ -18,15 +17,20 @@ export default function RnWGame(props: RnWGameProps) {
     );
 }
 
-type RnWGameControllerProps = {};
+type RnWGameControllerProps = {
+    board: {
+        rows: number,
+        columns: number,
+    },
+};
 function RnWGameController(props: RnWGameControllerProps) {
     const gameData = useGameData();
     const gameDataDispatch = useGameDataDispatch();
 
     const Board = buildBoardComponent(gameData, gameDataDispatch);
     return (
-        <Board rows={gameConfig.boardSize.rows}
-               columns={gameConfig.boardSize.columns}
+        <Board rows={props.board.rows}
+               columns={props.board.columns}
                haveEdges={true}/>
     );
 }

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Data/Common/Coordinates';
-import { Wall } from './Wall';
+import { Wall } from '../Pieces/Wall';
 
 export type RequiredBoardProps = {
     createEdgeContent?: (coord: EdgeCoordinate) => ReactNode,

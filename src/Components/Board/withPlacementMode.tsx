@@ -1,30 +1,34 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
-import ChessPiece, { ChessPieceProps } from './ChessPiece';
+import { Coordinate, areCoordinatesEqual } from '../../Data/Common/Coordinates';
 import './withPlacementMode.css';
 
-export type RequiredBoardProps = {
-    createSquareContent?: (coord: SquareCoordinate) => ReactNode,
+export type RequiredBoardProps<C extends Coordinate, K extends keyof any> = {
+    [P in K]?: (coord: C) => ReactNode;
+}
+export type WithPlacementModeProps<TCoord, TBoardProps> = TBoardProps & {
+    placebleCoordinates: TCoord[],
+    placeble: React.FC<PropsWithChildren>,
+    onPlace: (coord: TCoord) => void,
 };
-export type WithPlacementModeProps<TBoardProps> = TBoardProps & {
-    placebleCoordinates: SquareCoordinate[],
-    placeblePiece: ChessPieceProps,
-    onPlace: (coord: SquareCoordinate) => void,
-};
-export default function withPlacementMode<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>
-): React.FC<WithPlacementModeProps<TBoardProps>> {
+export default function withPlacementMode<
+    TCoord extends Coordinate,
+    TContentKey extends keyof TBoardProps,
+    TBoardProps extends RequiredBoardProps<TCoord, TContentKey>
+>(
+    Board: React.FC<TBoardProps>,
+    createContentKey: TContentKey
+): React.FC<WithPlacementModeProps<TCoord, TBoardProps>> {
     
-    return function(props: WithPlacementModeProps<TBoardProps>) {
+    return function(props: WithPlacementModeProps<TCoord, TBoardProps>) {
         
-        function createPlacebleAreas(coord: SquareCoordinate) {
-            if (props.placebleCoordinates.find(c => areSquareCoordinatesEqual(c, coord)) === undefined) {
-                return props.createSquareContent;
+        function createPlacebleAreas(coord: TCoord) {
+            if (props.placebleCoordinates.find(c => areCoordinatesEqual(c, coord)) === undefined) {
+                return props[createContentKey]?.(coord);
             }
 
             return (
-                <PlacebleArea placeblePiece={props.placeblePiece} onClick={() => props.onPlace(coord)}>
-                    { props.createSquareContent?.(coord) }
+                <PlacebleArea placeble={props.placeble} onClick={() => props.onPlace(coord)}>
+                    { props[createContentKey]?.(coord) }
                 </PlacebleArea>
             );
         }
@@ -36,22 +40,21 @@ export default function withPlacementMode<TBoardProps extends RequiredBoardProps
 }
 
 type PlacebleAreaProps = PropsWithChildren<{
-    placeblePiece: ChessPieceProps,
+    placeble: React.FC<PropsWithChildren>,
     onClick: () => void,
 }>;
 function PlacebleArea(props: PlacebleAreaProps) {
     const [isOver, setIsOver] = useState(false);
+    const Placeble = props.placeble;
 
-    // TODO: This is a temporary solution. As it is right now, it's hiding the children.
-    // Adding and removing components can work badly with Mouse Over and Out events, causing bugs.
     return (
         <div className={`placeble-area ${isOver ? 'over' : ''}`}
              onMouseOver={() => setIsOver(true)}
              onMouseOut={() => setIsOver(false)}
              onClick={props.onClick}>
-            <ChessPiece {...props.placeblePiece}>
+            <Placeble>
                 { props.children }
-            </ChessPiece>
+            </Placeble>
         </div>
     );
 }

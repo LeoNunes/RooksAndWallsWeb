@@ -1,6 +1,6 @@
 import React from 'react';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
-import ChessPiece, { ChessPieceProps } from './ChessPiece';
+import ChessPiece, { ChessPieceProps } from '../Pieces/ChessPiece';
 
 export type RequiredBoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => React.ReactNode,
