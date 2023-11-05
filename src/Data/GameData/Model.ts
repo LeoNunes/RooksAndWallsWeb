@@ -2,7 +2,9 @@ import {
     SquareCoordinate,
     EdgeCoordinate,
     areSquareCoordinatesEqual,
-    areEdgeCoordinatesEqual
+    areEdgeCoordinatesEqual,
+    edgeToTheRightOf,
+    edgeBelow
 } from '../Common/Coordinates';
 import { gameConfig } from '../../GameConfig';
 
@@ -59,6 +61,7 @@ export const modelBuilder = (data: GameData) => ({
     possibleDestinations: (piece: GamePiece) => possibleDestinations(data, piece),
     isPlayersTurn: () => isPlayersTurn(data),
     availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(data),
+    availableEdgesForPlacingWalls: () => availableEdgesForPlacingWalls(data),
     canPlacePiece: (position: SquareCoordinate) => canPlacePiece(data, position),
     canMoveTo: (piece: GamePiece, destination: SquareCoordinate) => canMoveTo(data, piece, destination),
 });
@@ -124,6 +127,27 @@ export function availableSquaresForPlacingPiece(data: GameData) {
         for (let c = 0; c < gameConfig.boardSize.columns; c++) {
             if (getPieceFromPosition(data, { row: r, column: c }) === undefined) {
                 result.push({ row: r, column: c });
+            }
+        }
+    }
+    return result;
+}
+
+export function availableEdgesForPlacingWalls(data: GameData) {
+    const result: EdgeCoordinate[] = [];
+    for (let row = 0; row < gameConfig.boardSize.rows; row++) {
+        for (let column = 0; column < gameConfig.boardSize.columns; column++) {
+            if (column !== gameConfig.boardSize.columns - 1) {
+                const coord = edgeToTheRightOf({row, column});
+                if (getWallFromPosition(data, coord) === undefined) {
+                    result.push(coord);
+                }
+            }
+            if (row !== gameConfig.boardSize.rows - 1) {
+                const coord = edgeBelow({row, column});
+                if (getWallFromPosition(data, coord) === undefined) {
+                    result.push(coord);
+                }
             }
         }
     }

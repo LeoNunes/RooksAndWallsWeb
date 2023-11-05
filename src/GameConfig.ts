@@ -10,7 +10,7 @@ import yellowRookDisabledImage from './resources/img/yellowrookdisabled.svg';
 export type PieceColor = 'blue' | 'green' | 'red' | 'yellow';
 
 export type PieceConfig = {
-    uri: string
+    uri: string,
 };
 
 type PlayerConfig = {

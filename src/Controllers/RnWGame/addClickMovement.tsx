@@ -33,7 +33,7 @@ export default function addClickMovement<TBoardProps extends RequiredBoardProps>
     };
 
     const Component = withClickMovement(Board);
-    return function(props: TBoardProps) {
+    return function AddClickMovement(props: TBoardProps) {
         return <Component {...props}
                           moveblePositions={moveblePositions}
                           destinationsFrom={destinationsFrom}

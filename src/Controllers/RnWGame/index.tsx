@@ -3,10 +3,11 @@ import { GameData } from '../../Data/GameData/Model';
 import { GameDataAction } from '../../Data/GameData/Actions';
 import { GameDataProvider, useGameData, useGameDataDispatch } from '../../Data/GameData/GameDataProvider';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
-import addClickMovement from './addClickMovement';
-import addChessPieces from './addChessPieces';
-import addPlacementMode from './addPlacementMode';
+import addPieces from './addPieces';
 import addWalls from './addWalls';
+import addPiecePlacement from './addPiecePlacement';
+import addWallPlacement from './addWallPlacement';
+import addClickMovement from './addClickMovement';
 
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
@@ -35,13 +36,14 @@ function RnWGameController(props: RnWGameControllerProps) {
     );
 }
 
-function buildBoardComponent(gameData: GameData, gameDataDispatch: React.Dispatch<GameDataAction>) {
+function buildBoardComponent(gameData: GameData, gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
     Board = addClickMovement(Board, gameData, gameDataDispatch);
-    Board = addPlacementMode(Board, gameData, gameDataDispatch);
+    Board = addPiecePlacement(Board, gameData, gameDataDispatch);
     Board = addWalls(Board, gameData);
-    Board = addChessPieces(Board, gameData);
+    Board = addPieces(Board, gameData);
+    Board = addWallPlacement(Board, gameData, gameDataDispatch);
     
     return Board;
 }

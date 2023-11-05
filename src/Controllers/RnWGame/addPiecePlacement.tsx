@@ -5,7 +5,7 @@ import { GameDataAction, addPieceActionCreator } from '../../Data/GameData/Actio
 import withPlacementMode, { RequiredBoardProps } from '../../Components/Board/withPlacementMode';
 import ChessPiece from '../../Components/Pieces/ChessPiece';
 
-export default function addPlacementMode<TBoardProps extends RequiredBoardProps<SquareCoordinate, 'createSquareContent'>>(
+export default function addPiecePlacement<TBoardProps extends RequiredBoardProps<SquareCoordinate, 'createSquareContent'>>(
     Board: React.FC<TBoardProps>,
     gameData: GameData,
     gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<TBoardProps> {
@@ -23,12 +23,12 @@ export default function addPlacementMode<TBoardProps extends RequiredBoardProps<
 
     const placebleCoordinates = model.availableSquaresForPlacingPiece();
 
-    const onPlace = (coord: SquareCoordinate) => {
+    function onPlace (coord: SquareCoordinate) {
         gameDataDispatch(addPieceActionCreator(gameData.playerId, coord));
-    };
+    }
 
     const Component = withPlacementMode<SquareCoordinate, 'createSquareContent', TBoardProps>(Board, 'createSquareContent');
-    return function(props: TBoardProps) {
+    return function AddPiecePlacement(props: TBoardProps) {
         return <Component {...props}
                           placeble={placeble}
                           placebleCoordinates={placebleCoordinates}

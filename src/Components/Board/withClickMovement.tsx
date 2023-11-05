@@ -14,7 +14,7 @@ export default function withClickMovement<TBoardProps extends RequiredBoardProps
     Board: React.FC<TBoardProps>
 ): React.FC<WithClickMovementProps<TBoardProps>> {
 
-    return function(props: WithClickMovementProps<TBoardProps>) {
+    return function WithClickMovement(props: WithClickMovementProps<TBoardProps>) {
 
         const [selected, setSelected] = useState<SquareCoordinate | undefined>(undefined);
         const [highlightedPositions, setHighlightedPositions] = useState<SquareCoordinate[]>([]);

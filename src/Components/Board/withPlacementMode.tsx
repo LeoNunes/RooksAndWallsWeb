@@ -19,7 +19,7 @@ export default function withPlacementMode<
     createContentKey: TContentKey
 ): React.FC<WithPlacementModeProps<TCoord, TBoardProps>> {
     
-    return function(props: WithPlacementModeProps<TCoord, TBoardProps>) {
+    return function WithPlacementMode(props: WithPlacementModeProps<TCoord, TBoardProps>) {
         
         function createPlacebleAreas(coord: TCoord) {
             if (props.placebleCoordinates.find(c => areCoordinatesEqual(c, coord)) === undefined) {
@@ -34,7 +34,7 @@ export default function withPlacementMode<
         }
 
         return (
-            <Board {...props} createSquareContent={createPlacebleAreas} />
+            <Board {...props} { ...{[createContentKey]: createPlacebleAreas} }/>
         );
     }
 }

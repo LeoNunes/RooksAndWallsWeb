@@ -15,11 +15,11 @@ export default function withWalls<TBoardProps extends RequiredBoardProps>(
     Board: React.FC<TBoardProps>
 ): React.FC<WithWallsProps<TBoardProps>> {
 
-    return function(props: WithWallsProps<TBoardProps>) {
+    return function WithWalls(props: WithWallsProps<TBoardProps>) {
 
         function createWalls(coord: EdgeCoordinate) {
             const wallData = props.wallsData.find(w => areEdgeCoordinatesEqual(w.coordinate, coord));
-            if (!wallData) return props.createEdgeContent;
+            if (!wallData) return props.createEdgeContent?.(coord);
 
             return (
                 <Wall>

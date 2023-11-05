@@ -11,7 +11,7 @@ export default function addWalls<TBoardProps extends RequiredBoardProps>(
     }));
 
     const Component = withWalls(Board);
-    return function (props: TBoardProps) {
+    return function AddWalls(props: TBoardProps) {
         return <Component {...props} wallsData={wallsData}/>
     }
 }
