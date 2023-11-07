@@ -1,16 +1,18 @@
-.board-container {
+.boardContainer {
     container: board-container / size;
     display: flex;
     flex: 1;
 }
 
-.board-wrapper {
+.boardWrapper {
     display: flex;
     flex: 1;
     flex-direction: column;
 	align-items: center;
+}
 
-    @container board-container (max-aspect-ratio: 1/1) {
+@container board-container (max-aspect-ratio: 1/1) {
+    .boardWrapper {
         flex-direction: row;
     }
 }
@@ -22,20 +24,20 @@
     aspect-ratio: 1;
 }
 
-.board-row {
+.boardRow {
     display: flex;
     flex-direction: row;
 
-    &.square-row {
+    &.squareRow {
         flex: 10;
     }
 
-    &.edge-row {
+    &.edgeRow {
         flex: 1;
     }
 }
 
-.board-corner-space {
+.boardCornerSpace {
     flex: 1;
     background-color: #769656;
 }

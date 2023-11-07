@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { EdgeCoordinate, SquareCoordinate, edgeBelow, edgeToTheRightOf } from '../../Data/Common/Coordinates';
 import Square from './Square';
 import Edge from './Edge';
-import './BoardBase.css';
+import styles from './BoardBase.module.css';
 
 export type BoardBaseProps = {
     rows: number,
@@ -35,7 +35,7 @@ export default function BoardBase(props: BoardBaseProps) {
     }
 
     function createCornerSpace(coordinate: SquareCoordinate) {
-        return <div key={`corner-${coordinate.row}-${coordinate.column}`} className='board-corner-space'/>;
+        return <div key={`corner-${coordinate.row}-${coordinate.column}`} className={styles.boardCornerSpace}/>;
     }
 
     function buildRow(row: number) {
@@ -49,7 +49,7 @@ export default function BoardBase(props: BoardBaseProps) {
                 }
             }
             return (
-                <div key={`row-${row}`} className='board-row square-row'>
+                <div key={`row-${row}`} className={`${styles.boardRow} ${styles.squareRow}`}>
                     { components }
                 </div>
             );
@@ -67,7 +67,7 @@ export default function BoardBase(props: BoardBaseProps) {
                 }
             }
             return (
-                <div key={`edge-row-${row}`} className='board-row edge-row'>
+                <div key={`edge-row-${row}`} className={`${styles.boardRow} ${styles.edgeRow}`}>
                     { components }
                 </div>
             );
@@ -78,9 +78,9 @@ export default function BoardBase(props: BoardBaseProps) {
 
     const rows = Array.from({ length: props.rows }, (_, i) => i);
     return (
-        <div className='board-container'>
-            <div className='board-wrapper'>
-                <div className='board'>
+        <div className={styles.boardContainer}>
+            <div className={styles.boardWrapper}>
+                <div className={styles.board}>
                     { rows.flatMap(row => buildRow(row)) }
                 </div>
             </div>
