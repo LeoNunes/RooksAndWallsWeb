@@ -1,21 +1,26 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { Coordinate, areCoordinatesEqual } from '../../Data/Common/Coordinates';
 import './withPlacementMode.css';
 
-export type RequiredBoardProps<C extends Coordinate, K extends keyof any> = {
-    [P in K]?: (coord: C) => ReactNode;
-}
-export type WithPlacementModeProps<TCoord, TBoardProps> = TBoardProps & {
+type BaseWithPlacementModeProps<TCoord> = {
     placebleCoordinates: TCoord[],
     placeble: React.FC<PropsWithChildren>,
     onPlace: (coord: TCoord) => void,
 };
+
+export type BoardProps<C extends Coordinate, K extends keyof any> = {
+    [P in K]?: (coord: C) => ReactNode;
+};
+export type ComputedBoardProps<TCoord, TBoardProps> = WithNoIntersection<TBoardProps, BaseWithPlacementModeProps<TCoord>>;
+export type WithPlacementModeProps<TCoord, TBoardProps> = TBoardProps & BaseWithPlacementModeProps<TCoord>;
+
 export default function withPlacementMode<
     TCoord extends Coordinate,
     TContentKey extends keyof TBoardProps,
-    TBoardProps extends RequiredBoardProps<TCoord, TContentKey>
+    TBoardProps extends BoardProps<TCoord, TContentKey>
 >(
-    Board: React.FC<TBoardProps>,
+    Board: React.FC<ComputedBoardProps<TCoord, TBoardProps>>,
     createContentKey: TContentKey
 ): React.FC<WithPlacementModeProps<TCoord, TBoardProps>> {
     
@@ -33,8 +38,10 @@ export default function withPlacementMode<
             );
         }
 
+        const boardProps = removeKeysFromObject<TBoardProps, BaseWithPlacementModeProps<TCoord>>(
+            props, { onPlace: true, placeble: true, placebleCoordinates: true });
         return (
-            <Board {...props} { ...{[createContentKey]: createPlacebleAreas} }/>
+            <Board {...boardProps} { ...{[createContentKey]: createPlacebleAreas} } />
         );
     }
 }

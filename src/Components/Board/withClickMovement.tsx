@@ -1,17 +1,21 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
 import './withClickMovement.css';
 
-export type RequiredBoardProps = {
+export type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode,
 };
-export type WithClickMovementProps<TBoardProps> = TBoardProps & {
+type BaseWithClickMovementProps = {
     moveblePositions: SquareCoordinate[],
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[],
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void,
 };
-export default function withClickMovement<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithClickMovementProps>;
+export type WithClickMovementProps<TBoardProps> = TBoardProps & BaseWithClickMovementProps;
+
+export default function withClickMovement<TBoardProps extends BoardProps>(
+    Board: React.FC<ComputedBoardProps<TBoardProps>>,
 ): React.FC<WithClickMovementProps<TBoardProps>> {
 
     return function WithClickMovement(props: WithClickMovementProps<TBoardProps>) {
@@ -31,8 +35,10 @@ export default function withClickMovement<TBoardProps extends RequiredBoardProps
             );
         }
 
+        const boardProps = removeKeysFromObject<TBoardProps, BaseWithClickMovementProps>(
+            props, { destinationsFrom: true, moveblePositions: true, onMove: true });
         return (
-            <Board {...props} createSquareContent={createClickableArea} />
+            <Board {...boardProps} createSquareContent={createClickableArea} />
         );
     }
 }

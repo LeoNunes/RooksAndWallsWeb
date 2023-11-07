@@ -1,11 +1,11 @@
 import React from 'react';
 import { ChessPieceTypes } from '../../Data/Common/PieceTypes';
 import { GameData } from '../../Data/GameData/Model';
-import withChessPieces, { PieceData, RequiredBoardProps } from '../../Components/Board/withChessPieces';
+import withChessPieces, { PieceData, BoardProps, ComputedBoardProps } from '../../Components/Board/withChessPieces';
 
-export default function addPieces<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>,
-    gameData: GameData): React.FC<TBoardProps> {
+export default function addPieces<TBoardProps extends BoardProps>(
+    Board: React.FC<ComputedBoardProps<TBoardProps>>,
+    gameData: GameData): React.FC<ComputedBoardProps<TBoardProps>> {
 
     const piecesData: PieceData[] = gameData.pieces.map(piece => ({
         coordinate: piece.position,
@@ -19,7 +19,7 @@ export default function addPieces<TBoardProps extends RequiredBoardProps>(
     })));
 
     const Component = withChessPieces(Board);
-    return function AddPieces(props: TBoardProps) {
-        return <Component {...props} piecesData={piecesData}/>
+    return function AddPieces(props: ComputedBoardProps<TBoardProps>) {
+        return <Component {...props} piecesData={piecesData}/>;
     }
 }

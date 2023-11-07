@@ -1,12 +1,12 @@
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import { GameData, modelBuilder } from '../../Data/GameData/Model';
 import { GameDataAction, movePieceActionCreator } from '../../Data/GameData/Actions';
-import withClickMovement, { RequiredBoardProps } from '../../Components/Board/withClickMovement';
+import withClickMovement, { BoardProps, ComputedBoardProps } from '../../Components/Board/withClickMovement';
 
-export default function addClickMovement<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>,
+export default function addClickMovement<TBoardProps extends BoardProps>(
+    Board: React.FC<ComputedBoardProps<TBoardProps>>,
     gameData: GameData,
-    gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<TBoardProps> {
+    gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<ComputedBoardProps<TBoardProps>> {
 
     const model = modelBuilder(gameData);
 
@@ -33,10 +33,10 @@ export default function addClickMovement<TBoardProps extends RequiredBoardProps>
     };
 
     const Component = withClickMovement(Board);
-    return function AddClickMovement(props: TBoardProps) {
+    return function AddClickMovement(props: ComputedBoardProps<TBoardProps>) {
         return <Component {...props}
                           moveblePositions={moveblePositions}
                           destinationsFrom={destinationsFrom}
-                          onMove={onMove} />
+                          onMove={onMove}/>;
     }
 }

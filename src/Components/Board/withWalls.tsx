@@ -1,18 +1,22 @@
 import React, { ReactNode } from 'react';
+import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Data/Common/Coordinates';
 import { Wall } from '../Pieces/Wall';
 
-export type RequiredBoardProps = {
-    createEdgeContent?: (coord: EdgeCoordinate) => ReactNode,
-};
 export type WallData = {
     coordinate: EdgeCoordinate,
 };
-export type WithWallsProps<TBoardProps> = TBoardProps & {
+type BaseWithWallsProps = {
     wallsData: WallData[],
 };
-export default function withWalls<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>
+export type BoardProps = {
+    createEdgeContent?: (coord: EdgeCoordinate) => ReactNode,
+};
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithWallsProps>;
+export type WithWallsProps<TBoardProps> = TBoardProps & BaseWithWallsProps;
+
+export default function withWalls<TBoardProps extends BoardProps>(
+    Board: React.FC<ComputedBoardProps<TBoardProps>>,
 ): React.FC<WithWallsProps<TBoardProps>> {
 
     return function WithWalls(props: WithWallsProps<TBoardProps>) {
@@ -28,6 +32,7 @@ export default function withWalls<TBoardProps extends RequiredBoardProps>(
             );
         }
 
-        return <Board {...props} createEdgeContent={createWalls}/>
+        const boardProps = removeKeysFromObject<TBoardProps, BaseWithWallsProps>(props, { wallsData: true });
+        return <Board {...boardProps} createEdgeContent={createWalls}/>;
     }
 }

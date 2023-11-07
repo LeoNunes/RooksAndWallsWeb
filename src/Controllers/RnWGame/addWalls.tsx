@@ -1,17 +1,17 @@
 import React from 'react';
 import { GameData } from '../../Data/GameData/Model';
-import withWalls, { RequiredBoardProps, WallData } from '../../Components/Board/withWalls';
+import withWalls, { BoardProps, ComputedBoardProps, WallData } from '../../Components/Board/withWalls';
 
-export default function addWalls<TBoardProps extends RequiredBoardProps>(
-    Board: React.FC<TBoardProps>,
-    gameData: GameData): React.FC<TBoardProps> {
+export default function addWalls<TBoardProps extends BoardProps>(
+    Board: React.FC<ComputedBoardProps<TBoardProps>>,
+    gameData: GameData): React.FC<ComputedBoardProps<TBoardProps>> {
 
     const wallsData: WallData[] = gameData.walls.map(wall => ({
         coordinate: wall.position,
     }));
 
     const Component = withWalls(Board);
-    return function AddWalls(props: TBoardProps) {
-        return <Component {...props} wallsData={wallsData}/>
+    return function AddWalls(props: ComputedBoardProps<TBoardProps>) {
+        return <Component {...props} wallsData={wallsData}/>;
     }
 }
