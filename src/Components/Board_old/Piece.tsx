@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieceConfig } from '../../GameConfig';
+import { PieceConfig } from '../../RnWConfig';
 import './Piece.css';
 
 type PieceProps = {

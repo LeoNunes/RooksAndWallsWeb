@@ -1,5 +1,5 @@
 import { EdgeCoordinate, SquareCoordinate, areEdgeCoordinatesEqual, areSquareCoordinatesEqual } from "../Common/Coordinates";
-import { PieceConfig } from '../../GameConfig';
+import { PieceConfig } from '../../RnWConfig';
 
 export type BoardPiece = {
     id: number,

@@ -1,6 +1,6 @@
 import React from 'react';
 import RnWGame from './Controllers/RnWGame';
-import { gameConfig } from './GameConfig';
+import { rnwConfig } from './RnWConfig';
 import './App.css';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     return (
         <div className='App'>
             <h1>Rooks And Walls</h1>
-            <RnWGame board={gameConfig.boardSize} />
+            <RnWGame board={rnwConfig.boardSize} />
         </div>
     );
 }

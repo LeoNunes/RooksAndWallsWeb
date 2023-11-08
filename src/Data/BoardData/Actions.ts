@@ -1,6 +1,6 @@
 import { BoardPiece, BoardWall } from "./Model";
 import { SquareCoordinate } from "../Common/Coordinates";
-import { PieceConfig } from "../../GameConfig";
+import { PieceConfig } from "../../RnWConfig";
 import { Dispatch } from "react";
 
 export type BoardDispatcher = ReturnType<typeof boardDispatcher>;

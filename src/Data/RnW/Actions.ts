@@ -1,8 +1,8 @@
-import { GamePiece } from './Model';
+import { Piece } from './Model';
 import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
-import { ServerData } from '../ServerData/Model';
+import { ServerData } from '../RnWServer/Model';
 
-export type GameDataAction =
+export type RnWAction =
     AddPieceActionType |
     AddWallActionType |
     MovePieceActionType |
@@ -25,10 +25,10 @@ export function addPieceActionCreator(owner: number, position: SquareCoordinate)
 }
 export type MovePieceActionType = {
     type: 'move-piece';
-    piece: GamePiece;
+    piece: Piece;
     newPosition: SquareCoordinate;
 };
-export function movePieceActionCreator(piece: GamePiece, newPosition: SquareCoordinate): MovePieceActionType {
+export function movePieceActionCreator(piece: Piece, newPosition: SquareCoordinate): MovePieceActionType {
     return {
         type: 'move-piece',
         piece: piece,
@@ -60,10 +60,10 @@ export function updateFromServerActionCreator(data: ServerData): UpdateFromServe
 
 export type SetNextMovePiece = {
     type: 'set-next-move-piece';
-    piece: GamePiece;
+    piece: Piece;
     position: SquareCoordinate;
 };
-export function setNextMovePieceActionCreator(piece: GamePiece, position: SquareCoordinate): SetNextMovePiece {
+export function setNextMovePieceActionCreator(piece: Piece, position: SquareCoordinate): SetNextMovePiece {
     return {
         type: 'set-next-move-piece',
         piece: piece,

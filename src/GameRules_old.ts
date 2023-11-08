@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import {
-    GameData,
+    RnWData,
     availableSquaresForPlacingPiece,
     canMoveTo,
     canPlacePiece,
@@ -9,39 +9,39 @@ import {
     getWallFromPosition,
     isPlayersTurn,
     possibleDestinations
-} from './Data/GameData/Model';
-import { GameDataAction, addWallActionCreator, resetNextMoveActionCreator, setNextMovePieceActionCreator, updateFromServerActionCreator } from './Data/GameData/Actions';
+} from './Data/RnW/Model';
+import { RnWAction, addWallActionCreator, resetNextMoveActionCreator, setNextMovePieceActionCreator, updateFromServerActionCreator } from './Data/RnW/Actions';
 import { BoardEventHandlers, BoardData, getBoardPieceFromPosition, getBoardPieceById } from './Data/BoardData/Model';
 import { BoardDispatcher } from './Data/BoardData/Actions';
-import { ServerData } from './Data/ServerData/Model';
-import { ServerAction, addPieceActionCreator, moveActionCreator } from './Data/ServerData/Actions';
+import { ServerData } from './Data/RnWServer/Model';
+import { ServerAction, addPieceActionCreator, moveActionCreator } from './Data/RnWServer/Actions';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
-import { gameConfig } from './GameConfig';
+import { rnwConfig } from './RnWConfig';
 
-export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispatch<GameDataAction>) {
+export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispatch<RnWAction>) {
     gameDispatch(updateFromServerActionCreator(serverData));
 }
 
-export function updateBoardElementsFromGameData(gameData: GameData,
+export function updateBoardElementsFromGameData(gameData: RnWData,
                                                 boardDispatcher: BoardDispatcher) {
     boardDispatcher.setPieces(gameData.pieces.map(p => {
         if (p.id === gameData.nextMove.piece?.id) {
             return {
                 id: p.id,
                 position: gameData.nextMove.piecePosition!!,
-                config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
+                config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
             };
         }
         return {
             id: p.id,
             position: p.position,
-            config: gameConfig.pieces[gameConfig.players[p.owner].color].default,
+            config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
         };
     }).concat(gameData.deadPieces.map(p => {
         return {
             id: p.id,
             position: p.position,
-            config: gameConfig.pieces[gameConfig.players[p.owner].color].disabled,
+            config: rnwConfig.pieces[rnwConfig.players[p.owner].color].disabled,
         };
     })));
     boardDispatcher.setWalls(gameData.walls.map((w, index) => ({
@@ -50,9 +50,9 @@ export function updateBoardElementsFromGameData(gameData: GameData,
     })));
 
     if (isPlayersTurn(gameData)) {
-        if (gameData.gameStage === 'piece_placement') {
+        if (gameData.stage === 'piece_placement') {
             boardDispatcher.enablePiecePlacementMode(
-                gameConfig.pieces[gameConfig.players[gameData.playerId].color].default,
+                rnwConfig.pieces[rnwConfig.players[gameData.playerId].color].default,
                 availableSquaresForPlacingPiece(gameData),
             );
         }
@@ -62,13 +62,13 @@ export function updateBoardElementsFromGameData(gameData: GameData,
     }
 }
 
-export function boardRules(gameState: GameData,
+export function boardRules(gameState: RnWData,
                            boardState: BoardData,
-                           gameDispatch: Dispatch<GameDataAction>,
+                           gameDispatch: Dispatch<RnWAction>,
                            boardDispatcher: BoardDispatcher,
                            serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
     
-    switch (gameState.gameStage) {
+    switch (gameState.stage) {
         case 'waiting_for_players': return {};
         case 'piece_placement': return boardRulesForPiecePlacementStage(gameState, boardState, gameDispatch, boardDispatcher, serverDispatch);
         case 'moves': return boardRulesForMovesStage(gameState, boardState, gameDispatch, boardDispatcher, serverDispatch);
@@ -76,9 +76,9 @@ export function boardRules(gameState: GameData,
     }
 }
 
-function boardRulesForPiecePlacementStage(gameState: GameData,
+function boardRulesForPiecePlacementStage(gameState: RnWData,
                                           boardState: BoardData,
-                                          gameDispatch: Dispatch<GameDataAction>,
+                                          gameDispatch: Dispatch<RnWAction>,
                                           boardDispatcher: BoardDispatcher,
                                           serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
     
@@ -97,9 +97,9 @@ function boardRulesForPiecePlacementStage(gameState: GameData,
     };
 }
 
-function boardRulesForMovesStage(gameState: GameData,
+function boardRulesForMovesStage(gameState: RnWData,
                                  boardState: BoardData,
-                                 gameDispatch: Dispatch<GameDataAction>,
+                                 gameDispatch: Dispatch<RnWAction>,
                                  boardDispatcher: BoardDispatcher,
                                  serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
 

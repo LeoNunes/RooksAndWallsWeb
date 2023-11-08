@@ -1,7 +1,7 @@
 import React from 'react';
-import { GameData } from '../../Data/GameData/Model';
-import { GameDataAction } from '../../Data/GameData/Actions';
-import { GameDataProvider, useGameData, useGameDataDispatch } from '../../Data/GameData/GameDataProvider';
+import { RnWData } from '../../Data/RnW/Model';
+import { RnWAction } from '../../Data/RnW/Actions';
+import { RnWDataProvider, useRnWData, useRnWDataDispatch } from '../../Data/RnW/RnWDataProvider';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addPieces from './addPieces';
 import addWalls from './addWalls';
@@ -12,9 +12,9 @@ import addClickMovement from './addClickMovement';
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
     return (
-        <GameDataProvider>
+        <RnWDataProvider>
             <RnWGameController {...props} />
-        </GameDataProvider>
+        </RnWDataProvider>
     );
 }
 
@@ -25,10 +25,10 @@ type RnWGameControllerProps = {
     },
 };
 function RnWGameController(props: RnWGameControllerProps) {
-    const gameData = useGameData();
-    const gameDataDispatch = useGameDataDispatch();
+    const rnwData = useRnWData();
+    const rnwDataDispatch = useRnWDataDispatch();
 
-    const Board = buildBoardComponent(gameData, gameDataDispatch);
+    const Board = buildBoardComponent(rnwData, rnwDataDispatch);
     return (
         <Board rows={props.board.rows}
                columns={props.board.columns}
@@ -36,14 +36,14 @@ function RnWGameController(props: RnWGameControllerProps) {
     );
 }
 
-function buildBoardComponent(gameData: GameData, gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<BoardBaseProps> {
+function buildBoardComponent(rnwData: RnWData, rnwDataDispatch: React.Dispatch<RnWAction>): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
-    Board = addClickMovement(Board, gameData, gameDataDispatch);
-    Board = addPiecePlacement(Board, gameData, gameDataDispatch);
-    Board = addWalls(Board, gameData);
-    Board = addPieces(Board, gameData);
-    Board = addWallPlacement(Board, gameData, gameDataDispatch);
+    Board = addClickMovement(Board, rnwData, rnwDataDispatch);
+    Board = addPiecePlacement(Board, rnwData, rnwDataDispatch);
+    Board = addWalls(Board, rnwData);
+    Board = addPieces(Board, rnwData);
+    Board = addWallPlacement(Board, rnwData, rnwDataDispatch);
     
     return Board;
 }

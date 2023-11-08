@@ -1,16 +1,16 @@
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
-import { GameData, modelBuilder } from '../../Data/GameData/Model';
-import { GameDataAction, movePieceActionCreator } from '../../Data/GameData/Actions';
+import { RnWData, modelBuilder } from '../../Data/RnW/Model';
+import { RnWAction, movePieceActionCreator } from '../../Data/RnW/Actions';
 import withClickMovement, { BoardProps, ComputedBoardProps } from '../../Components/Board/withClickMovement';
 
 export default function addClickMovement<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
-    gameData: GameData,
-    gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<ComputedBoardProps<TBoardProps>> {
+    rnwData: RnWData,
+    rnwDataDispatch: React.Dispatch<RnWAction>): React.FC<ComputedBoardProps<TBoardProps>> {
 
-    const model = modelBuilder(gameData);
+    const model = modelBuilder(rnwData);
 
-    if (gameData.gameStage !== 'moves' || !model.isPlayersTurn()) {
+    if (rnwData.stage !== 'moves' || !model.isPlayersTurn()) {
         return Board;
     }
 
@@ -29,7 +29,7 @@ export default function addClickMovement<TBoardProps extends BoardProps>(
         if (piece === undefined) return;
         if (!model.canMoveTo(piece, to)) return;
 
-        gameDataDispatch(movePieceActionCreator(piece, to));
+        rnwDataDispatch(movePieceActionCreator(piece, to));
     };
 
     const Component = withClickMovement(Board);

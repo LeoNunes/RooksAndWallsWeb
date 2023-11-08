@@ -17,14 +17,14 @@ type PlayerConfig = {
     color: PieceColor,
 };
 
-type GameConfig = {
+type RnWConfig = {
     numberOfPlayers: number,
     boardSize: { rows: number, columns: number },
     pieces: Record<PieceColor, { default: PieceConfig, disabled: PieceConfig }>,
     players: { [number: number]: PlayerConfig },
 };
 
-export const gameConfig: GameConfig = {
+export const rnwConfig: RnWConfig = {
     numberOfPlayers: 3,
     boardSize: {
         rows: 8,
@@ -61,4 +61,4 @@ const wsBaseUrl = 'wss://beta.api.rw.leonunes.me';
 const wsGamePath = '/rw/game/{gameId}';
 export const webSocketConfig = {
     urlForGame: (gameId: number) => `${wsBaseUrl}${wsGamePath.replace('{gameId}', gameId.toString())}`,
-}
+};

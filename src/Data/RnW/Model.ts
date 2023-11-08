@@ -6,43 +6,43 @@ import {
     edgeToTheRightOf,
     edgeBelow
 } from '../Common/Coordinates';
-import { gameConfig } from '../../GameConfig';
+import { rnwConfig } from '../../RnWConfig';
 
-export type GameStage = 'waiting_for_players' | 'piece_placement' | 'moves' | 'completed';
+export type Stage = 'waiting_for_players' | 'piece_placement' | 'moves' | 'completed';
 
 export type Player = {
     id: number;
 };
 
-export type GamePiece = {
+export type Piece = {
     id: number;
     owner: number;
     position: SquareCoordinate;
 };
 
-export type GameWall = {
+export type Wall = {
     position: EdgeCoordinate;
 };
 
 type NextMove = {
-    piece?: GamePiece;
+    piece?: Piece;
     piecePosition?: SquareCoordinate;
     wall?: EdgeCoordinate;
 };
 
-export type GameData = {
-    gameStage: GameStage;
+export type RnWData = {
+    stage: Stage;
     playerId: number;
     currentPlayer: number | undefined;
     players: Player[];
-    pieces: GamePiece[];
-    walls: GameWall[];
-    deadPieces: GamePiece[];
+    pieces: Piece[];
+    walls: Wall[];
+    deadPieces: Piece[];
     nextMove: NextMove;
 };
 
-export const gameDataInitialValue: GameData = {
-    gameStage: 'waiting_for_players',
+export const rnwDataInitialValue: RnWData = {
+    stage: 'waiting_for_players',
     playerId: 0,
     currentPlayer: undefined,
     players: [],
@@ -52,21 +52,21 @@ export const gameDataInitialValue: GameData = {
     nextMove: {},
 };
 
-export const modelBuilder = (data: GameData) => ({
+export const modelBuilder = (data: RnWData) => ({
     getPlayerId: () => data.playerId,
     getPieceById: (id: number) => getPieceById(data, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(data, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(data, position),
     getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(data, playerId),
-    possibleDestinations: (piece: GamePiece) => possibleDestinations(data, piece),
+    possibleDestinations: (piece: Piece) => possibleDestinations(data, piece),
     isPlayersTurn: () => isPlayersTurn(data),
     availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(data),
     availableEdgesForPlacingWalls: () => availableEdgesForPlacingWalls(data),
     canPlacePiece: (position: SquareCoordinate) => canPlacePiece(data, position),
-    canMoveTo: (piece: GamePiece, destination: SquareCoordinate) => canMoveTo(data, piece, destination),
+    canMoveTo: (piece: Piece, destination: SquareCoordinate) => canMoveTo(data, piece, destination),
 });
 
-export function getPieceById(data: GameData, id: number) {
+export function getPieceById(data: RnWData, id: number) {
     const piece = data.pieces.find(p => p.id === id);
     if (piece === undefined) {
         throw new Error(`Piece with id ${id} was not found`);
@@ -74,19 +74,19 @@ export function getPieceById(data: GameData, id: number) {
     return piece;
 }
 
-export function getPieceFromPosition(data: GameData, position: SquareCoordinate) {
+export function getPieceFromPosition(data: RnWData, position: SquareCoordinate) {
     return data.pieces.find(p => areSquareCoordinatesEqual(p.position, position));
 }
 
-export function getWallFromPosition(data: GameData, position: EdgeCoordinate) {
+export function getWallFromPosition(data: RnWData, position: EdgeCoordinate) {
     return data.walls.find(w => areEdgeCoordinatesEqual(w.position, position));
 }
 
-export function getPiecesFromPlayer(data: GameData, playerId: number) {
+export function getPiecesFromPlayer(data: RnWData, playerId: number) {
     return data.pieces.filter(p => p.owner === playerId);
 }
 
-export function possibleDestinations(data: GameData, piece: GamePiece) : SquareCoordinate[] {
+export function possibleDestinations(data: RnWData, piece: Piece) : SquareCoordinate[] {
     const destinations: SquareCoordinate[] = [];
     const directions = [[0,1], [0,-1], [1,0], [-1,0]];
     for (let [deltaRow, deltaColumn] of directions) {
@@ -117,14 +117,14 @@ export function possibleDestinations(data: GameData, piece: GamePiece) : SquareC
     return destinations;
 }
 
-export function isPlayersTurn(data: GameData) {
+export function isPlayersTurn(data: RnWData) {
     return data.currentPlayer === data.playerId;
 }
 
-export function availableSquaresForPlacingPiece(data: GameData) {
+export function availableSquaresForPlacingPiece(data: RnWData) {
     const result: SquareCoordinate[] = [];
-    for (let r = 0; r < gameConfig.boardSize.rows; r++) {
-        for (let c = 0; c < gameConfig.boardSize.columns; c++) {
+    for (let r = 0; r < rnwConfig.boardSize.rows; r++) {
+        for (let c = 0; c < rnwConfig.boardSize.columns; c++) {
             if (getPieceFromPosition(data, { row: r, column: c }) === undefined) {
                 result.push({ row: r, column: c });
             }
@@ -133,17 +133,17 @@ export function availableSquaresForPlacingPiece(data: GameData) {
     return result;
 }
 
-export function availableEdgesForPlacingWalls(data: GameData) {
+export function availableEdgesForPlacingWalls(data: RnWData) {
     const result: EdgeCoordinate[] = [];
-    for (let row = 0; row < gameConfig.boardSize.rows; row++) {
-        for (let column = 0; column < gameConfig.boardSize.columns; column++) {
-            if (column !== gameConfig.boardSize.columns - 1) {
+    for (let row = 0; row < rnwConfig.boardSize.rows; row++) {
+        for (let column = 0; column < rnwConfig.boardSize.columns; column++) {
+            if (column !== rnwConfig.boardSize.columns - 1) {
                 const coord = edgeToTheRightOf({row, column});
                 if (getWallFromPosition(data, coord) === undefined) {
                     result.push(coord);
                 }
             }
-            if (row !== gameConfig.boardSize.rows - 1) {
+            if (row !== rnwConfig.boardSize.rows - 1) {
                 const coord = edgeBelow({row, column});
                 if (getWallFromPosition(data, coord) === undefined) {
                     result.push(coord);
@@ -154,17 +154,17 @@ export function availableEdgesForPlacingWalls(data: GameData) {
     return result;
 }
 
-export function canPlacePiece(data: GameData, position: SquareCoordinate) {
+export function canPlacePiece(data: RnWData, position: SquareCoordinate) {
     return getPieceFromPosition(data, position) === undefined;
 }
 
-export function canMoveTo(data: GameData, piece: GamePiece, destination: SquareCoordinate) {
+export function canMoveTo(data: RnWData, piece: Piece, destination: SquareCoordinate) {
     return possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !== undefined;
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {
-    if (coordinate.row < 0 || coordinate.row > gameConfig.boardSize.rows - 1 ||
-        coordinate.column < 0 || coordinate.column > gameConfig.boardSize.columns - 1) {
+    if (coordinate.row < 0 || coordinate.row > rnwConfig.boardSize.rows - 1 ||
+        coordinate.column < 0 || coordinate.column > rnwConfig.boardSize.columns - 1) {
         return false;
     }
     return true;

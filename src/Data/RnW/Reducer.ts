@@ -1,7 +1,7 @@
-import { GameData } from './Model';
-import { GameDataAction, AddPieceActionType, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
+import { RnWData } from './Model';
+import { RnWAction, AddPieceActionType, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
 
-export function gameDataReducer(data: GameData, action: GameDataAction) : GameData {
+export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
     switch (action.type) {
         case 'add-piece': {
             const act = action as AddPieceActionType;
@@ -41,7 +41,7 @@ export function gameDataReducer(data: GameData, action: GameDataAction) : GameDa
             const { serverData } = action as UpdateFromServerActionType;
             return {
                 ...data,
-                gameStage: serverData.stage,
+                stage: serverData.stage,
                 playerId: serverData.playerId,
                 currentPlayer: serverData.currentTurn,
                 players: serverData.players.map(p => ({

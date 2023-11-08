@@ -1,17 +1,17 @@
 import React from 'react';
 import { EdgeCoordinate } from '../../Data/Common/Coordinates';
-import { GameData, modelBuilder } from '../../Data/GameData/Model';
-import { GameDataAction, addWallActionCreator } from '../../Data/GameData/Actions';
+import { RnWData, modelBuilder } from '../../Data/RnW/Model';
+import { RnWAction, addWallActionCreator } from '../../Data/RnW/Actions';
 import withPlacementMode, { BoardProps, ComputedBoardProps } from '../../Components/Board/withPlacementMode';
 import { Wall } from '../../Components/Pieces/Wall';
 
 export default function addWallPlacement<TBoardProps extends BoardProps<EdgeCoordinate, 'createEdgeContent'>>(
     Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
-    gameData: GameData,
-    gameDataDispatch: React.Dispatch<GameDataAction>): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
+    rnwData: RnWData,
+    rnwDataDispatch: React.Dispatch<RnWAction>): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
 
-    const model = modelBuilder(gameData);
-    if (gameData.gameStage !== 'moves' || !model.isPlayersTurn()) return Board;
+    const model = modelBuilder(rnwData);
+    if (rnwData.stage !== 'moves' || !model.isPlayersTurn()) return Board;
 
     function placeble(props: React.PropsWithChildren) {
         return (
@@ -24,7 +24,7 @@ export default function addWallPlacement<TBoardProps extends BoardProps<EdgeCoor
     const placebleCoordinates = model.availableEdgesForPlacingWalls();
 
     function onPlace(coord: EdgeCoordinate) {
-        gameDataDispatch(addWallActionCreator(coord));
+        rnwDataDispatch(addWallActionCreator(coord));
     }
 
     const Component = withPlacementMode<EdgeCoordinate, 'createEdgeContent', TBoardProps>(Board, 'createEdgeContent');
