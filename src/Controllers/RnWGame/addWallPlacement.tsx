@@ -1,5 +1,6 @@
 import React from 'react';
 import { EdgeCoordinate } from '../../Data/Common/Coordinates';
+import { AsyncDispatch } from '../../Data/Common/DataTypes';
 import { RnWData, modelBuilder } from '../../Data/RnW/Model';
 import { RnWAction, addWallActionCreator } from '../../Data/RnW/Actions';
 import withPlacementMode, {
@@ -13,7 +14,7 @@ export default function addWallPlacement<
 >(
     Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
     rnwData: RnWData,
-    rnwDataDispatch: React.Dispatch<RnWAction>,
+    rnwDataDispatch: AsyncDispatch<RnWAction>,
 ): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
     const model = modelBuilder(rnwData);
     if (rnwData.stage !== 'moves' || !model.isPlayersTurn()) return Board;

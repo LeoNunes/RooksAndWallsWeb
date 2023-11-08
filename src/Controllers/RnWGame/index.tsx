@@ -1,4 +1,5 @@
 import React from 'react';
+import { AsyncDispatch } from '../../Data/Common/DataTypes';
 import { RnWData } from '../../Data/RnW/Model';
 import { RnWAction } from '../../Data/RnW/Actions';
 import { RnWDataProvider, useRnWData, useRnWDataDispatch } from '../../Data/RnW/RnWDataProvider';
@@ -34,7 +35,7 @@ function RnWGameController(props: RnWGameControllerProps) {
 
 function buildBoardComponent(
     rnwData: RnWData,
-    rnwDataDispatch: React.Dispatch<RnWAction>,
+    rnwDataDispatch: AsyncDispatch<RnWAction>,
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 

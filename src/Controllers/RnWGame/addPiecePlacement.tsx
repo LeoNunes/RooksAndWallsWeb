@@ -1,5 +1,6 @@
 import React from 'react';
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
+import { AsyncDispatch } from '../../Data/Common/DataTypes';
 import { RnWData, modelBuilder } from '../../Data/RnW/Model';
 import { RnWAction, addPieceActionCreator } from '../../Data/RnW/Actions';
 import withPlacementMode, {
@@ -13,7 +14,7 @@ export default function addPiecePlacement<
 >(
     Board: React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
     rnwData: RnWData,
-    rnwDataDispatch: React.Dispatch<RnWAction>,
+    rnwDataDispatch: AsyncDispatch<RnWAction>,
 ): React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
     const model = modelBuilder(rnwData);
     if (rnwData.stage !== 'piece_placement' || !model.isPlayersTurn()) return Board;

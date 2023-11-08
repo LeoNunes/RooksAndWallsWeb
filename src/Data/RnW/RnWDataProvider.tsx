@@ -1,10 +1,12 @@
-import { createContext, useReducer, PropsWithChildren, Dispatch, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
+import { useAsyncReducer } from '../../Util/hooks';
+import { AsyncDispatch } from '../Common/DataTypes';
 import { RnWData, rnwDataInitialValue } from './Model';
 import { rnwDataReducer } from './Reducer';
 import { RnWAction } from './Actions';
 
 const RnWDataContext = createContext<RnWData | undefined>(undefined);
-const RnWDataDispatchContext = createContext<Dispatch<RnWAction> | undefined>(undefined);
+const RnWDataDispatchContext = createContext<AsyncDispatch<RnWAction> | undefined>(undefined);
 
 export function useRnWData(): RnWData {
     const rnwData = useContext(RnWDataContext);
@@ -14,7 +16,7 @@ export function useRnWData(): RnWData {
     return rnwData;
 }
 
-export function useRnWDataDispatch(): Dispatch<RnWAction> {
+export function useRnWDataDispatch(): AsyncDispatch<RnWAction> {
     const dispatch = useContext(RnWDataDispatchContext);
     if (dispatch === undefined) {
         throw new Error(
@@ -26,10 +28,10 @@ export function useRnWDataDispatch(): Dispatch<RnWAction> {
 
 type RnWDataProviderProps = PropsWithChildren<{}>;
 export function RnWDataProvider(props: RnWDataProviderProps) {
-    const [rnwData, rnwDataDispatch] = useReducer(rnwDataReducer, rnwDataInitialValue);
+    const [rnwState, rnwDataDispatch] = useAsyncReducer(rnwDataReducer, rnwDataInitialValue);
 
     return (
-        <RnWDataContext.Provider value={rnwData}>
+        <RnWDataContext.Provider value={rnwState}>
             <RnWDataDispatchContext.Provider value={rnwDataDispatch}>
                 {props.children}
             </RnWDataDispatchContext.Provider>
