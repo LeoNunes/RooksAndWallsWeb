@@ -1,40 +1,38 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useAsyncReducer } from '../../Util/hooks';
 import { AsyncDispatch } from '../Common/DataTypes';
-import { RnWData, rnwDataInitialValue } from './Model';
-import { rnwDataReducer } from './Reducer';
+import { RnWState, rnwStateInitialValue } from './Model';
+import { rnwReducer } from './Reducer';
 import { RnWAction } from './Actions';
 
-const RnWDataContext = createContext<RnWData | undefined>(undefined);
-const RnWDataDispatchContext = createContext<AsyncDispatch<RnWAction> | undefined>(undefined);
+const RnWStateContext = createContext<RnWState | undefined>(undefined);
+const RnWDispatchContext = createContext<AsyncDispatch<RnWAction> | undefined>(undefined);
 
-export function useRnWData(): RnWData {
-    const rnwData = useContext(RnWDataContext);
-    if (rnwData === undefined) {
-        throw new Error('RnWData is not available. Do you have a RnWDataProvider providing it?');
+export function useRnWState(): RnWState {
+    const rnwState = useContext(RnWStateContext);
+    if (rnwState === undefined) {
+        throw new Error('RnWState is not available. Do you have a RnWStateProvider providing it?');
     }
-    return rnwData;
+    return rnwState;
 }
 
-export function useRnWDataDispatch(): AsyncDispatch<RnWAction> {
-    const dispatch = useContext(RnWDataDispatchContext);
+export function useRnWDispatch(): AsyncDispatch<RnWAction> {
+    const dispatch = useContext(RnWDispatchContext);
     if (dispatch === undefined) {
-        throw new Error(
-            'RnWDataDispatch is not available. Do you have a RnWDataProvider providing it?',
-        );
+        throw new Error('RnWDispatch is not available. Do you have a RnWProvider providing it?');
     }
     return dispatch;
 }
 
-type RnWDataProviderProps = PropsWithChildren<{}>;
-export function RnWDataProvider(props: RnWDataProviderProps) {
-    const [rnwState, rnwDataDispatch] = useAsyncReducer(rnwDataReducer, rnwDataInitialValue);
+type RnWStateProviderProps = PropsWithChildren<{}>;
+export function RnWStateProvider(props: RnWStateProviderProps) {
+    const [rnwState, rnwDispatch] = useAsyncReducer(rnwReducer, rnwStateInitialValue);
 
     return (
-        <RnWDataContext.Provider value={rnwState}>
-            <RnWDataDispatchContext.Provider value={rnwDataDispatch}>
+        <RnWStateContext.Provider value={rnwState}>
+            <RnWDispatchContext.Provider value={rnwDispatch}>
                 {props.children}
-            </RnWDataDispatchContext.Provider>
-        </RnWDataContext.Provider>
+            </RnWDispatchContext.Provider>
+        </RnWStateContext.Provider>
     );
 }

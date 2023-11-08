@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { isServerData } from './Data/RnWServer/Model';
 import { ServerAction } from './Data/RnWServer/Actions';
-import { useRnWData, useRnWDataDispatch } from './Data/RnW/RnWDataProvider';
+import { useRnWState, useRnWDispatch } from './Data/RnW/RnWDataProvider';
 import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
 import { boardDispatcher } from './Data/BoardData/Actions';
 import { boardRules, updateBoardElementsFromGameData, updateGameFromServer } from './GameRules_old';
@@ -13,8 +13,8 @@ type GameProps = {
     gameId: number;
 };
 export default function Game(props: GameProps) {
-    const gameData = useRnWData();
-    const gameDataDispatch = useRnWDataDispatch();
+    const gameData = useRnWState();
+    const gameDataDispatch = useRnWDispatch();
     const boardData = useBoardData();
     const boardDataDispatch = useBoardDataDispatch();
     const boardDataDispatcher = boardDispatcher(boardDataDispatch);

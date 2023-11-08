@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import {
-    RnWData,
+    RnWState,
     availableSquaresForPlacingPiece,
     canMoveTo,
     canPlacePiece,
@@ -34,7 +34,7 @@ export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispa
 }
 
 export function updateBoardElementsFromGameData(
-    gameData: RnWData,
+    gameData: RnWState,
     boardDispatcher: BoardDispatcher,
 ) {
     boardDispatcher.setPieces(
@@ -83,7 +83,7 @@ export function updateBoardElementsFromGameData(
 }
 
 export function boardRules(
-    gameState: RnWData,
+    gameState: RnWState,
     boardState: BoardData,
     gameDispatch: Dispatch<RnWAction>,
     boardDispatcher: BoardDispatcher,
@@ -114,7 +114,7 @@ export function boardRules(
 }
 
 function boardRulesForPiecePlacementStage(
-    gameState: RnWData,
+    gameState: RnWState,
     boardState: BoardData,
     gameDispatch: Dispatch<RnWAction>,
     boardDispatcher: BoardDispatcher,
@@ -136,7 +136,7 @@ function boardRulesForPiecePlacementStage(
 }
 
 function boardRulesForMovesStage(
-    gameState: RnWData,
+    gameState: RnWState,
     boardState: BoardData,
     gameDispatch: Dispatch<RnWAction>,
     boardDispatcher: BoardDispatcher,

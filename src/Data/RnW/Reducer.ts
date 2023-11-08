@@ -1,4 +1,4 @@
-import { RnWData } from './Model';
+import { RnWState } from './Model';
 import {
     RnWAction,
     AddPieceActionType,
@@ -9,17 +9,17 @@ import {
     SetNextMoveWall,
 } from './Actions';
 
-export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
+export function rnwReducer(state: RnWState, action: RnWAction): RnWState {
     switch (action.type) {
         case 'add-piece': {
             const act = action as AddPieceActionType;
             return {
-                ...data,
+                ...state,
                 pieces: [
-                    ...data.pieces,
+                    ...state.pieces,
                     {
                         id:
-                            data.pieces
+                            state.pieces
                                 .map(piece => piece.id)
                                 .reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
                         owner: act.owner,
@@ -31,16 +31,16 @@ export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
         case 'add-wall': {
             const act = action as AddWallActionType;
             return {
-                ...data,
-                walls: [...data.walls, { position: act.position }],
+                ...state,
+                walls: [...state.walls, { position: act.position }],
             };
         }
         case 'move-piece': {
             const act = action as MovePieceActionType;
             return {
-                ...data,
+                ...state,
                 pieces: [
-                    ...data.pieces.filter(p => p !== action.piece),
+                    ...state.pieces.filter(p => p !== action.piece),
                     {
                         ...act.piece,
                         position: act.newPosition,
@@ -51,7 +51,7 @@ export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
         case 'update-from-server': {
             const { serverData } = action as UpdateFromServerActionType;
             return {
-                ...data,
+                ...state,
                 stage: serverData.stage,
                 playerId: serverData.playerId,
                 currentPlayer: serverData.currentTurn,
@@ -76,9 +76,9 @@ export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
         case 'set-next-move-piece': {
             const act = action as SetNextMovePiece;
             return {
-                ...data,
+                ...state,
                 nextMove: {
-                    ...data.nextMove,
+                    ...state.nextMove,
                     piece: act.piece,
                     piecePosition: act.position,
                 },
@@ -87,9 +87,9 @@ export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
         case 'set-next-move-wall': {
             const act = action as SetNextMoveWall;
             return {
-                ...data,
+                ...state,
                 nextMove: {
-                    ...data.nextMove,
+                    ...state.nextMove,
                     wall: act.position,
                 },
             };
@@ -97,7 +97,7 @@ export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
         // eslint-disable-next-line
         case 'reset-next-move': {
             return {
-                ...data,
+                ...state,
                 nextMove: {
                     piece: undefined,
                     piecePosition: undefined,

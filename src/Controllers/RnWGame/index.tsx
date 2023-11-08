@@ -1,8 +1,8 @@
 import React from 'react';
 import { AsyncDispatch } from '../../Data/Common/DataTypes';
-import { RnWData } from '../../Data/RnW/Model';
+import { RnWState } from '../../Data/RnW/Model';
 import { RnWAction } from '../../Data/RnW/Actions';
-import { RnWDataProvider, useRnWData, useRnWDataDispatch } from '../../Data/RnW/RnWDataProvider';
+import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Data/RnW/RnWDataProvider';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addPieces from './addPieces';
 import addWalls from './addWalls';
@@ -13,9 +13,9 @@ import addClickMovement from './addClickMovement';
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
     return (
-        <RnWDataProvider>
+        <RnWStateProvider>
             <RnWGameController {...props} />
-        </RnWDataProvider>
+        </RnWStateProvider>
     );
 }
 
@@ -26,24 +26,24 @@ type RnWGameControllerProps = {
     };
 };
 function RnWGameController(props: RnWGameControllerProps) {
-    const rnwData = useRnWData();
-    const rnwDataDispatch = useRnWDataDispatch();
+    const rnwState = useRnWState();
+    const rnwDispatch = useRnWDispatch();
 
-    const Board = buildBoardComponent(rnwData, rnwDataDispatch);
+    const Board = buildBoardComponent(rnwState, rnwDispatch);
     return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
 }
 
 function buildBoardComponent(
-    rnwData: RnWData,
-    rnwDataDispatch: AsyncDispatch<RnWAction>,
+    rnwState: RnWState,
+    rnwDispatch: AsyncDispatch<RnWAction>,
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
-    Board = addClickMovement(Board, rnwData, rnwDataDispatch);
-    Board = addPiecePlacement(Board, rnwData, rnwDataDispatch);
-    Board = addWalls(Board, rnwData);
-    Board = addPieces(Board, rnwData);
-    Board = addWallPlacement(Board, rnwData, rnwDataDispatch);
+    Board = addClickMovement(Board, rnwState, rnwDispatch);
+    Board = addPiecePlacement(Board, rnwState, rnwDispatch);
+    Board = addWalls(Board, rnwState);
+    Board = addPieces(Board, rnwState);
+    Board = addWallPlacement(Board, rnwState, rnwDispatch);
 
     return Board;
 }

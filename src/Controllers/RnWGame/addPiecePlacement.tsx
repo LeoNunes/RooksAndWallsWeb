@@ -1,7 +1,7 @@
 import React from 'react';
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import { AsyncDispatch } from '../../Data/Common/DataTypes';
-import { RnWData, modelBuilder } from '../../Data/RnW/Model';
+import { RnWState, modelBuilder } from '../../Data/RnW/Model';
 import { RnWAction, addPieceActionCreator } from '../../Data/RnW/Actions';
 import withPlacementMode, {
     BoardProps,
@@ -13,15 +13,15 @@ export default function addPiecePlacement<
     TBoardProps extends BoardProps<SquareCoordinate, 'createSquareContent'>,
 >(
     Board: React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
-    rnwData: RnWData,
-    rnwDataDispatch: AsyncDispatch<RnWAction>,
+    rnwState: RnWState,
+    rnwDispatch: AsyncDispatch<RnWAction>,
 ): React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
-    const model = modelBuilder(rnwData);
-    if (rnwData.stage !== 'piece_placement' || !model.isPlayersTurn()) return Board;
+    const model = modelBuilder(rnwState);
+    if (rnwState.stage !== 'piece_placement' || !model.isPlayersTurn()) return Board;
 
     function placeble(props: React.PropsWithChildren) {
         return (
-            <ChessPiece player={rnwData.playerId} type='rook'>
+            <ChessPiece player={rnwState.playerId} type='rook'>
                 {props.children}
             </ChessPiece>
         );
@@ -30,7 +30,7 @@ export default function addPiecePlacement<
     const placebleCoordinates = model.availableSquaresForPlacingPiece();
 
     function onPlace(coord: SquareCoordinate) {
-        rnwDataDispatch(addPieceActionCreator(rnwData.playerId, coord));
+        rnwDispatch(addPieceActionCreator(rnwState.playerId, coord));
     }
 
     const Component = withPlacementMode<SquareCoordinate, 'createSquareContent', TBoardProps>(
