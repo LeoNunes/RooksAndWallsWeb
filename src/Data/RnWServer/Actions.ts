@@ -1,4 +1,4 @@
-import { EdgeCoordinate, SquareCoordinate } from "../Common/Coordinates";
+import { EdgeCoordinate, SquareCoordinate } from '../Common/Coordinates';
 
 export type ServerAction = {
     addPiece?: AddPieceAction;
@@ -19,16 +19,20 @@ export function addPieceActionCreator(position: SquareCoordinate): ServerAction 
     return {
         addPiece: {
             position: position,
-        }
+        },
     };
 }
 
-export function moveActionCreator(pieceId: number, destination: SquareCoordinate, wallPosition: EdgeCoordinate): ServerAction {
+export function moveActionCreator(
+    pieceId: number,
+    destination: SquareCoordinate,
+    wallPosition: EdgeCoordinate,
+): ServerAction {
     return {
         move: {
             pieceId: pieceId,
             position: destination,
             wallPosition: wallPosition,
-        }
+        },
     };
 }

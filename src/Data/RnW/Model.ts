@@ -4,7 +4,7 @@ import {
     areSquareCoordinatesEqual,
     areEdgeCoordinatesEqual,
     edgeToTheRightOf,
-    edgeBelow
+    edgeBelow,
 } from '../Common/Coordinates';
 import { rnwConfig } from '../../RnWConfig';
 
@@ -86,15 +86,20 @@ export function getPiecesFromPlayer(data: RnWData, playerId: number) {
     return data.pieces.filter(p => p.owner === playerId);
 }
 
-export function possibleDestinations(data: RnWData, piece: Piece) : SquareCoordinate[] {
+export function possibleDestinations(data: RnWData, piece: Piece): SquareCoordinate[] {
     const destinations: SquareCoordinate[] = [];
-    const directions = [[0,1], [0,-1], [1,0], [-1,0]];
+    const directions = [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+    ];
     for (let [deltaRow, deltaColumn] of directions) {
         let currentSquare: SquareCoordinate = piece.position;
         while (true) {
             let nextSquare: SquareCoordinate = {
                 row: currentSquare.row + deltaRow,
-                column: currentSquare.column + deltaColumn
+                column: currentSquare.column + deltaColumn,
             };
 
             if (!isSquareInsideBoard(nextSquare)) {
@@ -138,13 +143,13 @@ export function availableEdgesForPlacingWalls(data: RnWData) {
     for (let row = 0; row < rnwConfig.boardSize.rows; row++) {
         for (let column = 0; column < rnwConfig.boardSize.columns; column++) {
             if (column !== rnwConfig.boardSize.columns - 1) {
-                const coord = edgeToTheRightOf({row, column});
+                const coord = edgeToTheRightOf({ row, column });
                 if (getWallFromPosition(data, coord) === undefined) {
                     result.push(coord);
                 }
             }
             if (row !== rnwConfig.boardSize.rows - 1) {
-                const coord = edgeBelow({row, column});
+                const coord = edgeBelow({ row, column });
                 if (getWallFromPosition(data, coord) === undefined) {
                     result.push(coord);
                 }
@@ -159,12 +164,19 @@ export function canPlacePiece(data: RnWData, position: SquareCoordinate) {
 }
 
 export function canMoveTo(data: RnWData, piece: Piece, destination: SquareCoordinate) {
-    return possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !== undefined;
+    return (
+        possibleDestinations(data, piece).find(d => areSquareCoordinatesEqual(d, destination)) !==
+        undefined
+    );
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {
-    if (coordinate.row < 0 || coordinate.row > rnwConfig.boardSize.rows - 1 ||
-        coordinate.column < 0 || coordinate.column > rnwConfig.boardSize.columns - 1) {
+    if (
+        coordinate.row < 0 ||
+        coordinate.row > rnwConfig.boardSize.rows - 1 ||
+        coordinate.column < 0 ||
+        coordinate.column > rnwConfig.boardSize.columns - 1
+    ) {
         return false;
     }
     return true;

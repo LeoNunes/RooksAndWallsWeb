@@ -1,37 +1,32 @@
-import { BoardPiece, BoardWall } from "./Model";
-import { SquareCoordinate } from "../Common/Coordinates";
-import { PieceConfig } from "../../RnWConfig";
-import { Dispatch } from "react";
+import { BoardPiece, BoardWall } from './Model';
+import { SquareCoordinate } from '../Common/Coordinates';
+import { PieceConfig } from '../../RnWConfig';
+import { Dispatch } from 'react';
 
 export type BoardDispatcher = ReturnType<typeof boardDispatcher>;
 export function boardDispatcher(dispatch: Dispatch<BoardAction>) {
     return {
-        selectPiece:
-            (piece: BoardPiece) => dispatch(selectPieceActionCreator(piece)),
-        clearPieceSelection:
-            () => dispatch(clearPieceSelectionActionCreator()),
-        highligh:
-            (squares: SquareCoordinate[]) => dispatch(highlighActionCreator(squares)),
-        clearHighlight:
-            () => dispatch(clearHighlightActionCreator()),
-        setPieces:
-            (pieces: BoardPiece[]) => dispatch(setPiecesActionCreator(pieces)),
-        setWalls:
-            (walls: BoardWall[]) => dispatch(setWallsActionCreator(walls)),
-        enablePiecePlacementMode:
-            (pieceConfig: PieceConfig, availableSquares: SquareCoordinate[]) => dispatch(enablePiecePlacementModeActionCreator(pieceConfig, availableSquares)),
-        disablePiecePlacementMode:
-            () => dispatch(disablePiecePlacementModeActionCreator()),
-    }
+        selectPiece: (piece: BoardPiece) => dispatch(selectPieceActionCreator(piece)),
+        clearPieceSelection: () => dispatch(clearPieceSelectionActionCreator()),
+        highligh: (squares: SquareCoordinate[]) => dispatch(highlighActionCreator(squares)),
+        clearHighlight: () => dispatch(clearHighlightActionCreator()),
+        setPieces: (pieces: BoardPiece[]) => dispatch(setPiecesActionCreator(pieces)),
+        setWalls: (walls: BoardWall[]) => dispatch(setWallsActionCreator(walls)),
+        enablePiecePlacementMode: (
+            pieceConfig: PieceConfig,
+            availableSquares: SquareCoordinate[],
+        ) => dispatch(enablePiecePlacementModeActionCreator(pieceConfig, availableSquares)),
+        disablePiecePlacementMode: () => dispatch(disablePiecePlacementModeActionCreator()),
+    };
 }
 
 export type BoardAction =
-    HighlighActionType |
-    SelectPieceActionType |
-    SetPiecesActionType |
-    SetWallsActionType |
-    EnablePiecePlacementMode |
-    DisablePiecePlacementMode;
+    | HighlighActionType
+    | SelectPieceActionType
+    | SetPiecesActionType
+    | SetWallsActionType
+    | EnablePiecePlacementMode
+    | DisablePiecePlacementMode;
 
 export type SelectPieceActionType = {
     type: 'select-piece';
@@ -56,13 +51,13 @@ export type HighlighActionType = {
 };
 export function highlighActionCreator(squares: SquareCoordinate[]): HighlighActionType {
     return {
-        type: "highlight",
+        type: 'highlight',
         squares: squares,
     };
 }
 export function clearHighlightActionCreator(): HighlighActionType {
     return {
-        type: "highlight",
+        type: 'highlight',
         squares: [],
     };
 }
@@ -90,11 +85,14 @@ export function setWallsActionCreator(walls: BoardWall[]): SetWallsActionType {
 }
 
 export type EnablePiecePlacementMode = {
-    type: 'enable-piece-placement-mode',
+    type: 'enable-piece-placement-mode';
+    pieceConfig: PieceConfig;
+    availableSquares: SquareCoordinate[];
+};
+export function enablePiecePlacementModeActionCreator(
     pieceConfig: PieceConfig,
     availableSquares: SquareCoordinate[],
-};
-export function enablePiecePlacementModeActionCreator(pieceConfig: PieceConfig, availableSquares: SquareCoordinate[]): EnablePiecePlacementMode {
+): EnablePiecePlacementMode {
     return {
         type: 'enable-piece-placement-mode',
         pieceConfig: pieceConfig,
@@ -103,7 +101,7 @@ export function enablePiecePlacementModeActionCreator(pieceConfig: PieceConfig, 
 }
 
 export type DisablePiecePlacementMode = {
-    type: 'disable-piece-placement-mode',
+    type: 'disable-piece-placement-mode';
 };
 export function disablePiecePlacementModeActionCreator(): DisablePiecePlacementMode {
     return {

@@ -1,6 +1,9 @@
 import { ChangePropertyType, WithNoIntersection } from './type';
 
-export function removeKeysFromObject<T extends object, K extends object>(obj: T, keys: ChangePropertyType<K, true>): WithNoIntersection<T, K> {
+export function removeKeysFromObject<T extends object, K extends object>(
+    obj: T,
+    keys: ChangePropertyType<K, true>,
+): WithNoIntersection<T, K> {
     const result: any = {};
     const keysToRemove = new Set(Object.keys(keys));
     Object.keys(obj).forEach(key => {

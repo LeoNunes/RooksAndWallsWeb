@@ -6,18 +6,20 @@ import { RnWAction } from './Actions';
 const RnWDataContext = createContext<RnWData | undefined>(undefined);
 const RnWDataDispatchContext = createContext<Dispatch<RnWAction> | undefined>(undefined);
 
-export function useRnWData() : RnWData {
+export function useRnWData(): RnWData {
     const rnwData = useContext(RnWDataContext);
     if (rnwData === undefined) {
-        throw new Error("RnWData is not available. Do you have a RnWDataProvider providing it?");
+        throw new Error('RnWData is not available. Do you have a RnWDataProvider providing it?');
     }
     return rnwData;
 }
 
-export function useRnWDataDispatch() : Dispatch<RnWAction> {
+export function useRnWDataDispatch(): Dispatch<RnWAction> {
     const dispatch = useContext(RnWDataDispatchContext);
     if (dispatch === undefined) {
-        throw new Error("RnWDataDispatch is not available. Do you have a RnWDataProvider providing it?")
+        throw new Error(
+            'RnWDataDispatch is not available. Do you have a RnWDataProvider providing it?',
+        );
     }
     return dispatch;
 }

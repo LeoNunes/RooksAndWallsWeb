@@ -5,7 +5,8 @@ import './App.css';
 
 function App() {
     // eslint-disable-next-line
-    const gameId = Number(Object.fromEntries(new URLSearchParams(window.location.search))['gameId']) || 0;
+    const gameId =
+        Number(Object.fromEntries(new URLSearchParams(window.location.search))['gameId']) || 0;
 
     return (
         <div className='App'>

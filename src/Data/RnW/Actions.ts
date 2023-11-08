@@ -3,20 +3,23 @@ import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
 import { ServerData } from '../RnWServer/Model';
 
 export type RnWAction =
-    AddPieceActionType |
-    AddWallActionType |
-    MovePieceActionType |
-    UpdateFromServerActionType |
-    SetNextMovePiece |
-    SetNextMoveWall |
-    ResetNextMove;
+    | AddPieceActionType
+    | AddWallActionType
+    | MovePieceActionType
+    | UpdateFromServerActionType
+    | SetNextMovePiece
+    | SetNextMoveWall
+    | ResetNextMove;
 
 export type AddPieceActionType = {
     type: 'add-piece';
-    owner: number,
+    owner: number;
     position: SquareCoordinate;
 };
-export function addPieceActionCreator(owner: number, position: SquareCoordinate): AddPieceActionType {
+export function addPieceActionCreator(
+    owner: number,
+    position: SquareCoordinate,
+): AddPieceActionType {
     return {
         type: 'add-piece',
         owner: owner,
@@ -28,7 +31,10 @@ export type MovePieceActionType = {
     piece: Piece;
     newPosition: SquareCoordinate;
 };
-export function movePieceActionCreator(piece: Piece, newPosition: SquareCoordinate): MovePieceActionType {
+export function movePieceActionCreator(
+    piece: Piece,
+    newPosition: SquareCoordinate,
+): MovePieceActionType {
     return {
         type: 'move-piece',
         piece: piece,
@@ -63,7 +69,10 @@ export type SetNextMovePiece = {
     piece: Piece;
     position: SquareCoordinate;
 };
-export function setNextMovePieceActionCreator(piece: Piece, position: SquareCoordinate): SetNextMovePiece {
+export function setNextMovePieceActionCreator(
+    piece: Piece,
+    position: SquareCoordinate,
+): SetNextMovePiece {
     return {
         type: 'set-next-move-piece',
         piece: piece,

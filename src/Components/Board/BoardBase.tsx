@@ -1,41 +1,52 @@
 import React, { ReactNode } from 'react';
-import { EdgeCoordinate, SquareCoordinate, edgeBelow, edgeToTheRightOf } from '../../Data/Common/Coordinates';
+import {
+    EdgeCoordinate,
+    SquareCoordinate,
+    edgeBelow,
+    edgeToTheRightOf,
+} from '../../Data/Common/Coordinates';
 import Square from './Square';
 import Edge from './Edge';
 import styles from './BoardBase.module.css';
 
 export type BoardBaseProps = {
-    rows: number,
-    columns: number,
-    haveEdges?: boolean,
-    createSquareContent?: (coord: SquareCoordinate) => ReactNode,
-    createEdgeContent?: (coord: EdgeCoordinate) => ReactNode,
+    rows: number;
+    columns: number;
+    haveEdges?: boolean;
+    createSquareContent?: (coord: SquareCoordinate) => ReactNode;
+    createEdgeContent?: (coord: EdgeCoordinate) => ReactNode;
 };
 export default function BoardBase(props: BoardBaseProps) {
-
     function createSquare(coordinate: SquareCoordinate) {
         const { row, column } = coordinate;
         return (
-            <Square key={`${row}-${column}`}
-                    color={ (row + column) % 2 === 0 ? 'black' : 'white'}>
-                { props.createSquareContent?.(coordinate) }
+            <Square key={`${row}-${column}`} color={(row + column) % 2 === 0 ? 'black' : 'white'}>
+                {props.createSquareContent?.(coordinate)}
             </Square>
         );
     }
 
     function createEdge(coordinate: EdgeCoordinate) {
-        const { square1: { row: row1, column: column1 }, square2: { row: row2, column: column2 } } = coordinate;
-        const orientation = coordinate.square1.row === coordinate.square2.row ? 'vertical' : 'horizontal';
+        const {
+            square1: { row: row1, column: column1 },
+            square2: { row: row2, column: column2 },
+        } = coordinate;
+        const orientation =
+            coordinate.square1.row === coordinate.square2.row ? 'vertical' : 'horizontal';
         return (
-            <Edge key={`${row1}-${column1}-${row2}-${column2}`}
-                  orientation={orientation}>
-                { props.createEdgeContent?.(coordinate) }
+            <Edge key={`${row1}-${column1}-${row2}-${column2}`} orientation={orientation}>
+                {props.createEdgeContent?.(coordinate)}
             </Edge>
         );
     }
 
     function createCornerSpace(coordinate: SquareCoordinate) {
-        return <div key={`corner-${coordinate.row}-${coordinate.column}`} className={styles.boardCornerSpace}/>;
+        return (
+            <div
+                key={`corner-${coordinate.row}-${coordinate.column}`}
+                className={styles.boardCornerSpace}
+            />
+        );
     }
 
     function buildRow(row: number) {
@@ -50,7 +61,7 @@ export default function BoardBase(props: BoardBaseProps) {
             }
             return (
                 <div key={`row-${row}`} className={`${styles.boardRow} ${styles.squareRow}`}>
-                    { components }
+                    {components}
                 </div>
             );
         }
@@ -68,7 +79,7 @@ export default function BoardBase(props: BoardBaseProps) {
             }
             return (
                 <div key={`edge-row-${row}`} className={`${styles.boardRow} ${styles.edgeRow}`}>
-                    { components }
+                    {components}
                 </div>
             );
         }
@@ -80,9 +91,7 @@ export default function BoardBase(props: BoardBaseProps) {
     return (
         <div className={styles.boardContainer}>
             <div className={styles.boardWrapper}>
-                <div className={styles.board}>
-                    { rows.flatMap(row => buildRow(row)) }
-                </div>
+                <div className={styles.board}>{rows.flatMap(row => buildRow(row))}</div>
             </div>
         </div>
     );

@@ -8,7 +8,9 @@ type PieceProps = {
 };
 export default function Piece({ pieceConfig, isPlacementMode }: PieceProps) {
     return (
-        <div className={'piece' + (isPlacementMode ? ' placing' : '')}
-             style={{ backgroundImage: `url(${pieceConfig.uri})` }}/>
+        <div
+            className={'piece' + (isPlacementMode ? ' placing' : '')}
+            style={{ backgroundImage: `url(${pieceConfig.uri})` }}
+        />
     );
-};
+}

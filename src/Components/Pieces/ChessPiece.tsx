@@ -4,9 +4,9 @@ import { rnwConfig } from '../../RnWConfig';
 import './ChessPiece.css';
 
 export type ChessPieceProps = {
-    player: number,
-    type: ChessPieceTypes,
-    disabled?: boolean,
+    player: number;
+    type: ChessPieceTypes;
+    disabled?: boolean;
 };
 export default function ChessPiece(props: PropsWithChildren<ChessPieceProps>) {
     const color = rnwConfig.players[props.player].color;
@@ -15,7 +15,7 @@ export default function ChessPiece(props: PropsWithChildren<ChessPieceProps>) {
 
     return (
         <div className='piece' style={{ backgroundImage: `url(${uri})` }}>
-            { props.children }
+            {props.children}
         </div>
     );
 }

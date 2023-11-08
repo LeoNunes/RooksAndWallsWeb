@@ -19,17 +19,20 @@ export default function Game(props: GameProps) {
     const boardDataDispatch = useBoardDataDispatch();
     const boardDataDispatcher = boardDispatcher(boardDataDispatch);
 
-    const { lastMessage, lastJsonMessage, sendJsonMessage } = useWebSocket(webSocketConfig.urlForGame(props.gameId), {
-        onOpen() {
-            console.log("Connected to websocket");
+    const { lastMessage, lastJsonMessage, sendJsonMessage } = useWebSocket(
+        webSocketConfig.urlForGame(props.gameId),
+        {
+            onOpen() {
+                console.log('Connected to websocket');
+            },
+            onClose() {
+                console.log('Disconnected from websocket');
+            },
         },
-        onClose() {
-            console.log("Disconnected from websocket");
-        }
-    });
+    );
 
-    useEffect(() => console.log("GameData", gameData), [gameData]);
-    useEffect(() => console.log("BoardStateData", boardData), [boardData]);
+    useEffect(() => console.log('GameData', gameData), [gameData]);
+    useEffect(() => console.log('BoardStateData', boardData), [boardData]);
 
     useEffect(() => updateBoardElementsFromGameData(gameData, boardDataDispatcher), [gameData]);
     useEffect(() => {
@@ -41,11 +44,21 @@ export default function Game(props: GameProps) {
         }
     }, [lastJsonMessage, lastMessage]);
 
-    function serverDispatch(action: ServerAction) { sendJsonMessage(action); }
+    function serverDispatch(action: ServerAction) {
+        sendJsonMessage(action);
+    }
 
     return (
-        <Board rows={rnwConfig.boardSize.rows}
-               columns={rnwConfig.boardSize.columns}
-               eventHandlers={boardRules(gameData, boardData, gameDataDispatch, boardDataDispatcher, serverDispatch)}/>
+        <Board
+            rows={rnwConfig.boardSize.rows}
+            columns={rnwConfig.boardSize.columns}
+            eventHandlers={boardRules(
+                gameData,
+                boardData,
+                gameDataDispatch,
+                boardDataDispatcher,
+                serverDispatch,
+            )}
+        />
     );
 }

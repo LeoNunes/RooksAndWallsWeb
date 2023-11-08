@@ -1,14 +1,19 @@
 import React from 'react';
-import { getBoardPieceFromPosition, isSquareHighlighted, canPlacePiece, getPieceForPiecePlacement } from '../../Data/BoardData/Model';
+import {
+    getBoardPieceFromPosition,
+    isSquareHighlighted,
+    canPlacePiece,
+    getPieceForPiecePlacement,
+} from '../../Data/BoardData/Model';
 import { useBoardData } from '../../Data/BoardData/BoardDataProvider';
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import Piece from './Piece';
 import './Square.css';
 
 type SquareProps = {
-    color: 'black' | 'white',
-    coordinate: SquareCoordinate,
-    clicked?: (coordinate: SquareCoordinate) => void,
+    color: 'black' | 'white';
+    coordinate: SquareCoordinate;
+    clicked?: (coordinate: SquareCoordinate) => void;
 };
 export default function Square(props: SquareProps) {
     const boardStateData = useBoardData();
@@ -27,9 +32,11 @@ export default function Square(props: SquareProps) {
     return (
         <div className={`board-square ${props.color}`} onClick={onClick}>
             <div className={`highlight ${highlight ? 'active' : 'inactive'}`}>
-                { piece !== undefined && <Piece pieceConfig={piece.config} isPlacementMode={false}/> }
-                { isPlacingPiece && <Piece pieceConfig={placeblePiece} isPlacementMode={true}/> }
+                {piece !== undefined && (
+                    <Piece pieceConfig={piece.config} isPlacementMode={false} />
+                )}
+                {isPlacingPiece && <Piece pieceConfig={placeblePiece} isPlacementMode={true} />}
             </div>
         </div>
     );
-};
+}

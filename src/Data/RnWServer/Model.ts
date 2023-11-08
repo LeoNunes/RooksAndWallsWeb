@@ -1,4 +1,4 @@
-import { EdgeCoordinate, SquareCoordinate } from "../Common/Coordinates";
+import { EdgeCoordinate, SquareCoordinate } from '../Common/Coordinates';
 
 export type ServerData = {
     gameId: number;
@@ -37,12 +37,14 @@ type Wall = {
 
 export function isServerData(obj: any): obj is ServerData {
     const gameState = obj as ServerData;
-    return gameState.gameId !== undefined &&
-           gameState.config !== undefined &&
-           gameState.stage !== undefined &&
-           gameState.playerId !== undefined &&
-           gameState.players !== undefined &&
-           gameState.pieces !== undefined &&
-           gameState.walls !== undefined &&
-           gameState.deadPieces !== undefined;
+    return (
+        gameState.gameId !== undefined &&
+        gameState.config !== undefined &&
+        gameState.stage !== undefined &&
+        gameState.playerId !== undefined &&
+        gameState.players !== undefined &&
+        gameState.pieces !== undefined &&
+        gameState.walls !== undefined &&
+        gameState.deadPieces !== undefined
+    );
 }

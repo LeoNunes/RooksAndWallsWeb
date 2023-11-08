@@ -6,8 +6,8 @@ import Wall from './Wall';
 import './Edge.css';
 
 type EdgeProps = {
-    coordinate: EdgeCoordinate,
-    clicked?: (coordinate: EdgeCoordinate) => void,
+    coordinate: EdgeCoordinate;
+    clicked?: (coordinate: EdgeCoordinate) => void;
 };
 export default function Edge({ coordinate, clicked }: EdgeProps) {
     const boardStateData = useBoardData();
@@ -22,7 +22,7 @@ export default function Edge({ coordinate, clicked }: EdgeProps) {
 
     return (
         <div className={`board-edge ${isVertical ? 'vertical' : 'horizontal'}`} onClick={onClick}>
-            { wall !== undefined && <Wall/> }
+            {wall !== undefined && <Wall />}
         </div>
     );
-};
+}

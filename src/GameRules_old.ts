@@ -8,10 +8,21 @@ import {
     getPieceFromPosition,
     getWallFromPosition,
     isPlayersTurn,
-    possibleDestinations
+    possibleDestinations,
 } from './Data/RnW/Model';
-import { RnWAction, addWallActionCreator, resetNextMoveActionCreator, setNextMovePieceActionCreator, updateFromServerActionCreator } from './Data/RnW/Actions';
-import { BoardEventHandlers, BoardData, getBoardPieceFromPosition, getBoardPieceById } from './Data/BoardData/Model';
+import {
+    RnWAction,
+    addWallActionCreator,
+    resetNextMoveActionCreator,
+    setNextMovePieceActionCreator,
+    updateFromServerActionCreator,
+} from './Data/RnW/Actions';
+import {
+    BoardEventHandlers,
+    BoardData,
+    getBoardPieceFromPosition,
+    getBoardPieceById,
+} from './Data/BoardData/Model';
 import { BoardDispatcher } from './Data/BoardData/Actions';
 import { ServerData } from './Data/RnWServer/Model';
 import { ServerAction, addPieceActionCreator, moveActionCreator } from './Data/RnWServer/Actions';
@@ -22,32 +33,42 @@ export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispa
     gameDispatch(updateFromServerActionCreator(serverData));
 }
 
-export function updateBoardElementsFromGameData(gameData: RnWData,
-                                                boardDispatcher: BoardDispatcher) {
-    boardDispatcher.setPieces(gameData.pieces.map(p => {
-        if (p.id === gameData.nextMove.piece?.id) {
-            return {
-                id: p.id,
-                position: gameData.nextMove.piecePosition!!,
-                config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
-            };
-        }
-        return {
-            id: p.id,
-            position: p.position,
-            config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
-        };
-    }).concat(gameData.deadPieces.map(p => {
-        return {
-            id: p.id,
-            position: p.position,
-            config: rnwConfig.pieces[rnwConfig.players[p.owner].color].disabled,
-        };
-    })));
-    boardDispatcher.setWalls(gameData.walls.map((w, index) => ({
-        id: index,
-        position: w.position,
-    })));
+export function updateBoardElementsFromGameData(
+    gameData: RnWData,
+    boardDispatcher: BoardDispatcher,
+) {
+    boardDispatcher.setPieces(
+        gameData.pieces
+            .map(p => {
+                if (p.id === gameData.nextMove.piece?.id) {
+                    return {
+                        id: p.id,
+                        position: gameData.nextMove.piecePosition!!,
+                        config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
+                    };
+                }
+                return {
+                    id: p.id,
+                    position: p.position,
+                    config: rnwConfig.pieces[rnwConfig.players[p.owner].color].default,
+                };
+            })
+            .concat(
+                gameData.deadPieces.map(p => {
+                    return {
+                        id: p.id,
+                        position: p.position,
+                        config: rnwConfig.pieces[rnwConfig.players[p.owner].color].disabled,
+                    };
+                }),
+            ),
+    );
+    boardDispatcher.setWalls(
+        gameData.walls.map((w, index) => ({
+            id: index,
+            position: w.position,
+        })),
+    );
 
     if (isPlayersTurn(gameData)) {
         if (gameData.stage === 'piece_placement') {
@@ -56,32 +77,49 @@ export function updateBoardElementsFromGameData(gameData: RnWData,
                 availableSquaresForPlacingPiece(gameData),
             );
         }
-    }
-    else {
+    } else {
         boardDispatcher.disablePiecePlacementMode();
     }
 }
 
-export function boardRules(gameState: RnWData,
-                           boardState: BoardData,
-                           gameDispatch: Dispatch<RnWAction>,
-                           boardDispatcher: BoardDispatcher,
-                           serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
-    
+export function boardRules(
+    gameState: RnWData,
+    boardState: BoardData,
+    gameDispatch: Dispatch<RnWAction>,
+    boardDispatcher: BoardDispatcher,
+    serverDispatch: Dispatch<ServerAction>,
+): BoardEventHandlers {
     switch (gameState.stage) {
-        case 'waiting_for_players': return {};
-        case 'piece_placement': return boardRulesForPiecePlacementStage(gameState, boardState, gameDispatch, boardDispatcher, serverDispatch);
-        case 'moves': return boardRulesForMovesStage(gameState, boardState, gameDispatch, boardDispatcher, serverDispatch);
-        case 'completed': return {};
+        case 'waiting_for_players':
+            return {};
+        case 'piece_placement':
+            return boardRulesForPiecePlacementStage(
+                gameState,
+                boardState,
+                gameDispatch,
+                boardDispatcher,
+                serverDispatch,
+            );
+        case 'moves':
+            return boardRulesForMovesStage(
+                gameState,
+                boardState,
+                gameDispatch,
+                boardDispatcher,
+                serverDispatch,
+            );
+        case 'completed':
+            return {};
     }
 }
 
-function boardRulesForPiecePlacementStage(gameState: RnWData,
-                                          boardState: BoardData,
-                                          gameDispatch: Dispatch<RnWAction>,
-                                          boardDispatcher: BoardDispatcher,
-                                          serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
-    
+function boardRulesForPiecePlacementStage(
+    gameState: RnWData,
+    boardState: BoardData,
+    gameDispatch: Dispatch<RnWAction>,
+    boardDispatcher: BoardDispatcher,
+    serverDispatch: Dispatch<ServerAction>,
+): BoardEventHandlers {
     function squareClicked(coordinate: SquareCoordinate) {
         if (!isPlayersTurn(gameState)) {
             return;
@@ -97,12 +135,13 @@ function boardRulesForPiecePlacementStage(gameState: RnWData,
     };
 }
 
-function boardRulesForMovesStage(gameState: RnWData,
-                                 boardState: BoardData,
-                                 gameDispatch: Dispatch<RnWAction>,
-                                 boardDispatcher: BoardDispatcher,
-                                 serverDispatch: Dispatch<ServerAction>): BoardEventHandlers {
-
+function boardRulesForMovesStage(
+    gameState: RnWData,
+    boardState: BoardData,
+    gameDispatch: Dispatch<RnWAction>,
+    boardDispatcher: BoardDispatcher,
+    serverDispatch: Dispatch<ServerAction>,
+): BoardEventHandlers {
     function squareClicked(coordinate: SquareCoordinate) {
         if (!isPlayersTurn(gameState)) {
             return;
@@ -115,8 +154,7 @@ function boardRulesForMovesStage(gameState: RnWData,
                 if (canMoveTo(gameState, gamePiece, coordinate)) {
                     gameDispatch(setNextMovePieceActionCreator(gamePiece, coordinate));
                 }
-            }
-            else {
+            } else {
                 const gamePiece = getPieceFromPosition(gameState, coordinate);
                 if (gamePiece && gamePiece.owner === gameState.playerId) {
                     boardDispatcher.selectPiece(getBoardPieceById(boardState, gamePiece.id));
@@ -124,7 +162,7 @@ function boardRulesForMovesStage(gameState: RnWData,
                 }
             }
         }
-    };
+    }
 
     function edgeClicked(coordinate: EdgeCoordinate) {
         if (!isPlayersTurn(gameState)) {
@@ -133,10 +171,16 @@ function boardRulesForMovesStage(gameState: RnWData,
         if (gameState.nextMove.piece) {
             if (getWallFromPosition(gameState, coordinate) === undefined) {
                 gameDispatch(resetNextMoveActionCreator());
-                serverDispatch(moveActionCreator(gameState.nextMove.piece.id, gameState.nextMove.piecePosition!!, coordinate))
+                serverDispatch(
+                    moveActionCreator(
+                        gameState.nextMove.piece.id,
+                        gameState.nextMove.piecePosition!!,
+                        coordinate,
+                    ),
+                );
             }
         }
-    };
+    }
 
     return {
         squareClicked,

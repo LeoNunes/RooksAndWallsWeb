@@ -4,35 +4,36 @@ import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/C
 import ChessPiece, { ChessPieceProps } from '../Pieces/ChessPiece';
 
 export type PieceData = ChessPieceProps & {
-    coordinate: SquareCoordinate,
+    coordinate: SquareCoordinate;
 };
 type BaseWithChessPiecesProps = {
-    piecesData: PieceData[],
+    piecesData: PieceData[];
 };
 export type BoardProps = {
-    createSquareContent?: (coord: SquareCoordinate) => React.ReactNode,
+    createSquareContent?: (coord: SquareCoordinate) => React.ReactNode;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithChessPiecesProps>;
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
+    TBoardProps,
+    BaseWithChessPiecesProps
+>;
 export type WithChessPiecesProps<TBoardProps> = TBoardProps & BaseWithChessPiecesProps;
 
 export default function withChessPieces<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
 ): React.FC<WithChessPiecesProps<TBoardProps>> {
-
     return function WithChessPieces(props: WithChessPiecesProps<TBoardProps>) {
-
         function createPieces(coord: SquareCoordinate) {
-            const pieceData = props.piecesData.find(p => areSquareCoordinatesEqual(p.coordinate, coord));
+            const pieceData = props.piecesData.find(p =>
+                areSquareCoordinatesEqual(p.coordinate, coord),
+            );
             if (!pieceData) return props.createSquareContent?.(coord);
 
-            return (
-                <ChessPiece {...pieceData}>
-                    { props.createSquareContent?.(coord) }
-                </ChessPiece>
-            );
+            return <ChessPiece {...pieceData}>{props.createSquareContent?.(coord)}</ChessPiece>;
         }
 
-        const boardProps = removeKeysFromObject<TBoardProps, BaseWithChessPiecesProps>(props, { piecesData: true });
-        return <Board {...boardProps} createSquareContent={createPieces}/>;
-    }
+        const boardProps = removeKeysFromObject<TBoardProps, BaseWithChessPiecesProps>(props, {
+            piecesData: true,
+        });
+        return <Board {...boardProps} createSquareContent={createPieces} />;
+    };
 }

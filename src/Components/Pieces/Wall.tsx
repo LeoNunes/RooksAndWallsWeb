@@ -3,9 +3,5 @@ import './Wall.css';
 
 type WallProps = PropsWithChildren<{}>;
 export function Wall(props: WallProps) {
-    return (
-        <div className='wall'>
-            { props.children }
-        </div>
-    );
+    return <div className='wall'>{props.children}</div>;
 }

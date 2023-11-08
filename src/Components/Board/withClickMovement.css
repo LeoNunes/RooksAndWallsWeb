@@ -3,10 +3,10 @@
     flex: 1;
 
     &.selected {
-        background-color: #AAAA77AA;
+        background-color: #aaaa77aa;
     }
 
     &.highlighted {
-        background-color: #AAAAAA88;
+        background-color: #aaaaaa88;
     }
 }

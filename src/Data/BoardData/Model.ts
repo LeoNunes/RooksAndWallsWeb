@@ -1,24 +1,29 @@
-import { EdgeCoordinate, SquareCoordinate, areEdgeCoordinatesEqual, areSquareCoordinatesEqual } from "../Common/Coordinates";
+import {
+    EdgeCoordinate,
+    SquareCoordinate,
+    areEdgeCoordinatesEqual,
+    areSquareCoordinatesEqual,
+} from '../Common/Coordinates';
 import { PieceConfig } from '../../RnWConfig';
 
 export type BoardPiece = {
-    id: number,
-    position: SquareCoordinate,
-    config: PieceConfig,
+    id: number;
+    position: SquareCoordinate;
+    config: PieceConfig;
 };
 
 export type BoardWall = {
-    id: number,
-    position: EdgeCoordinate,
+    id: number;
+    position: EdgeCoordinate;
 };
 
 export type BoardData = {
-    selectedPiece?: BoardPiece,
-    highlightedSquares?: SquareCoordinate[],
-    pieces: BoardPiece[],
-    walls: BoardWall[],
-    piecePlacement?: { piece: PieceConfig, availableSquares: SquareCoordinate[] },
-    wallPlacement?: { availableEdges: EdgeCoordinate[] },
+    selectedPiece?: BoardPiece;
+    highlightedSquares?: SquareCoordinate[];
+    pieces: BoardPiece[];
+    walls: BoardWall[];
+    piecePlacement?: { piece: PieceConfig; availableSquares: SquareCoordinate[] };
+    wallPlacement?: { availableEdges: EdgeCoordinate[] };
 };
 
 export const boardDataInitialValue: BoardData = {
@@ -56,12 +61,18 @@ export function getBoardWallFromPosition(data: BoardData, position: EdgeCoordina
 }
 
 export function isSquareHighlighted(data: BoardData, coordinate: SquareCoordinate) {
-    return data.highlightedSquares?.find(c => areSquareCoordinatesEqual(c, coordinate)) !== undefined;
+    return (
+        data.highlightedSquares?.find(c => areSquareCoordinatesEqual(c, coordinate)) !== undefined
+    );
 }
 
 export function canPlacePiece(data: BoardData, coordinate: SquareCoordinate) {
-    return data.piecePlacement?.piece !== undefined &&
-           data.piecePlacement?.availableSquares?.find(square => areSquareCoordinatesEqual(square, coordinate)) !== undefined;
+    return (
+        data.piecePlacement?.piece !== undefined &&
+        data.piecePlacement?.availableSquares?.find(square =>
+            areSquareCoordinatesEqual(square, coordinate),
+        ) !== undefined
+    );
 }
 
 export function getPieceForPiecePlacement(data: BoardData) {

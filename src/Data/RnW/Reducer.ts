@@ -1,29 +1,40 @@
 import { RnWData } from './Model';
-import { RnWAction, AddPieceActionType, AddWallActionType, MovePieceActionType, UpdateFromServerActionType, SetNextMovePiece, SetNextMoveWall } from './Actions';
+import {
+    RnWAction,
+    AddPieceActionType,
+    AddWallActionType,
+    MovePieceActionType,
+    UpdateFromServerActionType,
+    SetNextMovePiece,
+    SetNextMoveWall,
+} from './Actions';
 
-export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
+export function rnwDataReducer(data: RnWData, action: RnWAction): RnWData {
     switch (action.type) {
         case 'add-piece': {
             const act = action as AddPieceActionType;
             return {
                 ...data,
-                pieces: [...data.pieces, {
-                    id: data.pieces.map(piece => piece.id).reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
-                    owner: act.owner,
-                    position: act.position,
-                }]
-            }
-        };
+                pieces: [
+                    ...data.pieces,
+                    {
+                        id:
+                            data.pieces
+                                .map(piece => piece.id)
+                                .reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
+                        owner: act.owner,
+                        position: act.position,
+                    },
+                ],
+            };
+        }
         case 'add-wall': {
             const act = action as AddWallActionType;
             return {
                 ...data,
-                walls: [
-                    ...data.walls,
-                    { position: act.position }
-                ],
+                walls: [...data.walls, { position: act.position }],
             };
-        };
+        }
         case 'move-piece': {
             const act = action as MovePieceActionType;
             return {
@@ -33,10 +44,10 @@ export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
                     {
                         ...act.piece,
                         position: act.newPosition,
-                    }
+                    },
                 ],
             };
-        };
+        }
         case 'update-from-server': {
             const { serverData } = action as UpdateFromServerActionType;
             return {
@@ -61,7 +72,7 @@ export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
                     position: p.position,
                 })),
             };
-        };
+        }
         case 'set-next-move-piece': {
             const act = action as SetNextMovePiece;
             return {
@@ -70,9 +81,9 @@ export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
                     ...data.nextMove,
                     piece: act.piece,
                     piecePosition: act.position,
-                }
+                },
             };
-        };
+        }
         case 'set-next-move-wall': {
             const act = action as SetNextMoveWall;
             return {
@@ -80,9 +91,9 @@ export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
                 nextMove: {
                     ...data.nextMove,
                     wall: act.position,
-                }
+                },
             };
-        };
+        }
         // eslint-disable-next-line
         case 'reset-next-move': {
             return {
@@ -91,8 +102,8 @@ export function rnwDataReducer(data: RnWData, action: RnWAction) : RnWData {
                     piece: undefined,
                     piecePosition: undefined,
                     wall: undefined,
-                }
+                },
             };
-        };
+        }
     }
-};
+}

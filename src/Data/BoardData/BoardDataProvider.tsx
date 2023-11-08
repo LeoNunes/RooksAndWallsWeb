@@ -6,18 +6,22 @@ import { BoardAction } from './Actions';
 const BoardDataContext = createContext<BoardData | undefined>(undefined);
 const BoardDataDispatchContext = createContext<Dispatch<BoardAction> | undefined>(undefined);
 
-export function useBoardData() : BoardData {
+export function useBoardData(): BoardData {
     const data = useContext(BoardDataContext);
     if (data === undefined) {
-        throw new Error("BoardData is not available. Do you have a BoardDataProvider providing it?");
+        throw new Error(
+            'BoardData is not available. Do you have a BoardDataProvider providing it?',
+        );
     }
     return data;
 }
 
-export function useBoardDataDispatch() : Dispatch<BoardAction> {
+export function useBoardDataDispatch(): Dispatch<BoardAction> {
     const dispatch = useContext(BoardDataDispatchContext);
     if (dispatch === undefined) {
-        throw new Error("BoardDataDispatch is not available. Do you have a BoardDataProvider providing it?");
+        throw new Error(
+            'BoardDataDispatch is not available. Do you have a BoardDataProvider providing it?',
+        );
     }
     return dispatch;
 }

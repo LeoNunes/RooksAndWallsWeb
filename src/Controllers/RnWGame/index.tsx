@@ -20,23 +20,22 @@ export default function RnWGame(props: RnWGameProps) {
 
 type RnWGameControllerProps = {
     board: {
-        rows: number,
-        columns: number,
-    },
+        rows: number;
+        columns: number;
+    };
 };
 function RnWGameController(props: RnWGameControllerProps) {
     const rnwData = useRnWData();
     const rnwDataDispatch = useRnWDataDispatch();
 
     const Board = buildBoardComponent(rnwData, rnwDataDispatch);
-    return (
-        <Board rows={props.board.rows}
-               columns={props.board.columns}
-               haveEdges={true}/>
-    );
+    return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
 }
 
-function buildBoardComponent(rnwData: RnWData, rnwDataDispatch: React.Dispatch<RnWAction>): React.FC<BoardBaseProps> {
+function buildBoardComponent(
+    rnwData: RnWData,
+    rnwDataDispatch: React.Dispatch<RnWAction>,
+): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
     Board = addClickMovement(Board, rnwData, rnwDataDispatch);
@@ -44,6 +43,6 @@ function buildBoardComponent(rnwData: RnWData, rnwDataDispatch: React.Dispatch<R
     Board = addWalls(Board, rnwData);
     Board = addPieces(Board, rnwData);
     Board = addWallPlacement(Board, rnwData, rnwDataDispatch);
-    
+
     return Board;
 }

@@ -4,7 +4,7 @@
     background-size: contain;
 
     &.placing {
-        opacity: 0.0;
+        opacity: 0;
 
         &:hover {
             opacity: 0.6;
