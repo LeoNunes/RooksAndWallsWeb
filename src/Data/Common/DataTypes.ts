@@ -1,7 +1,7 @@
-import { Dispatch } from 'react';
+export type Dispatch<ActionType> = (action: ActionType) => void;
 
-export type AsyncAction<ActionType> =
+export type AsyncAction<ActionType, StateType = unknown> =
     | ActionType
-    | ((dispatch: (action: ActionType) => void) => Promise<void> | void);
+    | ((dispatch: Dispatch<ActionType>, getState: () => StateType) => Promise<void> | void);
 
-export type AsyncDispatch<ActionType> = Dispatch<AsyncAction<ActionType>>;
+export type AsyncDispatch<ActionType, StateType> = Dispatch<AsyncAction<ActionType, StateType>>;

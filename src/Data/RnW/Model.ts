@@ -27,7 +27,7 @@ export type Wall = {
 type NextMove = {
     piece?: Piece;
     piecePosition?: SquareCoordinate;
-    wall?: EdgeCoordinate;
+    wallPosition?: EdgeCoordinate;
 };
 
 export type RnWState = {
@@ -52,20 +52,40 @@ export const rnwStateInitialValue: RnWState = {
     nextMove: {},
 };
 
+// TODO:
 export const modelBuilder = (state: RnWState) => ({
+    isPlayersTurn: () => isPlayersTurn(state),
+    playerCurrentAction: () => playerCurrentAction(state),
     getPlayerId: () => state.playerId,
     getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(state, position),
     getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(state, playerId),
     possibleDestinations: (piece: Piece) => possibleDestinations(state, piece),
-    isPlayersTurn: () => isPlayersTurn(state),
     availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(state),
     availableEdgesForPlacingWalls: () => availableEdgesForPlacingWalls(state),
     canPlacePiece: (position: SquareCoordinate) => canPlacePiece(state, position),
     canMoveTo: (piece: Piece, destination: SquareCoordinate) =>
         canMoveTo(state, piece, destination),
 });
+
+export function isPlayersTurn(state: RnWState) {
+    return state.currentPlayer === state.playerId;
+}
+
+export function playerCurrentAction(
+    state: RnWState,
+): 'add_piece' | 'move_piece' | 'add_wall' | undefined {
+    if (!isPlayersTurn(state)) return undefined;
+
+    if (state.stage === 'piece_placement') return 'add_piece';
+
+    if (state.stage === 'moves' && state.nextMove.piece === undefined) return 'move_piece';
+
+    if (state.stage === 'moves' && state.nextMove.wallPosition === undefined) return 'add_wall';
+
+    return undefined;
+}
 
 export function getPieceById(state: RnWState, id: number) {
     const piece = state.pieces.find(p => p.id === id);
@@ -121,10 +141,6 @@ export function possibleDestinations(state: RnWState, piece: Piece): SquareCoord
         }
     }
     return destinations;
-}
-
-export function isPlayersTurn(state: RnWState) {
-    return state.currentPlayer === state.playerId;
 }
 
 export function availableSquaresForPlacingPiece(state: RnWState) {

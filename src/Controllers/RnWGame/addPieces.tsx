@@ -11,9 +11,10 @@ export default function addPieces<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
     rnwState: RnWState,
 ): React.FC<ComputedBoardProps<TBoardProps>> {
+    const nextMove = rnwState.nextMove;
     const piecesData: PieceData[] = rnwState.pieces
         .map(piece => ({
-            coordinate: piece.position,
+            coordinate: nextMove.piece?.id === piece.id ? nextMove.piecePosition!! : piece.position,
             player: piece.owner,
             type: 'rook' as ChessPieceTypes,
         }))

@@ -1,8 +1,9 @@
 import React from 'react';
 import { EdgeCoordinate } from '../../Data/Common/Coordinates';
-import { AsyncDispatch } from '../../Data/Common/DataTypes';
+import { Dispatch } from '../../Data/Common/DataTypes';
 import { RnWState, modelBuilder } from '../../Data/RnW/Model';
-import { RnWAction, addWallActionCreator } from '../../Data/RnW/Actions';
+import { RnWDispatch, commitMove, setNextMoveWall } from '../../Data/RnW/Actions';
+import { ServerAction } from '../../Services/RnWServer/Data';
 import withPlacementMode, {
     BoardProps,
     ComputedBoardProps,
@@ -14,10 +15,12 @@ export default function addWallPlacement<
 >(
     Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
     rnwState: RnWState,
-    rnwDispatch: AsyncDispatch<RnWAction>,
+    rnwDispatch: RnWDispatch,
+    websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
     const model = modelBuilder(rnwState);
-    if (rnwState.stage !== 'moves' || !model.isPlayersTurn()) return Board;
+
+    if (model.playerCurrentAction() !== 'add_wall') return Board;
 
     function placeble(props: React.PropsWithChildren) {
         return <Wall>{props.children}</Wall>;
@@ -26,7 +29,8 @@ export default function addWallPlacement<
     const placebleCoordinates = model.availableEdgesForPlacingWalls();
 
     function onPlace(coord: EdgeCoordinate) {
-        rnwDispatch(addWallActionCreator(coord));
+        rnwDispatch(setNextMoveWall(coord));
+        rnwDispatch(commitMove(websocketDispatch));
     }
 
     const Component = withPlacementMode<EdgeCoordinate, 'createEdgeContent', TBoardProps>(

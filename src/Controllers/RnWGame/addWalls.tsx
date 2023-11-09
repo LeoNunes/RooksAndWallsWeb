@@ -13,6 +13,9 @@ export default function addWalls<TBoardProps extends BoardProps>(
     const wallsData: WallData[] = rnwState.walls.map(wall => ({
         coordinate: wall.position,
     }));
+    if (rnwState.nextMove.wallPosition !== undefined) {
+        wallsData.push({ coordinate: rnwState.nextMove.wallPosition });
+    }
 
     const Component = withWalls(Board);
     return function AddWalls(props: ComputedBoardProps<TBoardProps>) {

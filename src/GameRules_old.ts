@@ -11,11 +11,11 @@ import {
     possibleDestinations,
 } from './Data/RnW/Model';
 import {
-    RnWAction,
-    addWallActionCreator,
-    resetNextMoveActionCreator,
-    setNextMovePieceActionCreator,
-    updateFromServerActionCreator,
+    RnWBaseAction,
+    addWall,
+    resetNextMove,
+    setNextMovePiece,
+    updateFromServer,
 } from './Data/RnW/Actions';
 import {
     BoardEventHandlers,
@@ -28,8 +28,11 @@ import { ServerState, ServerAction, addPieceAction, moveAction } from './Service
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
 import { rnwConfig } from './RnWConfig';
 
-export function updateGameFromServer(serverData: ServerState, gameDispatch: Dispatch<RnWAction>) {
-    gameDispatch(updateFromServerActionCreator(serverData));
+export function updateGameFromServer(
+    serverData: ServerState,
+    gameDispatch: Dispatch<RnWBaseAction>,
+) {
+    gameDispatch(updateFromServer(serverData));
 }
 
 export function updateBoardElementsFromGameData(
@@ -84,7 +87,7 @@ export function updateBoardElementsFromGameData(
 export function boardRules(
     gameState: RnWState,
     boardState: BoardData,
-    gameDispatch: Dispatch<RnWAction>,
+    gameDispatch: Dispatch<RnWBaseAction>,
     boardDispatcher: BoardDispatcher,
     serverDispatch: Dispatch<ServerAction>,
 ): BoardEventHandlers {
@@ -115,7 +118,7 @@ export function boardRules(
 function boardRulesForPiecePlacementStage(
     gameState: RnWState,
     boardState: BoardData,
-    gameDispatch: Dispatch<RnWAction>,
+    gameDispatch: Dispatch<RnWBaseAction>,
     boardDispatcher: BoardDispatcher,
     serverDispatch: Dispatch<ServerAction>,
 ): BoardEventHandlers {
@@ -137,7 +140,7 @@ function boardRulesForPiecePlacementStage(
 function boardRulesForMovesStage(
     gameState: RnWState,
     boardState: BoardData,
-    gameDispatch: Dispatch<RnWAction>,
+    gameDispatch: Dispatch<RnWBaseAction>,
     boardDispatcher: BoardDispatcher,
     serverDispatch: Dispatch<ServerAction>,
 ): BoardEventHandlers {
@@ -151,7 +154,7 @@ function boardRulesForMovesStage(
                 boardDispatcher.clearHighlight();
                 const gamePiece = getPieceById(gameState, boardState.selectedPiece.id);
                 if (canMoveTo(gameState, gamePiece, coordinate)) {
-                    gameDispatch(setNextMovePieceActionCreator(gamePiece, coordinate));
+                    gameDispatch(setNextMovePiece(gamePiece, coordinate));
                 }
             } else {
                 const gamePiece = getPieceFromPosition(gameState, coordinate);
@@ -169,7 +172,7 @@ function boardRulesForMovesStage(
         }
         if (gameState.nextMove.piece) {
             if (getWallFromPosition(gameState, coordinate) === undefined) {
-                gameDispatch(resetNextMoveActionCreator());
+                gameDispatch(resetNextMove());
                 serverDispatch(
                     moveAction(
                         gameState.nextMove.piece.id,

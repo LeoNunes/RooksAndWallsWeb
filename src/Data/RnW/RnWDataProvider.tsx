@@ -1,12 +1,11 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useAsyncReducer } from '../../Util/hooks';
-import { AsyncDispatch } from '../Common/DataTypes';
 import { RnWState, rnwStateInitialValue } from './Model';
 import { rnwReducer } from './Reducer';
-import { RnWAction } from './Actions';
+import { RnWDispatch } from './Actions';
 
 const RnWStateContext = createContext<RnWState | undefined>(undefined);
-const RnWDispatchContext = createContext<AsyncDispatch<RnWAction> | undefined>(undefined);
+const RnWDispatchContext = createContext<RnWDispatch | undefined>(undefined);
 
 export function useRnWState(): RnWState {
     const rnwState = useContext(RnWStateContext);
@@ -16,7 +15,7 @@ export function useRnWState(): RnWState {
     return rnwState;
 }
 
-export function useRnWDispatch(): AsyncDispatch<RnWAction> {
+export function useRnWDispatch(): RnWDispatch {
     const dispatch = useContext(RnWDispatchContext);
     if (dispatch === undefined) {
         throw new Error('RnWDispatch is not available. Do you have a RnWProvider providing it?');

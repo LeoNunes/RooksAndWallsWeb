@@ -1,6 +1,6 @@
 import { RnWState } from './Model';
 import {
-    RnWAction,
+    RnWBaseAction,
     AddPieceActionType,
     AddWallActionType,
     MovePieceActionType,
@@ -9,7 +9,7 @@ import {
     SetNextMoveWall,
 } from './Actions';
 
-export function rnwReducer(state: RnWState, action: RnWAction): RnWState {
+export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
     switch (action.type) {
         case 'add-piece': {
             const act = action as AddPieceActionType;
@@ -90,7 +90,7 @@ export function rnwReducer(state: RnWState, action: RnWAction): RnWState {
                 ...state,
                 nextMove: {
                     ...state.nextMove,
-                    wall: act.position,
+                    wallPosition: act.position,
                 },
             };
         }
@@ -101,7 +101,7 @@ export function rnwReducer(state: RnWState, action: RnWAction): RnWState {
                 nextMove: {
                     piece: undefined,
                     piecePosition: undefined,
-                    wall: undefined,
+                    wallPosition: undefined,
                 },
             };
         }

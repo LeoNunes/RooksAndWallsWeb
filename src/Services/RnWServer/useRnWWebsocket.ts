@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { Dispatch } from '../../Data/Common/DataTypes';
 import { ServerAction, ServerState, isServerState } from './Data';
 import { webSocketConfig } from '../../RnWConfig';
 
-export function useRnWWebsocket(gameId: number, onUpdate: (state: ServerState) => void) {
+export function useRnWWebsocket(
+    gameId: number,
+    onUpdate: (state: ServerState) => void,
+): Dispatch<ServerAction> {
     const { lastMessage, lastJsonMessage, sendJsonMessage } = useWebSocket(
         webSocketConfig.urlForGame(gameId),
         {

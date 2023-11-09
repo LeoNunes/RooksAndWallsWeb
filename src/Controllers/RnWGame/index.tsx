@@ -1,9 +1,9 @@
 import React from 'react';
-import { AsyncDispatch } from '../../Data/Common/DataTypes';
+import { Dispatch } from '../../Data/Common/DataTypes';
 import { RnWState } from '../../Data/RnW/Model';
-import { RnWAction, updateFromServerActionCreator } from '../../Data/RnW/Actions';
+import { RnWDispatch, updateFromServer } from '../../Data/RnW/Actions';
 import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Data/RnW/RnWDataProvider';
-import { ServerState } from '../../Services/RnWServer/Data';
+import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addPieces from './addPieces';
@@ -33,25 +33,26 @@ function RnWGameController(props: RnWGameControllerProps) {
     const rnwDispatch = useRnWDispatch();
 
     function onWebsocketUpdate(state: ServerState) {
-        rnwDispatch(updateFromServerActionCreator(state));
+        rnwDispatch(updateFromServer(state));
     }
     const websocketDispatch = useRnWWebsocket(props.gameId, onWebsocketUpdate);
 
-    const Board = buildBoardComponent(rnwState, rnwDispatch);
+    const Board = buildBoardComponent(rnwState, rnwDispatch, websocketDispatch);
     return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
 }
 
 function buildBoardComponent(
     rnwState: RnWState,
-    rnwDispatch: AsyncDispatch<RnWAction>,
+    rnwDispatch: RnWDispatch,
+    websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
     Board = addClickMovement(Board, rnwState, rnwDispatch);
-    Board = addPiecePlacement(Board, rnwState, rnwDispatch);
+    Board = addPiecePlacement(Board, rnwState, rnwDispatch, websocketDispatch);
     Board = addWalls(Board, rnwState);
     Board = addPieces(Board, rnwState);
-    Board = addWallPlacement(Board, rnwState, rnwDispatch);
+    Board = addWallPlacement(Board, rnwState, rnwDispatch, websocketDispatch);
 
     return Board;
 }
