@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { isServerData } from './Data/RnWServer/Model';
-import { ServerAction } from './Data/RnWServer/Actions';
+import { isServerState, ServerAction } from './Services/RnWServer/Data';
 import { useRnWState, useRnWDispatch } from './Data/RnW/RnWDataProvider';
 import { useBoardData, useBoardDataDispatch } from './Data/BoardData/BoardDataProvider';
 import { boardDispatcher } from './Data/BoardData/Actions';
@@ -36,7 +35,7 @@ export default function Game(props: GameProps) {
 
     useEffect(() => updateBoardElementsFromGameData(gameData, boardDataDispatcher), [gameData]);
     useEffect(() => {
-        if (lastJsonMessage !== null && isServerData(lastJsonMessage)) {
+        if (lastJsonMessage !== null && isServerState(lastJsonMessage)) {
             console.log('Message received', lastJsonMessage);
             updateGameFromServer(lastJsonMessage, gameDataDispatch);
         } else {

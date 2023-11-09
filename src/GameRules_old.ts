@@ -24,12 +24,11 @@ import {
     getBoardPieceById,
 } from './Data/BoardData/Model';
 import { BoardDispatcher } from './Data/BoardData/Actions';
-import { ServerData } from './Data/RnWServer/Model';
-import { ServerAction, addPieceActionCreator, moveActionCreator } from './Data/RnWServer/Actions';
+import { ServerState, ServerAction, addPieceAction, moveAction } from './Services/RnWServer/Data';
 import { EdgeCoordinate, SquareCoordinate } from './Data/Common/Coordinates';
 import { rnwConfig } from './RnWConfig';
 
-export function updateGameFromServer(serverData: ServerData, gameDispatch: Dispatch<RnWAction>) {
+export function updateGameFromServer(serverData: ServerState, gameDispatch: Dispatch<RnWAction>) {
     gameDispatch(updateFromServerActionCreator(serverData));
 }
 
@@ -126,7 +125,7 @@ function boardRulesForPiecePlacementStage(
         }
 
         if (canPlacePiece(gameState, coordinate)) {
-            serverDispatch(addPieceActionCreator(coordinate));
+            serverDispatch(addPieceAction(coordinate));
         }
     }
 
@@ -172,7 +171,7 @@ function boardRulesForMovesStage(
             if (getWallFromPosition(gameState, coordinate) === undefined) {
                 gameDispatch(resetNextMoveActionCreator());
                 serverDispatch(
-                    moveActionCreator(
+                    moveAction(
                         gameState.nextMove.piece.id,
                         gameState.nextMove.piecePosition!!,
                         coordinate,

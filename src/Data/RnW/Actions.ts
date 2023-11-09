@@ -1,6 +1,6 @@
 import { Piece } from './Model';
 import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
-import { ServerData } from '../RnWServer/Model';
+import { ServerState } from '../../Services/RnWServer/Data';
 
 export type RnWAction =
     | AddPieceActionType
@@ -55,12 +55,12 @@ export function addWallActionCreator(position: EdgeCoordinate): AddWallActionTyp
 
 export type UpdateFromServerActionType = {
     type: 'update-from-server';
-    serverData: ServerData;
+    serverState: ServerState;
 };
-export function updateFromServerActionCreator(data: ServerData): UpdateFromServerActionType {
+export function updateFromServerActionCreator(data: ServerState): UpdateFromServerActionType {
     return {
         type: 'update-from-server',
-        serverData: data,
+        serverState: data,
     };
 }
 

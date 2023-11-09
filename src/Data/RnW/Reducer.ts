@@ -49,24 +49,24 @@ export function rnwReducer(state: RnWState, action: RnWAction): RnWState {
             };
         }
         case 'update-from-server': {
-            const { serverData } = action as UpdateFromServerActionType;
+            const { serverState } = action as UpdateFromServerActionType;
             return {
                 ...state,
-                stage: serverData.stage,
-                playerId: serverData.playerId,
-                currentPlayer: serverData.currentTurn,
-                players: serverData.players.map(p => ({
+                stage: serverState.stage,
+                playerId: serverState.playerId,
+                currentPlayer: serverState.currentTurn,
+                players: serverState.players.map(p => ({
                     id: p.id,
                 })),
-                pieces: serverData.pieces.map(p => ({
+                pieces: serverState.pieces.map(p => ({
                     id: p.id,
                     owner: p.owner,
                     position: p.position,
                 })),
-                walls: serverData.walls.map(w => ({
+                walls: serverState.walls.map(w => ({
                     position: w.position,
                 })),
-                deadPieces: serverData.deadPieces.map(p => ({
+                deadPieces: serverState.deadPieces.map(p => ({
                     id: p.id,
                     owner: p.owner,
                     position: p.position,
