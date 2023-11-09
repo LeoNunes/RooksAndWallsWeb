@@ -1,4 +1,4 @@
-import { Reducer, useReducer } from 'react';
+import { Reducer, useEffect, useReducer, useRef } from 'react';
 import { AsyncAction, AsyncDispatch } from '../Data/Common/DataTypes';
 
 export function useAsyncReducer<StateType, ActionType extends object>(
@@ -7,17 +7,25 @@ export function useAsyncReducer<StateType, ActionType extends object>(
 ): [StateType, AsyncDispatch<ActionType, StateType>] {
     const [baseState, baseDispatch] = useReducer(reducer, initialValue);
 
-    // TODO: Test if function returns different values on a single action if state changes.
-    // useState + useEffect if that doesnt work?
-    function getState() {
-        return baseState;
+    const intermediateState = useRef(baseState);
+    useEffect(() => {
+        intermediateState.current = baseState;
+    }, [baseState]);
+
+    function getState(): StateType {
+        return intermediateState.current;
+    }
+
+    function dispatchAndUpdateIntermediateState(action: ActionType): void {
+        intermediateState.current = reducer(intermediateState.current, action);
+        baseDispatch(action);
     }
 
     async function asyncDispatch(action: AsyncAction<ActionType, StateType>) {
         if (typeof action === 'function') {
-            await action(baseDispatch, getState);
+            await action(dispatchAndUpdateIntermediateState, getState);
         } else {
-            baseDispatch(action);
+            dispatchAndUpdateIntermediateState(action);
         }
     }
 

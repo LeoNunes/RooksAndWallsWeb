@@ -21,6 +21,7 @@ export function useRnWWebsocket(
     );
 
     useEffect(() => {
+        if (lastMessage === null) return;
         if (lastJsonMessage !== null && isServerState(lastJsonMessage)) {
             console.log('Websocket message received:', lastJsonMessage);
             onUpdate(lastJsonMessage);
