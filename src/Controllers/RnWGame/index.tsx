@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch } from '../../Data/Common/DataTypes';
 import { RnWState } from '../../Data/RnW/Model';
-import { RnWDispatch, updateFromServer } from '../../Data/RnW/Actions';
+import { RnWActions, createAction } from '../../Data/RnW/Actions';
 import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Data/RnW/RnWDataProvider';
 import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
@@ -31,28 +31,29 @@ type RnWGameControllerProps = {
 function RnWGameController(props: RnWGameControllerProps) {
     const rnwState = useRnWState();
     const rnwDispatch = useRnWDispatch();
+    const rnwActions = createAction(rnwDispatch);
 
     function onWebsocketUpdate(state: ServerState) {
-        rnwDispatch(updateFromServer(state));
+        rnwActions.updateFromServer(state);
     }
     const websocketDispatch = useRnWWebsocket(props.gameId, onWebsocketUpdate);
 
-    const Board = buildBoardComponent(rnwState, rnwDispatch, websocketDispatch);
+    const Board = buildBoardComponent(rnwState, rnwActions, websocketDispatch);
     return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
 }
 
 function buildBoardComponent(
     rnwState: RnWState,
-    rnwDispatch: RnWDispatch,
+    rnwActions: RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
-    Board = addClickMovement(Board, rnwState, rnwDispatch);
-    Board = addPiecePlacement(Board, rnwState, rnwDispatch, websocketDispatch);
+    Board = addClickMovement(Board, rnwState, rnwActions);
+    Board = addPiecePlacement(Board, rnwState, rnwActions, websocketDispatch);
     Board = addWalls(Board, rnwState);
     Board = addPieces(Board, rnwState);
-    Board = addWallPlacement(Board, rnwState, rnwDispatch, websocketDispatch);
+    Board = addWallPlacement(Board, rnwState, rnwActions, websocketDispatch);
 
     return Board;
 }

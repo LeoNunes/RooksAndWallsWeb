@@ -2,7 +2,7 @@ import React from 'react';
 import { EdgeCoordinate } from '../../Data/Common/Coordinates';
 import { Dispatch } from '../../Data/Common/DataTypes';
 import { RnWState, modelBuilder } from '../../Data/RnW/Model';
-import { RnWDispatch, commitMove, setNextMoveWall } from '../../Data/RnW/Actions';
+import { RnWActions } from '../../Data/RnW/Actions';
 import { ServerAction } from '../../Services/RnWServer/Data';
 import withPlacementMode, {
     BoardProps,
@@ -15,7 +15,7 @@ export default function addWallPlacement<
 >(
     Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
     rnwState: RnWState,
-    rnwDispatch: RnWDispatch,
+    rnwActions: RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
     const model = modelBuilder(rnwState);
@@ -29,8 +29,8 @@ export default function addWallPlacement<
     const placebleCoordinates = model.availableEdgesForPlacingWalls();
 
     function onPlace(coord: EdgeCoordinate) {
-        rnwDispatch(setNextMoveWall(coord));
-        rnwDispatch(commitMove(websocketDispatch));
+        rnwActions.setNextMoveWall(coord);
+        rnwActions.commitMove(websocketDispatch);
     }
 
     const Component = withPlacementMode<EdgeCoordinate, 'createEdgeContent', TBoardProps>(

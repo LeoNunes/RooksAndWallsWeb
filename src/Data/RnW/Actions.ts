@@ -20,6 +20,31 @@ export type RnWBaseAction =
 export type RnWAction = AsyncAction<RnWBaseAction, RnWState>;
 export type RnWDispatch = Dispatch<RnWAction>;
 
+export type RnWActions = ReturnType<typeof createAction>;
+export function createAction(dispatch: RnWDispatch) {
+    return {
+        addPiece: (
+            owner: number,
+            position: SquareCoordinate,
+            websocketDispatch: Dispatch<ServerAction>,
+        ) => {
+            dispatch(addPiece(owner, position, websocketDispatch));
+        },
+        setNextMovePiece: (piece: Piece, position: SquareCoordinate) => {
+            dispatch(setNextMovePiece(piece, position));
+        },
+        setNextMoveWall: (position: EdgeCoordinate) => {
+            dispatch(setNextMoveWall(position));
+        },
+        commitMove: (websocketDispatch: Dispatch<ServerAction>) => {
+            dispatch(commitMove(websocketDispatch));
+        },
+        updateFromServer: (state: ServerState) => {
+            dispatch(updateFromServer(state));
+        },
+    };
+}
+
 export type AddPieceActionType = {
     type: 'add-piece';
     owner: number;
@@ -48,7 +73,7 @@ export type MovePieceActionType = {
     piece: Piece;
     newPosition: SquareCoordinate;
 };
-export function movePiece(piece: Piece, newPosition: SquareCoordinate): MovePieceActionType {
+function movePiece(piece: Piece, newPosition: SquareCoordinate): MovePieceActionType {
     return {
         type: 'move-piece',
         piece: piece,
@@ -60,7 +85,7 @@ export type AddWallActionType = {
     type: 'add-wall';
     position: EdgeCoordinate;
 };
-export function addWall(position: EdgeCoordinate): AddWallActionType {
+function addWall(position: EdgeCoordinate): AddWallActionType {
     return {
         type: 'add-wall',
         position: position,
@@ -94,7 +119,7 @@ export function setNextMoveWall(position: EdgeCoordinate): SetNextMoveWall {
 export type ResetNextMove = {
     type: 'reset-next-move';
 };
-export function resetNextMove(): ResetNextMove {
+function resetNextMove(): ResetNextMove {
     return {
         type: 'reset-next-move',
     };

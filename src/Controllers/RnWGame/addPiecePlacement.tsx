@@ -2,7 +2,7 @@ import React from 'react';
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
 import { Dispatch } from '../../Data/Common/DataTypes';
 import { RnWState, modelBuilder } from '../../Data/RnW/Model';
-import { RnWDispatch, addPiece } from '../../Data/RnW/Actions';
+import { RnWActions } from '../../Data/RnW/Actions';
 import { ServerAction } from '../../Services/RnWServer/Data';
 import withPlacementMode, {
     BoardProps,
@@ -15,7 +15,7 @@ export default function addPiecePlacement<
 >(
     Board: React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
     rnwState: RnWState,
-    rnwDispatch: RnWDispatch,
+    rnwActions: RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
     const model = modelBuilder(rnwState);
@@ -33,7 +33,7 @@ export default function addPiecePlacement<
     const placebleCoordinates = model.availableSquaresForPlacingPiece();
 
     function onPlace(coord: SquareCoordinate) {
-        rnwDispatch(addPiece(rnwState.playerId, coord, websocketDispatch));
+        rnwActions.addPiece(rnwState.playerId, coord, websocketDispatch);
     }
 
     const Component = withPlacementMode<SquareCoordinate, 'createSquareContent', TBoardProps>(
