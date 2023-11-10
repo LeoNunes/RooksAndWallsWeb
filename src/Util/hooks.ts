@@ -23,7 +23,7 @@ export function useAsyncReducer<StateType, ActionType extends object>(
 
     async function asyncDispatch(action: AsyncAction<ActionType, StateType>) {
         if (typeof action === 'function') {
-            await action(dispatchAndUpdateIntermediateState, getState);
+            await action(asyncDispatch, getState);
         } else {
             dispatchAndUpdateIntermediateState(action);
         }
