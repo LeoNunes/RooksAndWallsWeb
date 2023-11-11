@@ -52,12 +52,11 @@ export const rnwStateInitialValue: RnWState = {
     nextMove: {},
 };
 
-// TODO:
-export const modelBuilder = (state: RnWState) => ({
-    isPlayersTurn: () => isPlayersTurn(state),
+export type RnWModel = ReturnType<typeof createModel>;
+export const createModel = (state: RnWState) => ({
+    ...state,
     playerCurrentAction: () => playerCurrentAction(state),
     getPlayerId: () => state.playerId,
-    getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(state, position),
     getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(state, playerId),
@@ -69,7 +68,7 @@ export const modelBuilder = (state: RnWState) => ({
         canMoveTo(state, piece, destination),
 });
 
-export function isPlayersTurn(state: RnWState) {
+function isPlayersTurn(state: RnWState) {
     return state.currentPlayer === state.playerId;
 }
 
@@ -85,14 +84,6 @@ export function playerCurrentAction(
     if (state.stage === 'moves' && state.nextMove.wallPosition === undefined) return 'add_wall';
 
     return undefined;
-}
-
-export function getPieceById(state: RnWState, id: number) {
-    const piece = state.pieces.find(p => p.id === id);
-    if (piece === undefined) {
-        throw new Error(`Piece with id ${id} was not found`);
-    }
-    return piece;
 }
 
 export function getPieceFromPosition(state: RnWState, position: SquareCoordinate) {

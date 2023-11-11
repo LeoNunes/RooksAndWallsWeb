@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChessPieceTypes } from '../../Data/Common/PieceTypes';
-import { RnWState } from '../../Data/RnW/Model';
+import { RnWModel } from '../../Data/RnW/Model';
 import withChessPieces, {
     PieceData,
     BoardProps,
@@ -9,17 +9,17 @@ import withChessPieces, {
 
 export default function addPieces<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
-    rnwState: RnWState,
+    rnwModel: RnWModel,
 ): React.FC<ComputedBoardProps<TBoardProps>> {
-    const nextMove = rnwState.nextMove;
-    const piecesData: PieceData[] = rnwState.pieces
+    const nextMove = rnwModel.nextMove;
+    const piecesData: PieceData[] = rnwModel.pieces
         .map(piece => ({
             coordinate: nextMove.piece?.id === piece.id ? nextMove.piecePosition!! : piece.position,
             player: piece.owner,
             type: 'rook' as ChessPieceTypes,
         }))
         .concat(
-            rnwState.deadPieces.map(piece => ({
+            rnwModel.deadPieces.map(piece => ({
                 coordinate: piece.position,
                 player: piece.owner,
                 type: 'rook' as ChessPieceTypes,

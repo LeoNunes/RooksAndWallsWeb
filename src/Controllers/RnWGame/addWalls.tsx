@@ -1,5 +1,5 @@
 import React from 'react';
-import { RnWState } from '../../Data/RnW/Model';
+import { RnWModel } from '../../Data/RnW/Model';
 import withWalls, {
     BoardProps,
     ComputedBoardProps,
@@ -8,13 +8,13 @@ import withWalls, {
 
 export default function addWalls<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
-    rnwState: RnWState,
+    rnwModel: RnWModel,
 ): React.FC<ComputedBoardProps<TBoardProps>> {
-    const wallsData: WallData[] = rnwState.walls.map(wall => ({
+    const wallsData: WallData[] = rnwModel.walls.map(wall => ({
         coordinate: wall.position,
     }));
-    if (rnwState.nextMove.wallPosition !== undefined) {
-        wallsData.push({ coordinate: rnwState.nextMove.wallPosition });
+    if (rnwModel.nextMove.wallPosition !== undefined) {
+        wallsData.push({ coordinate: rnwModel.nextMove.wallPosition });
     }
 
     const Component = withWalls(Board);

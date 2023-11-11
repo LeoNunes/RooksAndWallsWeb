@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dispatch } from '../../Data/Common/DataTypes';
-import { RnWState } from '../../Data/RnW/Model';
+import { RnWModel, createModel } from '../../Data/RnW/Model';
 import { RnWActions, createAction } from '../../Data/RnW/Actions';
 import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Data/RnW/RnWDataProvider';
 import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
@@ -31,6 +31,7 @@ type RnWGameControllerProps = {
 function RnWGameController(props: RnWGameControllerProps) {
     const rnwState = useRnWState();
     const rnwDispatch = useRnWDispatch();
+    const rnwModel = createModel(rnwState);
     const rnwActions = createAction(rnwDispatch);
 
     function onWebsocketUpdate(state: ServerState) {
@@ -38,22 +39,22 @@ function RnWGameController(props: RnWGameControllerProps) {
     }
     const websocketDispatch = useRnWWebsocket(props.gameId, onWebsocketUpdate);
 
-    const Board = buildBoardComponent(rnwState, rnwActions, websocketDispatch);
+    const Board = buildBoardComponent(rnwModel, rnwActions, websocketDispatch);
     return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
 }
 
 function buildBoardComponent(
-    rnwState: RnWState,
+    rnwModel: RnWModel,
     rnwActions: RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
-    Board = addClickMovement(Board, rnwState, rnwActions);
-    Board = addPiecePlacement(Board, rnwState, rnwActions, websocketDispatch);
-    Board = addWalls(Board, rnwState);
-    Board = addPieces(Board, rnwState);
-    Board = addWallPlacement(Board, rnwState, rnwActions, websocketDispatch);
+    Board = addClickMovement(Board, rnwModel, rnwActions);
+    Board = addPiecePlacement(Board, rnwModel, rnwActions, websocketDispatch);
+    Board = addWalls(Board, rnwModel);
+    Board = addPieces(Board, rnwModel);
+    Board = addWallPlacement(Board, rnwModel, rnwActions, websocketDispatch);
 
     return Board;
 }

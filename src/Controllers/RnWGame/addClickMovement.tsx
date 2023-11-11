@@ -1,5 +1,5 @@
 import { SquareCoordinate } from '../../Data/Common/Coordinates';
-import { RnWState, modelBuilder } from '../../Data/RnW/Model';
+import { RnWModel } from '../../Data/RnW/Model';
 import { RnWActions } from '../../Data/RnW/Actions';
 import withClickMovement, {
     BoardProps,
@@ -8,27 +8,25 @@ import withClickMovement, {
 
 export default function addClickMovement<TBoardProps extends BoardProps>(
     Board: React.FC<ComputedBoardProps<TBoardProps>>,
-    rnwState: RnWState,
+    rnwModel: RnWModel,
     rnwActions: RnWActions,
 ): React.FC<ComputedBoardProps<TBoardProps>> {
-    const model = modelBuilder(rnwState);
+    if (rnwModel.playerCurrentAction() !== 'move_piece') return Board;
 
-    if (model.playerCurrentAction() !== 'move_piece') return Board;
-
-    const moveblePositions = model
-        .getPiecesFromPlayer(model.getPlayerId())
-        .filter(piece => model.possibleDestinations(piece).length > 0)
+    const moveblePositions = rnwModel
+        .getPiecesFromPlayer(rnwModel.getPlayerId())
+        .filter(piece => rnwModel.possibleDestinations(piece).length > 0)
         .map(piece => piece.position);
 
     const destinationsFrom = (coord: SquareCoordinate) => {
-        const piece = model.getPieceFromPosition(coord);
-        return piece !== undefined ? model.possibleDestinations(piece) : [];
+        const piece = rnwModel.getPieceFromPosition(coord);
+        return piece !== undefined ? rnwModel.possibleDestinations(piece) : [];
     };
 
     const onMove = (from: SquareCoordinate, to: SquareCoordinate) => {
-        const piece = model.getPieceFromPosition(from);
+        const piece = rnwModel.getPieceFromPosition(from);
         if (piece === undefined) return;
-        if (!model.canMoveTo(piece, to)) return;
+        if (!rnwModel.canMoveTo(piece, to)) return;
 
         rnwActions.setNextMovePiece(piece, to);
     };
