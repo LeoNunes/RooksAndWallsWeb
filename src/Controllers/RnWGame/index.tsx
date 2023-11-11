@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dispatch } from '../../Data/Common/DataTypes';
-import { RnWModel, createModel } from '../../Data/RnW/Model';
-import { RnWActions, createAction } from '../../Data/RnW/Actions';
-import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Data/RnW/RnWDataProvider';
+import { Dispatch } from '../../Domain/Common/DataTypes';
+import { RnWModel, createModel } from '../../Domain/RnW/Model';
+import { RnWActions, createAction } from '../../Domain/RnW/Actions';
+import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Domain/RnW/RnWDataProvider';
 import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';

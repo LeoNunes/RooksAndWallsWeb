@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
+import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withClickMovement.css';
 
 export type BoardProps = {

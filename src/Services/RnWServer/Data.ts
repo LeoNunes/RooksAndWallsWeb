@@ -4,7 +4,7 @@ import {
     SquareCoordinate,
     isEdgeCoordinate,
     isSquareCoordinate,
-} from '../../Data/Common/Coordinates';
+} from '../../Domain/Common/Coordinates';
 
 export type ServerState = Immutable<{
     gameId: number;

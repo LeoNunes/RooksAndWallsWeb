@@ -1,6 +1,6 @@
 import React from 'react';
-import { ChessPieceTypes } from '../../Data/Common/PieceTypes';
-import { RnWModel } from '../../Data/RnW/Model';
+import { ChessPieceTypes } from '../../Domain/Common/PieceTypes';
+import { RnWModel } from '../../Domain/RnW/Model';
 import withChessPieces, {
     PieceData,
     BoardProps,

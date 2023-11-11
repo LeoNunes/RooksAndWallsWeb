@@ -4,7 +4,7 @@ import {
     SquareCoordinate,
     edgeBelow,
     edgeToTheRightOf,
-} from '../../Data/Common/Coordinates';
+} from '../../Domain/Common/Coordinates';
 import Square from './Square';
 import Edge from './Edge';
 import styles from './BoardBase.module.css';

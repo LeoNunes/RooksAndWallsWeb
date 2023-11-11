@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Data/Common/Coordinates';
+import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import { Wall } from '../Pieces/Wall';
 
 export type WallData = {

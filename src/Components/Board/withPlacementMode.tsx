@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode, useState } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { Coordinate, areCoordinatesEqual } from '../../Data/Common/Coordinates';
+import { Coordinate, areCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withPlacementMode.css';
 
 type BaseWithPlacementModeProps<TCoord> = {

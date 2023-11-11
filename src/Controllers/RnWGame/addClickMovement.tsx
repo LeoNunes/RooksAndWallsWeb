@@ -1,6 +1,6 @@
-import { SquareCoordinate } from '../../Data/Common/Coordinates';
-import { RnWModel } from '../../Data/RnW/Model';
-import { RnWActions } from '../../Data/RnW/Actions';
+import { SquareCoordinate } from '../../Domain/Common/Coordinates';
+import { RnWModel } from '../../Domain/RnW/Model';
+import { RnWActions } from '../../Domain/RnW/Actions';
 import withClickMovement, {
     BoardProps,
     ComputedBoardProps,

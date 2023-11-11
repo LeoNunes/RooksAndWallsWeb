@@ -1,6 +1,6 @@
 import React from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Data/Common/Coordinates';
+import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import ChessPiece, { ChessPieceProps } from '../Pieces/ChessPiece';
 
 export type PieceData = ChessPieceProps & {

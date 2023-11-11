@@ -1,8 +1,8 @@
 import React from 'react';
-import { SquareCoordinate } from '../../Data/Common/Coordinates';
-import { Dispatch } from '../../Data/Common/DataTypes';
-import { RnWModel } from '../../Data/RnW/Model';
-import { RnWActions } from '../../Data/RnW/Actions';
+import { SquareCoordinate } from '../../Domain/Common/Coordinates';
+import { Dispatch } from '../../Domain/Common/DataTypes';
+import { RnWModel } from '../../Domain/RnW/Model';
+import { RnWActions } from '../../Domain/RnW/Actions';
 import { ServerAction } from '../../Services/RnWServer/Data';
 import withPlacementMode, {
     BoardProps,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RnWModel } from '../../Data/RnW/Model';
+import { RnWModel } from '../../Domain/RnW/Model';
 import withWalls, {
     BoardProps,
     ComputedBoardProps,

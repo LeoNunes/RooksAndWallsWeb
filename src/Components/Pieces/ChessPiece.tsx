@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { ChessPieceTypes } from '../../Data/Common/PieceTypes';
+import { ChessPieceTypes } from '../../Domain/Common/PieceTypes';
 import { rnwConfig } from '../../RnWConfig';
 import './ChessPiece.css';
 

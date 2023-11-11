@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { Dispatch } from '../../Data/Common/DataTypes';
+import { Dispatch } from '../../Domain/Common/DataTypes';
 import { ServerAction, ServerState, isServerState } from './Data';
 import { webSocketConfig } from '../../RnWConfig';
 
