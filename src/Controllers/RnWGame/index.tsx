@@ -8,6 +8,7 @@ import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import addPieces from './addPieces';
 import addWalls from './addWalls';
+import addLastMoveHighlight from './addLastMoveHighlight';
 import addPiecePlacement from './addPiecePlacement';
 import addWallPlacement from './addWallPlacement';
 import addClickMovement from './addClickMovement';
@@ -52,6 +53,7 @@ function buildBoardComponent(
 
     Board = addClickMovement(Board, rnwModel, rnwActions);
     Board = addPiecePlacement(Board, rnwModel, rnwActions, websocketDispatch);
+    Board = addLastMoveHighlight(Board, rnwModel);
     Board = addWalls(Board, rnwModel);
     Board = addPieces(Board, rnwModel);
     Board = addWallPlacement(Board, rnwModel, rnwActions, websocketDispatch);

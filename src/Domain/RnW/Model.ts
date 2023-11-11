@@ -57,6 +57,7 @@ export const createModel = (state: RnWState) => ({
     ...state,
     playerCurrentAction: () => playerCurrentAction(state),
     getPlayerId: () => state.playerId,
+    getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(state, position),
     getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(state, playerId),
@@ -84,6 +85,10 @@ export function playerCurrentAction(
     if (state.stage === 'moves' && state.nextMove.wallPosition === undefined) return 'add_wall';
 
     return undefined;
+}
+
+export function getPieceById(state: RnWState, id: number) {
+    return state.pieces.find(p => p.id === id);
 }
 
 export function getPieceFromPosition(state: RnWState, position: SquareCoordinate) {

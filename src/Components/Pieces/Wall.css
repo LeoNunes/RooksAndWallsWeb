@@ -2,3 +2,10 @@
     flex: 1;
     background-color: #183b09;
 }
+
+/* TODO: Is this the best approach to highlight the wall? */
+.highlight {
+    .wall {
+        background-color: #d55e5e;
+    }
+}
