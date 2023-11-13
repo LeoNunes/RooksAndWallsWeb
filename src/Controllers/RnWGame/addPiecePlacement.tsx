@@ -20,12 +20,8 @@ export default function addPiecePlacement<
 ): React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
     if (rnwModel.playerCurrentAction() !== 'add_piece') return Board;
 
-    function placeble(props: React.PropsWithChildren) {
-        return (
-            <ChessPiece player={rnwModel.playerId} type='rook'>
-                {props.children}
-            </ChessPiece>
-        );
+    function placeble() {
+        return <ChessPiece player={rnwModel.playerId} type='rook' />;
     }
 
     const placebleCoordinates = rnwModel.availableSquaresForPlacingPiece();

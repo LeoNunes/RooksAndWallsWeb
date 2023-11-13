@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { Coordinate, areCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withPlacementMode.css';
 
 type BaseWithPlacementModeProps<TCoord> = {
     placebleCoordinates: TCoord[];
-    placeble: React.FC<PropsWithChildren>;
+    placeble: React.FC;
     onPlace: (coord: TCoord) => void;
 };
 
@@ -49,21 +49,18 @@ export default function withPlacementMode<
 }
 
 type PlacebleAreaProps = PropsWithChildren<{
-    placeble: React.FC<PropsWithChildren>;
+    placeble: React.FC;
     onClick: () => void;
 }>;
 function PlacebleArea(props: PlacebleAreaProps) {
-    const [isOver, setIsOver] = useState(false);
     const Placeble = props.placeble;
 
     return (
-        <div
-            className={`placeble-area ${isOver ? 'over' : ''}`}
-            onMouseOver={() => setIsOver(true)}
-            onMouseOut={() => setIsOver(false)}
-            onClick={props.onClick}
-        >
-            <Placeble>{props.children}</Placeble>
+        <div className='placeble-area-container'>
+            {props.children}
+            <div className='placeble-area' onClick={props.onClick}>
+                <Placeble />
+            </div>
         </div>
     );
 }

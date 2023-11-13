@@ -41,6 +41,7 @@ function addSquareLastMoveHighlight<
     ) {
         // TODO: add moves history on the backend and get data here
         // This is a workaround as the component is being recreated and can't have a persistent state
+        // There is a bug when the player moves a piece and kills it in the same turn (highlight doesn't update).
         for (const piece of rnwModel.pieces) {
             const newPosition = piece.position;
             const oldPosition = lastStatePieces.find(p => p.id === piece.id)?.position;

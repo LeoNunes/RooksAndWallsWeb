@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { ServerAction, ServerState, isServerState } from './Data';
@@ -12,10 +12,10 @@ export function useRnWWebsocket(
         webSocketConfig.urlForGame(gameId),
         {
             onOpen() {
-                console.log('Connected to websocket');
+                console.debug('Websocket - Connected');
             },
             onClose() {
-                console.log('Disconnected from websocket');
+                console.debug('Websocket - Disconnected');
             },
         },
     );
@@ -23,15 +23,22 @@ export function useRnWWebsocket(
     useEffect(() => {
         if (lastMessage === null) return;
         if (lastJsonMessage !== null && isServerState(lastJsonMessage)) {
-            console.log('Websocket message received:', lastJsonMessage);
+            console.debug('Websocket - message received:', lastJsonMessage);
             onUpdate(lastJsonMessage);
         } else {
-            console.warn('Websocket message received with an invalid format:', lastMessage);
+            console.warn('Websocket - message received with an invalid format:', lastMessage);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lastMessage, lastJsonMessage]);
 
-    return function dispatch(action: ServerAction) {
-        sendJsonMessage(action);
-    };
+    const dispatch = useCallback(
+        (action: ServerAction) => {
+            console.debug('Websocket - message sent:', action);
+            // TODO: Test with fake latency.
+            sendJsonMessage(action);
+        },
+        [sendJsonMessage],
+    );
+
+    return dispatch;
 }

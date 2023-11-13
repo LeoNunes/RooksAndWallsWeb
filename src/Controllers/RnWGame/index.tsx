@@ -51,12 +51,12 @@ function buildBoardComponent(
 ): React.FC<BoardBaseProps> {
     let Board: React.FC<BoardBaseProps> = BoardBase;
 
+    Board = addWallPlacement(Board, rnwModel, rnwActions, websocketDispatch);
     Board = addClickMovement(Board, rnwModel, rnwActions);
     Board = addPiecePlacement(Board, rnwModel, rnwActions, websocketDispatch);
     Board = addLastMoveHighlight(Board, rnwModel);
     Board = addWalls(Board, rnwModel);
     Board = addPieces(Board, rnwModel);
-    Board = addWallPlacement(Board, rnwModel, rnwActions, websocketDispatch);
 
     return Board;
 }

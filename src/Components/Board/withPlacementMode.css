@@ -1,9 +1,17 @@
-.placeble-area {
+.placeble-area-container {
     display: flex;
     flex: 1;
+    position: relative;
+}
+
+.placeble-area {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
     opacity: 0;
 
-    &.over {
+    &:hover {
         opacity: 0.5;
     }
 }
