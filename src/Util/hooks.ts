@@ -1,4 +1,4 @@
-import { Reducer, useEffect, useReducer, useRef } from 'react';
+import { Reducer, useCallback, useReducer, useRef, useState } from 'react';
 import { AsyncAction, AsyncDispatch } from '../Domain/Common/DataTypes';
 
 export function useAsyncReducer<StateType, ActionType extends object>(
@@ -8,26 +8,42 @@ export function useAsyncReducer<StateType, ActionType extends object>(
     const [baseState, baseDispatch] = useReducer(reducer, initialValue);
 
     const intermediateState = useRef(baseState);
-    useEffect(() => {
-        intermediateState.current = baseState;
-    }, [baseState]);
+    intermediateState.current = baseState;
 
-    function getState(): StateType {
-        return intermediateState.current;
-    }
+    const asyncDispatch = useCallback(
+        async (action: AsyncAction<ActionType, StateType>) => {
+            function getState(): StateType {
+                return intermediateState.current;
+            }
 
-    function dispatchAndUpdateIntermediateState(action: ActionType): void {
-        intermediateState.current = reducer(intermediateState.current, action);
-        baseDispatch(action);
-    }
+            function dispatchAndUpdateIntermediateState(action: ActionType): void {
+                intermediateState.current = reducer(intermediateState.current, action);
+                baseDispatch(action);
+            }
 
-    async function asyncDispatch(action: AsyncAction<ActionType, StateType>) {
-        if (typeof action === 'function') {
-            await action(asyncDispatch, getState);
-        } else {
-            dispatchAndUpdateIntermediateState(action);
-        }
-    }
+            if (typeof action === 'function') {
+                await action(asyncDispatch, getState);
+            } else {
+                dispatchAndUpdateIntermediateState(action);
+            }
+        },
+        [reducer, intermediateState],
+    );
 
     return [baseState, asyncDispatch];
+}
+
+export function useGetter<S>(value: S): () => S {
+    const valueRef = useRef(value);
+    valueRef.current = value;
+    return useCallback(() => valueRef.current, [valueRef]);
+}
+
+export function useGetState<S>(
+    initialState: S | (() => S),
+): [() => S, React.Dispatch<React.SetStateAction<S>>] {
+    const [state, setState] = useState(initialState);
+    const getState = useGetter(state);
+
+    return [getState, setState];
 }

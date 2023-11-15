@@ -61,6 +61,7 @@ export const createModel = (state: RnWState) => ({
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(state, position),
     getPiecesFromPlayer: (playerId: number) => getPiecesFromPlayer(state, playerId),
+    getPiecesThatCanMove: () => getPiecesThatCanMove(state),
     possibleDestinations: (piece: Piece) => possibleDestinations(state, piece),
     availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(state),
     availableEdgesForPlacingWalls: () => availableEdgesForPlacingWalls(state),
@@ -103,6 +104,14 @@ export function getPiecesFromPlayer(state: RnWState, playerId: number) {
     return state.pieces.filter(p => p.owner === playerId);
 }
 
+export function getPiecesThatCanMove(state: RnWState) {
+    if (playerCurrentAction(state) !== 'move_piece') return [];
+
+    return state.pieces
+        .filter(p => p.owner === state.playerId)
+        .filter(piece => possibleDestinations(state, piece).length > 0);
+}
+
 export function possibleDestinations(state: RnWState, piece: Piece): SquareCoordinate[] {
     const destinations: SquareCoordinate[] = [];
     const directions = [
@@ -140,6 +149,8 @@ export function possibleDestinations(state: RnWState, piece: Piece): SquareCoord
 }
 
 export function availableSquaresForPlacingPiece(state: RnWState) {
+    if (playerCurrentAction(state) !== 'add_piece') return [];
+
     const result: SquareCoordinate[] = [];
     for (let r = 0; r < rnwConfig.boardSize.rows; r++) {
         for (let c = 0; c < rnwConfig.boardSize.columns; c++) {
@@ -152,6 +163,8 @@ export function availableSquaresForPlacingPiece(state: RnWState) {
 }
 
 export function availableEdgesForPlacingWalls(state: RnWState) {
+    if (playerCurrentAction(state) !== 'add_wall') return [];
+
     const result: EdgeCoordinate[] = [];
     for (let row = 0; row < rnwConfig.boardSize.rows; row++) {
         for (let column = 0; column < rnwConfig.boardSize.columns; column++) {
