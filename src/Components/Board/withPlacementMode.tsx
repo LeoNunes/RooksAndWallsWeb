@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { Coordinate, areCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withPlacementMode.css';
 
 type BaseWithPlacementModeProps<TCoord> = {
     placebleCoordinates: TCoord[];
-    placeble: React.FC;
+    placeble: ComponentType;
     onPlace: (coord: TCoord) => void;
 };
 
@@ -24,9 +24,9 @@ export default function withPlacementMode<
     TContentKey extends keyof TBoardProps,
     TBoardProps extends BoardProps<TCoord, TContentKey>,
 >(
-    Board: React.FC<ComputedBoardProps<TCoord, TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<TCoord, TBoardProps>>,
     createContentKey: TContentKey,
-): React.FC<WithPlacementModeProps<TCoord, TBoardProps>> {
+): ComponentType<WithPlacementModeProps<TCoord, TBoardProps>> {
     return function WithPlacementMode(props: WithPlacementModeProps<TCoord, TBoardProps>) {
         function createPlacebleAreas(coord: TCoord) {
             if (props.placebleCoordinates.find(c => areCoordinatesEqual(c, coord)) === undefined) {
@@ -49,7 +49,7 @@ export default function withPlacementMode<
 }
 
 type PlacebleAreaProps = PropsWithChildren<{
-    placeble: React.FC;
+    placeble: ComponentType;
     onClick: () => void;
 }>;
 function PlacebleArea(props: PlacebleAreaProps) {

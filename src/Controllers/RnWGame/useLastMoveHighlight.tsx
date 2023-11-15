@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import { ComponentType, useCallback, useMemo, useRef } from 'react';
 import { RnWModel } from '../../Domain/RnW/Model';
 import withHighlight, {
     BoardProps,
@@ -17,18 +17,18 @@ type CombinedComputedBoardProps<TBoardProps> = ComputedBoardProps<EdgeCoordinate
     ComputedBoardProps<SquareCoordinate, TBoardProps>;
 
 export default function useLastMoveHighlight<TBoardProps extends CombinedBoardProps>(
-    Board: React.FC<CombinedComputedBoardProps<TBoardProps>>,
+    Board: ComponentType<CombinedComputedBoardProps<TBoardProps>>,
     getRnWModel: () => RnWModel,
-): React.FC<CombinedComputedBoardProps<TBoardProps>> {
+): ComponentType<CombinedComputedBoardProps<TBoardProps>> {
     return useEdgeLastMoveHighlight(useSquareLastMoveHighlight(Board, getRnWModel), getRnWModel);
 }
 
 function useSquareLastMoveHighlight<
     TBoardProps extends BoardProps<SquareCoordinate, 'createSquareContent'>,
 >(
-    Board: React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
     getRnWModel: () => RnWModel,
-): React.FC<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
+): ComponentType<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
     const Component = useMemo(
         () =>
             withHighlight<SquareCoordinate, 'createSquareContent', TBoardProps>(
@@ -67,9 +67,9 @@ function useSquareLastMoveHighlight<
 function useEdgeLastMoveHighlight<
     TBoardProps extends BoardProps<EdgeCoordinate, 'createEdgeContent'>,
 >(
-    Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
     getRnWModel: () => RnWModel,
-): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
+): ComponentType<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
     const Component = useMemo(
         () =>
             withHighlight<EdgeCoordinate, 'createEdgeContent', TBoardProps>(

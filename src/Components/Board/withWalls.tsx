@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import { Wall } from '../Pieces/Wall';
@@ -16,8 +16,8 @@ export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, Ba
 export type WithWallsProps<TBoardProps> = TBoardProps & BaseWithWallsProps;
 
 export default function withWalls<TBoardProps extends BoardProps>(
-    Board: React.FC<ComputedBoardProps<TBoardProps>>,
-): React.FC<WithWallsProps<TBoardProps>> {
+    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
+): ComponentType<WithWallsProps<TBoardProps>> {
     return function WithWalls(props: WithWallsProps<TBoardProps>) {
         function createWalls(coord: EdgeCoordinate) {
             const wallData = props.wallsData.find(w =>

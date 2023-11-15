@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { Coordinate, areCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withHighlight.css';
@@ -21,9 +21,9 @@ export default function withHighlight<
     TContentKey extends keyof TBoardProps,
     TBoardProps extends BoardProps<TCoord, TContentKey>,
 >(
-    Board: React.FC<ComputedBoardProps<TCoord, TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<TCoord, TBoardProps>>,
     createContentKey: TContentKey,
-): React.FC<WithHighlightProps<TCoord, TBoardProps>> {
+): ComponentType<WithHighlightProps<TCoord, TBoardProps>> {
     return function WithHighlight(props: WithHighlightProps<TCoord, TBoardProps>) {
         function createHighlightedArea(coord: TCoord) {
             if (!props.highlighted.find(highlight => areCoordinatesEqual(highlight, coord))) {

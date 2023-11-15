@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { ComponentType, useCallback, useMemo } from 'react';
 import { ChessPieceTypes } from '../../Domain/Common/PieceTypes';
 import { RnWModel } from '../../Domain/RnW/Model';
 import withChessPieces, {
@@ -8,9 +8,9 @@ import withChessPieces, {
 } from '../../Components/Board/withChessPieces';
 
 export default function usePieces<TBoardProps extends BoardProps>(
-    Board: React.FC<ComputedBoardProps<TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
     getRnWModel: () => RnWModel,
-): React.FC<ComputedBoardProps<TBoardProps>> {
+): ComponentType<ComputedBoardProps<TBoardProps>> {
     const Component = useMemo(() => withChessPieces(Board), [Board]);
 
     return useCallback(

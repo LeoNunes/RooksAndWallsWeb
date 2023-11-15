@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import ChessPiece, { ChessPieceProps } from '../Pieces/ChessPiece';
@@ -10,7 +10,7 @@ type BaseWithChessPiecesProps = {
     piecesData: PieceData[];
 };
 export type BoardProps = {
-    createSquareContent?: (coord: SquareCoordinate) => React.ReactNode;
+    createSquareContent?: (coord: SquareCoordinate) => ReactNode;
 };
 export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
     TBoardProps,
@@ -19,8 +19,8 @@ export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
 export type WithChessPiecesProps<TBoardProps> = TBoardProps & BaseWithChessPiecesProps;
 
 export default function withChessPieces<TBoardProps extends BoardProps>(
-    Board: React.FC<ComputedBoardProps<TBoardProps>>,
-): React.FC<WithChessPiecesProps<TBoardProps>> {
+    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
+): ComponentType<WithChessPiecesProps<TBoardProps>> {
     return function WithChessPieces(props: WithChessPiecesProps<TBoardProps>) {
         function createPieces(coord: SquareCoordinate) {
             const pieceData = props.piecesData.find(p =>

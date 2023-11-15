@@ -1,4 +1,11 @@
-import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import {
+    ComponentType,
+    Dispatch,
+    PropsWithChildren,
+    ReactNode,
+    SetStateAction,
+    useState,
+} from 'react';
 import { WithNoIntersection, removeKeysFromObject } from '../../Util';
 import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
 import './withClickMovement.css';
@@ -18,8 +25,8 @@ export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
 export type WithClickMovementProps<TBoardProps> = TBoardProps & BaseWithClickMovementProps;
 
 export default function withClickMovement<TBoardProps extends BoardProps>(
-    Board: React.FC<ComputedBoardProps<TBoardProps>>,
-): React.FC<WithClickMovementProps<TBoardProps>> {
+    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
+): ComponentType<WithClickMovementProps<TBoardProps>> {
     return function WithClickMovement(props: WithClickMovementProps<TBoardProps>) {
         const [selected, setSelected] = useState<SquareCoordinate | undefined>(undefined);
         const [highlightedPositions, setHighlightedPositions] = useState<SquareCoordinate[]>([]);
@@ -61,8 +68,8 @@ const handleClick =
         clickCoordinate: SquareCoordinate,
         props: WithClickMovementProps<TBoardProps>,
         selected: SquareCoordinate | undefined,
-        setSelected: React.Dispatch<React.SetStateAction<SquareCoordinate | undefined>>,
-        setHighlightedPositions: React.Dispatch<React.SetStateAction<SquareCoordinate[]>>,
+        setSelected: Dispatch<SetStateAction<SquareCoordinate | undefined>>,
+        setHighlightedPositions: Dispatch<SetStateAction<SquareCoordinate[]>>,
     ) =>
     () => {
         if (selected) {

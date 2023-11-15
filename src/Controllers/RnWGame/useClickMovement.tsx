@@ -1,3 +1,4 @@
+import { ComponentType, useCallback, useMemo } from 'react';
 import { SquareCoordinate } from '../../Domain/Common/Coordinates';
 import { RnWModel } from '../../Domain/RnW/Model';
 import { RnWActions } from '../../Domain/RnW/Actions';
@@ -5,13 +6,12 @@ import withClickMovement, {
     BoardProps,
     ComputedBoardProps,
 } from '../../Components/Board/withClickMovement';
-import { useCallback, useMemo } from 'react';
 
 export default function useClickMovement<TBoardProps extends BoardProps>(
-    Board: React.FC<ComputedBoardProps<TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
-): React.FC<ComputedBoardProps<TBoardProps>> {
+): ComponentType<ComputedBoardProps<TBoardProps>> {
     const Component = useMemo(() => withClickMovement(Board), [Board]);
 
     return useCallback(

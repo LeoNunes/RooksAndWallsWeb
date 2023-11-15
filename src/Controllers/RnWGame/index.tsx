@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType } from 'react';
 import { useGetter } from '../../Util/hooks';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel, createModel } from '../../Domain/RnW/Model';
@@ -51,8 +51,8 @@ function useBoardComponent(
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
-): React.FC<BoardBaseProps> {
-    let Board: React.FC<BoardBaseProps> = BoardBase;
+): ComponentType<BoardBaseProps> {
+    let Board: ComponentType<BoardBaseProps> = BoardBase;
 
     Board = useWallPlacement(Board, getRnWModel, getRnWActions, websocketDispatch);
     Board = useClickMovement(Board, getRnWModel, getRnWActions);

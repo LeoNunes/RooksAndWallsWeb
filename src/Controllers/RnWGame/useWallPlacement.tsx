@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { ComponentType, useCallback, useMemo } from 'react';
 import { EdgeCoordinate } from '../../Domain/Common/Coordinates';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel } from '../../Domain/RnW/Model';
@@ -13,11 +13,11 @@ import { Wall } from '../../Components/Pieces/Wall';
 export default function useWallPlacement<
     TBoardProps extends BoardProps<EdgeCoordinate, 'createEdgeContent'>,
 >(
-    Board: React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
+    Board: ComponentType<ComputedBoardProps<EdgeCoordinate, TBoardProps>>,
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
     websocketDispatch: Dispatch<ServerAction>,
-): React.FC<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
+): ComponentType<ComputedBoardProps<EdgeCoordinate, TBoardProps>> {
     const Component = useMemo(
         () =>
             withPlacementMode<EdgeCoordinate, 'createEdgeContent', TBoardProps>(
