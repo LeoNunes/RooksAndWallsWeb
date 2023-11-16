@@ -1,0 +1,12 @@
+.dnd {
+    display: flex;
+    flex: 1;
+
+    &.droppable {
+        background-color: #aaaaaa88;
+
+        &.over {
+            background-color: #aaaaaacc;
+        }
+    }
+}
