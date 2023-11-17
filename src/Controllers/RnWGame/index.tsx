@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { useGetter } from '../../Util/hooks';
+import { useGetter, useImagePreloader } from '../../Util';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel, createModel } from '../../Domain/RnW/Model';
 import { RnWActions, createAction } from '../../Domain/RnW/Actions';
@@ -14,6 +14,7 @@ import useLastMoveHighlight from './useLastMoveHighlight';
 import usePiecePlacement from './usePiecePlacement';
 import useWallPlacement from './useWallPlacement';
 import useClickMovement from './useClickMovement';
+import { rnwConfig } from '../../RnWConfig';
 
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
@@ -38,6 +39,10 @@ function RnWGameController(props: RnWGameControllerProps) {
     const rnwActions = createAction(rnwDispatch);
     const getRnWModel = useGetter(rnwModel);
     const getRnWActions = useGetter(rnwActions);
+
+    useImagePreloader(
+        Object.values(rnwConfig.pieces).flatMap(p => [p.default.uri, p.disabled.uri]),
+    );
 
     function onWebsocketUpdate(state: ServerState) {
         rnwActions.updateFromServer(state);
