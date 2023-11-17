@@ -3,7 +3,7 @@ import { useGetter, useImagePreloader } from '../../Util';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel, createModel } from '../../Domain/RnW/Model';
 import { RnWActions, createAction } from '../../Domain/RnW/Actions';
-import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Domain/RnW/RnWDataProvider';
+import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Domain/RnW/RnWStateProvider';
 import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
