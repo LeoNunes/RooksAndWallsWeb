@@ -4,7 +4,10 @@ import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel, createModel } from '../../Domain/RnW/Model';
 import { RnWActions, createAction } from '../../Domain/RnW/Actions';
 import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Domain/RnW/RnWStateProvider';
-import { ServerAction, ServerState } from '../../Services/RnWServer/Data';
+import {
+    RnWGameAction as ServerGameAction,
+    RnWGameState as ServerGameState,
+} from '../../Services/RnWServer/Data';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import usePieces from './usePieces';
@@ -44,7 +47,7 @@ function RnWGameController(props: RnWGameControllerProps) {
         Object.values(rnwConfig.pieces).flatMap(p => [p.default.uri, p.disabled.uri]),
     );
 
-    function onWebsocketUpdate(state: ServerState) {
+    function onWebsocketUpdate(state: ServerGameState) {
         rnwActions.updateFromServer(state);
     }
     const websocketDispatch = useRnWWebsocket(props.gameId, onWebsocketUpdate);
@@ -56,7 +59,7 @@ function RnWGameController(props: RnWGameControllerProps) {
 function useBoardComponent(
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
-    websocketDispatch: Dispatch<ServerAction>,
+    websocketDispatch: Dispatch<ServerGameAction>,
 ): ComponentType<BoardBaseProps> {
     let Board: ComponentType<BoardBaseProps> = BoardBase;
 

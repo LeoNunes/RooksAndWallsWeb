@@ -6,7 +6,7 @@ import {
     isSquareCoordinate,
 } from '../../Domain/Common/Coordinates';
 
-export type ServerState = Immutable<{
+export type RnWGameState = Immutable<{
     gameId: number;
     config: GameConfig;
     stage: GameStage;
@@ -42,7 +42,7 @@ type Wall = {
     position: EdgeCoordinate;
 };
 
-export type ServerAction = Immutable<{
+export type RnWGameAction = Immutable<{
     addPiece?: AddPieceAction;
     move?: MoveAction;
 }>;
@@ -50,7 +50,7 @@ export type ServerAction = Immutable<{
 type AddPieceAction = {
     position: SquareCoordinate;
 };
-export function addPieceAction(position: SquareCoordinate): ServerAction {
+export function addPieceAction(position: SquareCoordinate): RnWGameAction {
     return {
         addPiece: {
             position: position,
@@ -67,7 +67,7 @@ export function moveAction(
     pieceId: number,
     destination: SquareCoordinate,
     wallPosition: EdgeCoordinate,
-): ServerAction {
+): RnWGameAction {
     return {
         move: {
             pieceId: pieceId,
@@ -77,8 +77,8 @@ export function moveAction(
     };
 }
 
-export function isServerState(obj: any): obj is ServerState {
-    const gameState = obj as ServerState;
+export function isRnWGameState(obj: any): obj is RnWGameState {
+    const gameState = obj as RnWGameState;
     return (
         typeof gameState === 'object' &&
         typeof gameState.gameId === 'number' &&

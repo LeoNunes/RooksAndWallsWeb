@@ -3,7 +3,7 @@ import { SquareCoordinate } from '../../Domain/Common/Coordinates';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel } from '../../Domain/RnW/Model';
 import { RnWActions } from '../../Domain/RnW/Actions';
-import { ServerAction } from '../../Services/RnWServer/Data';
+import { RnWGameAction as ServerGameAction } from '../../Services/RnWServer/Data';
 import withPlacementMode, {
     BoardProps,
     ComputedBoardProps,
@@ -16,7 +16,7 @@ export default function usePiecePlacement<
     Board: ComponentType<ComputedBoardProps<SquareCoordinate, TBoardProps>>,
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
-    websocketDispatch: Dispatch<ServerAction>,
+    websocketDispatch: Dispatch<ServerGameAction>,
 ): ComponentType<ComputedBoardProps<SquareCoordinate, TBoardProps>> {
     const Component = useMemo(
         () =>

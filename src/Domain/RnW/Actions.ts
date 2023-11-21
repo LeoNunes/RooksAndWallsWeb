@@ -2,8 +2,8 @@ import { Piece, RnWState } from './Model';
 import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
 import { AsyncAction, Dispatch } from '../Common/DataTypes';
 import {
-    ServerAction,
-    ServerState,
+    RnWGameAction as ServerGameAction,
+    RnWGameState as ServerGameState,
     addPieceAction,
     moveAction,
 } from '../../Services/RnWServer/Data';
@@ -26,7 +26,7 @@ export function createAction(dispatch: RnWDispatch) {
         addPiece: (
             owner: number,
             position: SquareCoordinate,
-            websocketDispatch: Dispatch<ServerAction>,
+            websocketDispatch: Dispatch<ServerGameAction>,
         ) => {
             dispatch(addPiece(owner, position, websocketDispatch));
         },
@@ -36,10 +36,10 @@ export function createAction(dispatch: RnWDispatch) {
         setNextMoveWall: (position: EdgeCoordinate) => {
             dispatch(setNextMoveWall(position));
         },
-        commitMove: (websocketDispatch: Dispatch<ServerAction>) => {
+        commitMove: (websocketDispatch: Dispatch<ServerGameAction>) => {
             dispatch(commitMove(websocketDispatch));
         },
-        updateFromServer: (state: ServerState) => {
+        updateFromServer: (state: ServerGameState) => {
             dispatch(updateFromServer(state));
         },
     };
@@ -60,7 +60,7 @@ function addPieceBase(owner: number, position: SquareCoordinate): AddPieceAction
 export function addPiece(
     owner: number,
     position: SquareCoordinate,
-    websocketDispatch: Dispatch<ServerAction>,
+    websocketDispatch: Dispatch<ServerGameAction>,
 ): RnWAction {
     return function (dispatch) {
         dispatch(addPieceBase(owner, position));
@@ -125,7 +125,7 @@ function resetNextMove(): ResetNextMove {
     };
 }
 
-export function commitMove(websocketDispatch: Dispatch<ServerAction>): RnWAction {
+export function commitMove(websocketDispatch: Dispatch<ServerGameAction>): RnWAction {
     return function (dispatch, getState) {
         const { nextMove } = getState();
 
@@ -150,9 +150,9 @@ export function commitMove(websocketDispatch: Dispatch<ServerAction>): RnWAction
 
 export type UpdateFromServerActionType = {
     type: 'update-from-server';
-    serverState: ServerState;
+    serverState: ServerGameState;
 };
-export function updateFromServer(state: ServerState): UpdateFromServerActionType {
+export function updateFromServer(state: ServerGameState): UpdateFromServerActionType {
     return {
         type: 'update-from-server',
         serverState: state,
