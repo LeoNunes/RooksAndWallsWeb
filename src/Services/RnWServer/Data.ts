@@ -42,41 +42,6 @@ type Wall = {
     position: EdgeCoordinate;
 };
 
-export type RnWGameAction = Immutable<{
-    addPiece?: AddPieceAction;
-    move?: MoveAction;
-}>;
-
-type AddPieceAction = {
-    position: SquareCoordinate;
-};
-export function addPieceAction(position: SquareCoordinate): RnWGameAction {
-    return {
-        addPiece: {
-            position: position,
-        },
-    };
-}
-
-type MoveAction = {
-    pieceId: number;
-    position: SquareCoordinate;
-    wallPosition: EdgeCoordinate;
-};
-export function moveAction(
-    pieceId: number,
-    destination: SquareCoordinate,
-    wallPosition: EdgeCoordinate,
-): RnWGameAction {
-    return {
-        move: {
-            pieceId: pieceId,
-            position: destination,
-            wallPosition: wallPosition,
-        },
-    };
-}
-
 export function isRnWGameState(obj: any): obj is RnWGameState {
     const gameState = obj as RnWGameState;
     return (

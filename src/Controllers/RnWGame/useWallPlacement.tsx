@@ -3,7 +3,7 @@ import { EdgeCoordinate } from '../../Domain/Common/Coordinates';
 import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel } from '../../Domain/RnW/Model';
 import { RnWActions } from '../../Domain/RnW/Actions';
-import { RnWGameAction as ServerGameAction } from '../../Services/RnWServer/Data';
+import { RnWGameAction as ServerGameAction } from '../../Services/RnWServer/Actions';
 import withPlacementMode, {
     BoardProps,
     ComputedBoardProps,

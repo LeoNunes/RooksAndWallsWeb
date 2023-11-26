@@ -4,10 +4,8 @@ import { Dispatch } from '../../Domain/Common/DataTypes';
 import { RnWModel, createModel } from '../../Domain/RnW/Model';
 import { RnWActions, createAction } from '../../Domain/RnW/Actions';
 import { RnWStateProvider, useRnWState, useRnWDispatch } from '../../Domain/RnW/RnWStateProvider';
-import {
-    RnWGameAction as ServerGameAction,
-    RnWGameState as ServerGameState,
-} from '../../Services/RnWServer/Data';
+import { RnWGameState as ServerGameState } from '../../Services/RnWServer/Data';
+import { RnWGameAction as ServerGameAction } from '../../Services/RnWServer/Actions';
 import { useRnWWebsocket } from '../../Services/RnWServer/useRnWWebsocket';
 import BoardBase, { BoardBaseProps } from '../../Components/Board/BoardBase';
 import usePieces from './usePieces';
