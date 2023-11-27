@@ -6,6 +6,17 @@ import {
     isSquareCoordinate,
 } from '../../Domain/Common/Coordinates';
 
+export type CreateGameRequest = {
+    numberOfPlayers: number;
+    piecesPerPlayer: number;
+    boardRows: number;
+    boardColumns: number;
+};
+
+export type CreateGameResponse = {
+    gameId: number;
+};
+
 export type RnWGameState = Immutable<{
     gameId: number;
     config: GameConfig;

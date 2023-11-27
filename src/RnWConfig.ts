@@ -56,6 +56,16 @@ export const rnwConfig: RnWConfig = {
     },
 };
 
+const apiBaseUrl = 'https://beta.api.rw.leonunes.me';
+// const apiBaseUrl = 'http://127.0.0.1:5000';
+const apiPrefix = '/rw';
+export const apiConfig = {
+    createGame: {
+        endpoint: () => `${apiBaseUrl}${apiPrefix}/game`,
+        method: 'POST',
+    },
+};
+
 const wsBaseUrl = 'wss://beta.api.rw.leonunes.me';
 // const wsBaseUrl = 'ws://127.0.0.1:5000';
 const wsGamePath = '/rw/game/{gameId}';
