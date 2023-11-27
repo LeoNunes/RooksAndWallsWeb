@@ -1,18 +1,9 @@
 import { RnWState } from './Model';
-import {
-    RnWBaseAction,
-    AddPieceActionType,
-    AddWallActionType,
-    MovePieceActionType,
-    UpdateFromServerActionType,
-    SetNextMovePiece,
-    SetNextMoveWall,
-} from './Actions';
+import { RnWBaseAction } from './Actions';
 
 export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
     switch (action.type) {
         case 'add-piece': {
-            const act = action as AddPieceActionType;
             return {
                 ...state,
                 pieces: [
@@ -22,34 +13,32 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                             state.pieces
                                 .map(piece => piece.id)
                                 .reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
-                        owner: act.owner,
-                        position: act.position,
+                        owner: action.owner,
+                        position: action.position,
                     },
                 ],
             };
         }
         case 'add-wall': {
-            const act = action as AddWallActionType;
             return {
                 ...state,
-                walls: [...state.walls, { position: act.position }],
+                walls: [...state.walls, { position: action.position }],
             };
         }
         case 'move-piece': {
-            const act = action as MovePieceActionType;
             return {
                 ...state,
                 pieces: [
                     ...state.pieces.filter(p => p !== action.piece),
                     {
-                        ...act.piece,
-                        position: act.newPosition,
+                        ...action.piece,
+                        position: action.newPosition,
                     },
                 ],
             };
         }
         case 'update-from-server': {
-            const { serverState } = action as UpdateFromServerActionType;
+            const { serverState } = action;
             return {
                 ...state,
                 stage: serverState.stage,
@@ -74,27 +63,24 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
             };
         }
         case 'set-next-move-piece': {
-            const act = action as SetNextMovePiece;
             return {
                 ...state,
                 nextMove: {
                     ...state.nextMove,
-                    piece: act.piece,
-                    piecePosition: act.position,
+                    piece: action.piece,
+                    piecePosition: action.position,
                 },
             };
         }
         case 'set-next-move-wall': {
-            const act = action as SetNextMoveWall;
             return {
                 ...state,
                 nextMove: {
                     ...state.nextMove,
-                    wallPosition: act.position,
+                    wallPosition: action.position,
                 },
             };
         }
-        // eslint-disable-next-line
         case 'reset-next-move': {
             return {
                 ...state,
