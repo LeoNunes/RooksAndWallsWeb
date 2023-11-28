@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
     EdgeCoordinate,
     SquareCoordinate,
@@ -51,7 +51,7 @@ export default function BoardBase(props: BoardBaseProps) {
 
     function buildRow(row: number) {
         function buildSquareRow() {
-            const components: React.ReactNode[] = [];
+            const components: ReactNode[] = [];
             for (let column = 0; column < props.columns; column++) {
                 const squareCoord = { row, column };
                 components.push(createSquare(squareCoord));
@@ -69,7 +69,7 @@ export default function BoardBase(props: BoardBaseProps) {
         function buildEdgeRow() {
             if (!props.haveEdges || row === props.rows - 1) return undefined;
 
-            const components: React.ReactNode[] = [];
+            const components: ReactNode[] = [];
             for (let column = 0; column < props.columns; column++) {
                 const squareCoord = { row, column };
                 components.push(createEdge(edgeBelow(squareCoord)));

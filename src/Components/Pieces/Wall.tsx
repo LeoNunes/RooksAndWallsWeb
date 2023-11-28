@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import './Wall.css';
 
 type WallProps = PropsWithChildren<{}>;
