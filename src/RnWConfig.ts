@@ -18,14 +18,24 @@ type PlayerConfig = {
 };
 
 type RnWConfig = {
-    numberOfPlayers: number;
+    maxNumberOfPlayers: number;
+    minNumberOfPlayers: number;
+    defaultNumberOfPlayers: number;
+    maxPiecesPerPlayer: number;
+    minPiecesPerPlayer: number;
+    defaultPiecesPerPlayer: number;
     boardSize: { rows: number; columns: number };
     pieces: Record<PieceColor, { default: PieceConfig; disabled: PieceConfig }>;
     players: { [number: number]: PlayerConfig };
 };
 
 export const rnwConfig: RnWConfig = {
-    numberOfPlayers: 3,
+    maxNumberOfPlayers: 4,
+    minNumberOfPlayers: 2,
+    defaultNumberOfPlayers: 3,
+    maxPiecesPerPlayer: 5,
+    minPiecesPerPlayer: 1,
+    defaultPiecesPerPlayer: 3,
     boardSize: {
         rows: 8,
         columns: 8,

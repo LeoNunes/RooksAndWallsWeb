@@ -8,7 +8,7 @@ export type RnWManagerBaseAction = StartGameCreation | GameCreated | GameCreatio
 export type RnwManagerAction = AsyncAction<RnWManagerBaseAction, RnWManagerState>;
 export type RnWManagerDispatch = Dispatch<RnwManagerAction>;
 
-export function createGame(): RnwManagerAction {
+export function createGame(numberOfPlayers: number, piecesPerPlayer: number): RnwManagerAction {
     return async function (dispatch) {
         const tempId = crypto.randomUUID();
         try {
@@ -16,8 +16,8 @@ export function createGame(): RnwManagerAction {
             const response = await createServerGame({
                 boardRows: rnwConfig.boardSize.rows,
                 boardColumns: rnwConfig.boardSize.columns,
-                numberOfPlayers: 2,
-                piecesPerPlayer: 3,
+                numberOfPlayers,
+                piecesPerPlayer,
             });
             dispatch(gameCreated(tempId, response.gameId));
         } catch {

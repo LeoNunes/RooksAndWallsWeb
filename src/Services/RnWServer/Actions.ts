@@ -41,6 +41,10 @@ export function moveAction(
 export async function createGame(request: CreateGameRequest): Promise<CreateGameResponse> {
     const response = await fetch(apiConfig.createGame.endpoint(), {
         method: apiConfig.createGame.method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
     });
     if (!response.ok) {
         throw new Error('Game creation failed');

@@ -37,8 +37,8 @@ export default function RnWAccessGame(props: RnWAccessGameProps) {
 
     function handleGameIdChange(event: ChangeEvent<HTMLInputElement>): void {
         const s = event.target.value;
-        let gameId: number | undefined;
 
+        let gameId: number | undefined;
         if (isInt(s)) {
             gameId = Number.parseInt(s);
             gameId = Math.max(0, gameId);
@@ -90,7 +90,11 @@ export default function RnWAccessGame(props: RnWAccessGameProps) {
                 <h3>Entrar em um jogo</h3>
                 <label>
                     ID
-                    <input type='number' value={state.gameId || ''} onChange={handleGameIdChange} />
+                    <input
+                        type='number'
+                        value={state.gameId === undefined ? '' : state.gameId}
+                        onChange={handleGameIdChange}
+                    />
                 </label>
                 <input type='submit' value='Entrar' disabled={state.gameId === undefined} />
             </form>
