@@ -33,10 +33,13 @@ function RnWGameManagerController(props: RnWGameManagerControllerProps) {
 
     if (game && !game.isCreating) {
         return (
-            <RnWGame
-                gameId={game.gameId}
-                board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }}
-            />
+            <>
+                <p style={{ textAlign: 'center' }}>Game ID: {game.gameId}</p>
+                <RnWGame
+                    gameId={game.gameId}
+                    board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }}
+                />
+            </>
         );
     }
 
