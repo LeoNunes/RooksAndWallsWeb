@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import { useAsyncReducer } from '../../Util';
 import { RnWManagerState, rnwManagerInitialState } from './Model';
 import { rnwManagerReducer } from './Reducer';
@@ -33,6 +33,8 @@ export function RnWManagerStateProvider(props: RnWManagerStateProviderProps) {
         rnwManagerReducer,
         rnwManagerInitialState,
     );
+
+    useEffect(() => console.debug('rnwManagerState', rnwManagerState), [rnwManagerState]);
 
     return (
         <RnWManagerStateContext.Provider value={rnwManagerState}>

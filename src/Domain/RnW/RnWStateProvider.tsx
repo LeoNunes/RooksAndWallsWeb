@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import { useAsyncReducer } from '../../Util';
 import { RnWState, rnwStateInitialValue } from './Model';
 import { rnwReducer } from './Reducer';
@@ -26,6 +26,8 @@ export function useRnWDispatch(): RnWDispatch {
 type RnWStateProviderProps = PropsWithChildren<{}>;
 export function RnWStateProvider(props: RnWStateProviderProps) {
     const [rnwState, rnwDispatch] = useAsyncReducer(rnwReducer, rnwStateInitialValue);
+
+    useEffect(() => console.debug('rnwState', rnwState), [rnwState]);
 
     return (
         <RnWStateContext.Provider value={rnwState}>
