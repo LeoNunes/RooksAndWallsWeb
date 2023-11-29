@@ -3,7 +3,7 @@ import { createGame as createServerGame } from '../../Services/RnWServer/Actions
 import { RnWManagerState } from './Model';
 import { rnwConfig } from '../../RnWConfig';
 
-export type RnWManagerBaseAction = StartGameCreation | GameCreated | GameCreationFailed;
+export type RnWManagerBaseAction = StartGameCreation | GameCreated | GameCreationFailed | JoinGame;
 
 export type RnwManagerAction = AsyncAction<RnWManagerBaseAction, RnWManagerState>;
 export type RnWManagerDispatch = Dispatch<RnwManagerAction>;
@@ -58,5 +58,17 @@ function gameCreationFailed(tempId: string): GameCreationFailed {
     return {
         type: 'game-creation-failed',
         tempId,
+    };
+}
+
+export type JoinGame = {
+    type: 'join-game';
+    gameId: number;
+};
+export function joinGame(gameId: number): JoinGame {
+    // TODO: check if game exists and get metadata before joining
+    return {
+        type: 'join-game',
+        gameId,
     };
 }

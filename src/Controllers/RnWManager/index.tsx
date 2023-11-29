@@ -1,3 +1,4 @@
+import { createGame, joinGame } from '../../Domain/RnWManager/Actions';
 import {
     RnWManagerStateProvider,
     useRnWManagerDispatch,
@@ -6,7 +7,6 @@ import {
 import RnWAccessGame from '../../Components/RnWAccessGame/RnWAccessGame';
 import RnWGame from '../RnWGame';
 import { rnwConfig } from '../../RnWConfig';
-import { createGame } from '../../Domain/RnWManager/Actions';
 
 export default function RnWGameManager() {
     return (
@@ -23,6 +23,10 @@ function RnWGameManagerController(props: RnWGameManagerControllerProps) {
 
     function handleCreateGame(players: number, piecesPerPlayer: number): void {
         rnwManagerDispatch(createGame(players, piecesPerPlayer));
+    }
+
+    function handleJoinGame(gameId: number): void {
+        rnwManagerDispatch(joinGame(gameId));
     }
 
     const game = rnwManagerState.games.at(0);
@@ -45,7 +49,7 @@ function RnWGameManagerController(props: RnWGameManagerControllerProps) {
             minPiecesPerPlayer={rnwConfig.minPiecesPerPlayer}
             defaultPiecesPerPlayer={rnwConfig.defaultPiecesPerPlayer}
             createGame={handleCreateGame}
-            joinGame={() => {}}
+            joinGame={handleJoinGame}
         />
     );
 }

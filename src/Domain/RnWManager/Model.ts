@@ -3,10 +3,9 @@ export type RnWManagerState = {
 };
 
 export type Game = {
-    tempId: string;
+    tempId?: string;
     gameId: number;
     isCreating: boolean;
-    isJoining: boolean;
 };
 
 export const rnwManagerInitialState: RnWManagerState = {

@@ -9,10 +9,7 @@ export function rnwManagerReducer(
         case 'start-game-creation': {
             return {
                 ...state,
-                games: [
-                    ...state.games,
-                    { tempId: action.tempId, gameId: -1, isCreating: true, isJoining: false },
-                ],
+                games: [...state.games, { tempId: action.tempId, gameId: -1, isCreating: true }],
             };
         }
         case 'game-created': {
@@ -31,6 +28,12 @@ export function rnwManagerReducer(
             // TODO: Handle failure
             return {
                 ...state,
+            };
+        }
+        case 'join-game': {
+            return {
+                ...state,
+                games: [...state.games, { gameId: action.gameId, isCreating: false }],
             };
         }
     }
