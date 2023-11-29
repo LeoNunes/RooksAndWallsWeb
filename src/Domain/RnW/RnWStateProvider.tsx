@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
-import { useAsyncReducer } from '../../Util';
+import { useAsyncReducer } from 'Util';
 import { RnWState, rnwStateInitialValue } from './Model';
 import { rnwReducer } from './Reducer';
 import { RnWDispatch } from './Actions';

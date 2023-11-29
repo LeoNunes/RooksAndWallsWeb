@@ -1,10 +1,6 @@
 import { ComponentType, useCallback, useMemo } from 'react';
-import { RnWModel } from '../../Domain/RnW/Model';
-import withWalls, {
-    BoardProps,
-    ComputedBoardProps,
-    WallData,
-} from '../../Components/Board/withWalls';
+import { RnWModel } from 'Domain/RnW/Model';
+import withWalls, { BoardProps, ComputedBoardProps, WallData } from 'Components/Board/withWalls';
 
 export default function useWalls<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,

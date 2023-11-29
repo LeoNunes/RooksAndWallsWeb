@@ -1,11 +1,11 @@
 import { ComponentType, useCallback, useMemo } from 'react';
-import { SquareCoordinate } from '../../Domain/Common/Coordinates';
-import { RnWModel } from '../../Domain/RnW/Model';
-import { RnWActions } from '../../Domain/RnW/Actions';
+import { SquareCoordinate } from 'Domain/Common/Coordinates';
+import { RnWModel } from 'Domain/RnW/Model';
+import { RnWActions } from 'Domain/RnW/Actions';
 import withClickMovement, {
     BoardProps,
     ComputedBoardProps,
-} from '../../Components/Board/withClickMovement';
+} from 'Components/Board/withClickMovement';
 
 export default function useClickMovement<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,

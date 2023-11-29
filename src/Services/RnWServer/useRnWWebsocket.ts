@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { Dispatch } from '../../Domain/Common/DataTypes';
+import { Dispatch } from 'Domain/Common/DataTypes';
 import { RnWGameState, isRnWGameState } from './Data';
 import { RnWGameAction } from './Actions';
-import { webSocketConfig } from '../../RnWConfig';
+import { webSocketConfig } from 'RnWConfig';
 
 export function useRnWWebsocket(
     gameId: number,

@@ -1,15 +1,12 @@
 import { ComponentType, useCallback, useMemo, useRef } from 'react';
-import { RnWModel } from '../../Domain/RnW/Model';
-import withHighlight, {
-    BoardProps,
-    ComputedBoardProps,
-} from '../../Components/Board/withHighlight';
+import { RnWModel } from 'Domain/RnW/Model';
+import withHighlight, { BoardProps, ComputedBoardProps } from 'Components/Board/withHighlight';
 import {
     EdgeCoordinate,
     SquareCoordinate,
     areEdgeCoordinatesEqual,
     areSquareCoordinatesEqual,
-} from '../../Domain/Common/Coordinates';
+} from 'Domain/Common/Coordinates';
 
 type CombinedBoardProps = BoardProps<EdgeCoordinate, 'createEdgeContent'> &
     BoardProps<SquareCoordinate, 'createSquareContent'>;

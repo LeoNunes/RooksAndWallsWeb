@@ -1,12 +1,12 @@
-import { createGame, joinGame } from '../../Domain/RnWManager/Actions';
+import { createGame, joinGame } from 'Domain/RnWManager/Actions';
 import {
     RnWManagerStateProvider,
     useRnWManagerDispatch,
     useRnWManagerState,
-} from '../../Domain/RnWManager/RnWGameManagerStateProvider';
-import RnWAccessGame from '../../Components/RnWAccessGame/RnWAccessGame';
-import RnWGame from '../RnWGame';
-import { rnwConfig } from '../../RnWConfig';
+} from 'Domain/RnWManager/RnWGameManagerStateProvider';
+import RnWGame from 'Controllers/RnWGame';
+import RnWAccessGame from 'Components/RnWAccessGame/RnWAccessGame';
+import { rnwConfig } from 'RnWConfig';
 
 export default function RnWGameManager() {
     return (

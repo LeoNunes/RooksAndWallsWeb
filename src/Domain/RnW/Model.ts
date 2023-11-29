@@ -5,8 +5,8 @@ import {
     areEdgeCoordinatesEqual,
     edgeToTheRightOf,
     edgeBelow,
-} from '../Common/Coordinates';
-import { rnwConfig } from '../../RnWConfig';
+} from 'Domain/Common/Coordinates';
+import { rnwConfig } from 'RnWConfig';
 
 export type Stage = 'waiting_for_players' | 'piece_placement' | 'moves' | 'completed';
 

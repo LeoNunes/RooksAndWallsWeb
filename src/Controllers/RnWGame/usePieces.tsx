@@ -1,11 +1,11 @@
 import { ComponentType, useCallback, useMemo } from 'react';
-import { ChessPieceTypes } from '../../Domain/Common/PieceTypes';
-import { RnWModel } from '../../Domain/RnW/Model';
+import { ChessPieceTypes } from 'Domain/Common/PieceTypes';
+import { RnWModel } from 'Domain/RnW/Model';
 import withChessPieces, {
     PieceData,
     BoardProps,
     ComputedBoardProps,
-} from '../../Components/Board/withChessPieces';
+} from 'Components/Board/withChessPieces';
 
 export default function usePieces<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,

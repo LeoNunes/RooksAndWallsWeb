@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from 'react';
-import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { Coordinate, areCoordinatesEqual } from '../../Domain/Common/Coordinates';
+import { WithNoIntersection, removeKeysFromObject } from 'Util';
+import { Coordinate, areCoordinatesEqual } from 'Domain/Common/Coordinates';
 import './withHighlight.css';
 
 type BaseWithHighlightProps<TCoord> = {

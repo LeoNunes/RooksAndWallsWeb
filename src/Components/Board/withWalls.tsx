@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode } from 'react';
-import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { EdgeCoordinate, areEdgeCoordinatesEqual } from '../../Domain/Common/Coordinates';
-import { Wall } from '../Pieces/Wall';
+import { WithNoIntersection, removeKeysFromObject } from 'Util';
+import { EdgeCoordinate, areEdgeCoordinatesEqual } from 'Domain/Common/Coordinates';
+import { Wall } from 'Components/Pieces/Wall';
 
 export type WallData = {
     coordinate: EdgeCoordinate;

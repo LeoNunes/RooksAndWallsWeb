@@ -1,11 +1,8 @@
 import { ComponentType, useCallback, useMemo } from 'react';
-import { SquareCoordinate } from '../../Domain/Common/Coordinates';
-import { RnWModel } from '../../Domain/RnW/Model';
-import { RnWActions } from '../../Domain/RnW/Actions';
-import withDnDMovement, {
-    BoardProps,
-    ComputedBoardProps,
-} from '../../Components/Board/withDnDMovement';
+import { SquareCoordinate } from 'Domain/Common/Coordinates';
+import { RnWModel } from 'Domain/RnW/Model';
+import { RnWActions } from 'Domain/RnW/Actions';
+import withDnDMovement, { BoardProps, ComputedBoardProps } from 'Components/Board/withDnDMovement';
 
 export default function useDnDMovement<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,

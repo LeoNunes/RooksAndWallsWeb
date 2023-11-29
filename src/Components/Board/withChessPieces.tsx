@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode } from 'react';
-import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
-import ChessPiece, { ChessPieceProps } from '../Pieces/ChessPiece';
+import { WithNoIntersection, removeKeysFromObject } from 'Util';
+import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
+import ChessPiece, { ChessPieceProps } from 'Components/Pieces/ChessPiece';
 
 export type PieceData = ChessPieceProps & {
     coordinate: SquareCoordinate;

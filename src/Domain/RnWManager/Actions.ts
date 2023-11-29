@@ -1,7 +1,7 @@
-import { AsyncAction, Dispatch } from '../Common/DataTypes';
-import { createGame as createServerGame } from '../../Services/RnWServer/Actions';
+import { AsyncAction, Dispatch } from 'Domain/Common/DataTypes';
+import { createGame as createServerGame } from 'Services/RnWServer/Actions';
 import { RnWManagerState } from './Model';
-import { rnwConfig } from '../../RnWConfig';
+import { rnwConfig } from 'RnWConfig';
 
 export type RnWManagerBaseAction = StartGameCreation | GameCreated | GameCreationFailed | JoinGame;
 

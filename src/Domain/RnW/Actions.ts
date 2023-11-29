@@ -1,12 +1,12 @@
-import { Piece, RnWState } from './Model';
-import { SquareCoordinate, EdgeCoordinate } from '../Common/Coordinates';
-import { AsyncAction, Dispatch } from '../Common/DataTypes';
-import { RnWGameState as ServerGameState } from '../../Services/RnWServer/Data';
+import { EdgeCoordinate, SquareCoordinate } from 'Domain/Common/Coordinates';
+import { AsyncAction, Dispatch } from 'Domain/Common/DataTypes';
+import { RnWGameState as ServerGameState } from 'Services/RnWServer/Data';
 import {
     RnWGameAction as ServerGameAction,
     addPieceAction,
     moveAction,
-} from '../../Services/RnWServer/Actions';
+} from 'Services/RnWServer/Actions';
+import { Piece, RnWState } from './Model';
 
 export type RnWBaseAction =
     | AddPieceActionType

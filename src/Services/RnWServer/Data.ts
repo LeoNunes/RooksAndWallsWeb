@@ -1,10 +1,10 @@
-import { Immutable, isArrayOf } from '../../Util';
+import { Immutable, isArrayOf } from 'Util';
 import {
     EdgeCoordinate,
     SquareCoordinate,
     isEdgeCoordinate,
     isSquareCoordinate,
-} from '../../Domain/Common/Coordinates';
+} from 'Domain/Common/Coordinates';
 
 export type CreateGameRequest = {
     numberOfPlayers: number;

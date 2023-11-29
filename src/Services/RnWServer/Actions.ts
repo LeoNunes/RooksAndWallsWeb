@@ -1,7 +1,7 @@
-import { Immutable } from '../../Util';
-import { EdgeCoordinate, SquareCoordinate } from '../../Domain/Common/Coordinates';
+import { Immutable } from 'Util';
+import { EdgeCoordinate, SquareCoordinate } from 'Domain/Common/Coordinates';
 import { CreateGameRequest, CreateGameResponse } from './Data';
-import { apiConfig } from '../../RnWConfig';
+import { apiConfig } from 'RnWConfig';
 
 export type RnWGameAction = Immutable<{
     addPiece?: AddPieceAction;

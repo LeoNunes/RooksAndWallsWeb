@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { isInt, range } from '../../Util';
+import { isInt, range } from 'Util';
 import './RnWAccessGame.css';
 
 type RnWAccessGameProps = {

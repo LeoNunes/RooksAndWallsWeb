@@ -1,5 +1,5 @@
 import { Reducer, useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { AsyncAction, AsyncDispatch } from '../Domain/Common/DataTypes';
+import { AsyncAction, AsyncDispatch } from 'Domain/Common/DataTypes';
 
 export function useAsyncReducer<StateType, ActionType extends object>(
     reducer: Reducer<StateType, ActionType>,

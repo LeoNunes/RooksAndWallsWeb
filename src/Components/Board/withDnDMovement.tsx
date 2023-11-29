@@ -11,8 +11,8 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
+import { WithNoIntersection, removeKeysFromObject } from 'Util';
+import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
 import './withDnDMovement.css';
 
 export type BoardProps = {

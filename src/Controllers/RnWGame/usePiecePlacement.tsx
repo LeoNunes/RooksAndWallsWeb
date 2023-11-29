@@ -1,14 +1,14 @@
 import { ComponentType, useCallback, useMemo } from 'react';
-import { SquareCoordinate } from '../../Domain/Common/Coordinates';
-import { Dispatch } from '../../Domain/Common/DataTypes';
-import { RnWModel } from '../../Domain/RnW/Model';
-import { RnWActions } from '../../Domain/RnW/Actions';
-import { RnWGameAction as ServerGameAction } from '../../Services/RnWServer/Actions';
+import { SquareCoordinate } from 'Domain/Common/Coordinates';
+import { Dispatch } from 'Domain/Common/DataTypes';
+import { RnWModel } from 'Domain/RnW/Model';
+import { RnWActions } from 'Domain/RnW/Actions';
+import { RnWGameAction as ServerGameAction } from 'Services/RnWServer/Actions';
 import withPlacementMode, {
     BoardProps,
     ComputedBoardProps,
-} from '../../Components/Board/withPlacementMode';
-import ChessPiece from '../../Components/Pieces/ChessPiece';
+} from 'Components/Board/withPlacementMode';
+import ChessPiece from 'Components/Pieces/ChessPiece';
 
 export default function usePiecePlacement<
     TBoardProps extends BoardProps<SquareCoordinate, 'createSquareContent'>,

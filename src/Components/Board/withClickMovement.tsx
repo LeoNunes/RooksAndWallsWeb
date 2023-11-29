@@ -6,8 +6,8 @@ import {
     SetStateAction,
     useState,
 } from 'react';
-import { WithNoIntersection, removeKeysFromObject } from '../../Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from '../../Domain/Common/Coordinates';
+import { WithNoIntersection, removeKeysFromObject } from 'Util';
+import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
 import './withClickMovement.css';
 
 export type BoardProps = {

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import { ChessPieceTypes } from '../../Domain/Common/PieceTypes';
-import { rnwConfig } from '../../RnWConfig';
+import { ChessPieceTypes } from 'Domain/Common/PieceTypes';
+import { rnwConfig } from 'RnWConfig';
 import './ChessPiece.css';
 
 export type ChessPieceProps = {
