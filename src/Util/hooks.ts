@@ -1,4 +1,13 @@
-import { Reducer, useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import {
+    Dispatch,
+    Reducer,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from 'react';
 import { AsyncAction, AsyncDispatch } from 'Domain/Common/DataTypes';
 
 export function useAsyncReducer<StateType, ActionType extends object>(
@@ -41,7 +50,7 @@ export function useGetter<S>(value: S): () => S {
 
 export function useGetState<S>(
     initialState: S | (() => S),
-): [() => S, React.Dispatch<React.SetStateAction<S>>] {
+): [() => S, Dispatch<SetStateAction<S>>] {
     const [state, setState] = useState(initialState);
     const getState = useGetter(state);
 
