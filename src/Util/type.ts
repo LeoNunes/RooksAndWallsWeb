@@ -1,19 +1,20 @@
 export type NonEmptyArray<T> = [T, ...T[]];
 export type ReadonlyNonEmptyArray<T> = readonly [T, ...T[]];
 
+// biome-ignore lint/complexity/noBannedTypes: Ignore
 export type Primitives = undefined | null | boolean | string | number | bigint | symbol | Function;
 
 export type Immutable<T> = T extends Primitives
     ? T
     : T extends NonEmptyArray<infer A>
-    ? ImmutableNonEmptyArray<A>
-    : T extends Array<infer B>
-    ? ImmutableArray<B>
-    : T extends Map<infer C, infer D>
-    ? ImmutableMap<C, D>
-    : T extends Set<infer E>
-    ? ImmutableSet<E>
-    : ImmutableObject<T>;
+      ? ImmutableNonEmptyArray<A>
+      : T extends Array<infer B>
+        ? ImmutableArray<B>
+        : T extends Map<infer C, infer D>
+          ? ImmutableMap<C, D>
+          : T extends Set<infer E>
+            ? ImmutableSet<E>
+            : ImmutableObject<T>;
 
 export type ImmutableNonEmptyArray<T> = ReadonlyNonEmptyArray<Immutable<T>>;
 export type ImmutableArray<T> = ReadonlyArray<Immutable<T>>;
@@ -27,6 +28,6 @@ export type ChangePropertyType<T, P> = {
 
 export type WithNoIntersection<T, U> = T & Partial<ChangePropertyType<U, undefined>>;
 
-export function isArrayOf<T>(obj: any, checkItem: (item: any) => item is T): obj is T[] {
-    return Array.isArray(obj) && obj.every(item => checkItem(item));
+export function isArrayOf<T>(obj: unknown, checkItem: (item: unknown) => item is T): obj is T[] {
+    return Array.isArray(obj) && obj.every((item) => checkItem(item));
 }

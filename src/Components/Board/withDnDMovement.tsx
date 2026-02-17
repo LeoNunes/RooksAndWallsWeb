@@ -1,19 +1,19 @@
-import { ComponentType, PropsWithChildren, ReactNode, useState } from 'react';
+import { areSquareCoordinatesEqual, type SquareCoordinate } from "Domain/Common/Coordinates";
+import { removeKeysFromObject, type WithNoIntersection } from "Util";
 import {
     DndContext,
-    DragEndEvent,
-    DragStartEvent,
+    type DragEndEvent,
+    type DragStartEvent,
     MouseSensor,
     pointerWithin,
     useDraggable,
     useDroppable,
     useSensor,
     useSensors,
-} from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
-import { WithNoIntersection, removeKeysFromObject } from 'Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
-import './withDnDMovement.css';
+} from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import { type ComponentType, type PropsWithChildren, type ReactNode, useState } from "react";
+import "./withDnDMovement.css";
 
 export type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
@@ -23,10 +23,7 @@ type BaseWithDnDMovementProps = {
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[];
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
-    TBoardProps,
-    BaseWithDnDMovementProps
->;
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithDnDMovementProps>;
 export type WithDnDMovementProps<TBoardProps> = TBoardProps & BaseWithDnDMovementProps;
 
 export default function withDnDMovement<TBoardProps extends BoardProps>(
@@ -34,21 +31,14 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
 ): ComponentType<WithDnDMovementProps<TBoardProps>> {
     return function WithDnDMovement(props: WithDnDMovementProps<TBoardProps>) {
         const [destinations, setDestinations] = useState<SquareCoordinate[]>([]);
-        const sensors = useSensors(
-            useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
-        );
+        const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 10 } }));
 
         function createDnDArea(coord: SquareCoordinate) {
             return (
                 <DragAndDropArea
                     coord={coord}
-                    canDrag={
-                        props.moveblePositions.find(p => areSquareCoordinatesEqual(p, coord)) !==
-                        undefined
-                    }
-                    canDrop={
-                        destinations.find(d => areSquareCoordinatesEqual(d, coord)) !== undefined
-                    }
+                    canDrag={props.moveblePositions.find((p) => areSquareCoordinatesEqual(p, coord)) !== undefined}
+                    canDrop={destinations.find((d) => areSquareCoordinatesEqual(d, coord)) !== undefined}
                 >
                     {props.createSquareContent?.(coord)}
                 </DragAndDropArea>
@@ -69,9 +59,7 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
             if (!dragData || !dropData) return;
 
             if (
-                props
-                    .destinationsFrom(dragData.origin)
-                    .find(c => areSquareCoordinatesEqual(c, dropData.destination))
+                props.destinationsFrom(dragData.origin).find((c) => areSquareCoordinatesEqual(c, dropData.destination))
             ) {
                 props.onMove(dragData.origin, dropData.destination);
             }
@@ -90,7 +78,7 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
                 onDragStart={handleDragStart}
                 collisionDetection={pointerWithin}
             >
-                <Board {...boardProps} createSquareContent={createDnDArea} />;
+                <Board {...boardProps} createSquareContent={createDnDArea} />
             </DndContext>
         );
     };
@@ -123,12 +111,9 @@ function DragAndDropArea(props: DragAndDropAreaProps) {
     });
 
     return (
-        <div
-            className={`dnd ${props.canDrop ? 'droppable' : ''} ${isOver ? 'over' : ''}`}
-            ref={setDroppableRef}
-        >
+        <div className={`dnd ${props.canDrop ? "droppable" : ""} ${isOver ? "over" : ""}`} ref={setDroppableRef}>
             <div
-                className={`dnd ${props.canDrag ? 'draggable' : ''}`}
+                className={`dnd ${props.canDrag ? "draggable" : ""}`}
                 ref={setDraggableRef}
                 style={dragStyle}
                 {...listeners}

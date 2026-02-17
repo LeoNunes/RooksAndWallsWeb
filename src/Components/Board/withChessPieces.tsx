@@ -1,7 +1,7 @@
-import { ComponentType, ReactNode } from 'react';
-import { WithNoIntersection, removeKeysFromObject } from 'Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
-import ChessPiece, { ChessPieceProps } from 'Components/Pieces/ChessPiece';
+import ChessPiece, { type ChessPieceProps } from "Components/Pieces/ChessPiece";
+import { areSquareCoordinatesEqual, type SquareCoordinate } from "Domain/Common/Coordinates";
+import { removeKeysFromObject, type WithNoIntersection } from "Util";
+import type { ComponentType, ReactNode } from "react";
 
 export type PieceData = ChessPieceProps & {
     coordinate: SquareCoordinate;
@@ -12,10 +12,7 @@ type BaseWithChessPiecesProps = {
 export type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
-    TBoardProps,
-    BaseWithChessPiecesProps
->;
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithChessPiecesProps>;
 export type WithChessPiecesProps<TBoardProps> = TBoardProps & BaseWithChessPiecesProps;
 
 export default function withChessPieces<TBoardProps extends BoardProps>(
@@ -23,9 +20,7 @@ export default function withChessPieces<TBoardProps extends BoardProps>(
 ): ComponentType<WithChessPiecesProps<TBoardProps>> {
     return function WithChessPieces(props: WithChessPiecesProps<TBoardProps>) {
         function createPieces(coord: SquareCoordinate) {
-            const pieceData = props.piecesData.find(p =>
-                areSquareCoordinatesEqual(p.coordinate, coord),
-            );
+            const pieceData = props.piecesData.find((p) => areSquareCoordinatesEqual(p.coordinate, coord));
             if (!pieceData) return props.createSquareContent?.(coord);
 
             return <ChessPiece {...pieceData}>{props.createSquareContent?.(coord)}</ChessPiece>;

@@ -1,35 +1,32 @@
-import { RnWState } from './Model';
-import { RnWBaseAction } from './Actions';
+import type { RnWBaseAction } from "./Actions";
+import type { RnWState } from "./Model";
 
 export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
     switch (action.type) {
-        case 'add-piece': {
+        case "add-piece": {
             return {
                 ...state,
                 pieces: [
                     ...state.pieces,
                     {
-                        id:
-                            state.pieces
-                                .map(piece => piece.id)
-                                .reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
+                        id: state.pieces.map((piece) => piece.id).reduce((prev, curr) => Math.max(prev, curr), 0) + 1,
                         owner: action.owner,
                         position: action.position,
                     },
                 ],
             };
         }
-        case 'add-wall': {
+        case "add-wall": {
             return {
                 ...state,
                 walls: [...state.walls, { position: action.position }],
             };
         }
-        case 'move-piece': {
+        case "move-piece": {
             return {
                 ...state,
                 pieces: [
-                    ...state.pieces.filter(p => p !== action.piece),
+                    ...state.pieces.filter((p) => p !== action.piece),
                     {
                         ...action.piece,
                         position: action.newPosition,
@@ -37,32 +34,32 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                 ],
             };
         }
-        case 'update-from-server': {
+        case "update-from-server": {
             const { serverState } = action;
             return {
                 ...state,
                 stage: serverState.stage,
                 playerId: serverState.playerId,
                 currentPlayer: serverState.currentTurn,
-                players: serverState.players.map(p => ({
+                players: serverState.players.map((p) => ({
                     id: p.id,
                 })),
-                pieces: serverState.pieces.map(p => ({
+                pieces: serverState.pieces.map((p) => ({
                     id: p.id,
                     owner: p.owner,
                     position: p.position,
                 })),
-                walls: serverState.walls.map(w => ({
+                walls: serverState.walls.map((w) => ({
                     position: w.position,
                 })),
-                deadPieces: serverState.deadPieces.map(p => ({
+                deadPieces: serverState.deadPieces.map((p) => ({
                     id: p.id,
                     owner: p.owner,
                     position: p.position,
                 })),
             };
         }
-        case 'set-next-move-piece': {
+        case "set-next-move-piece": {
             return {
                 ...state,
                 nextMove: {
@@ -72,7 +69,7 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                 },
             };
         }
-        case 'set-next-move-wall': {
+        case "set-next-move-wall": {
             return {
                 ...state,
                 nextMove: {
@@ -81,7 +78,7 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                 },
             };
         }
-        case 'reset-next-move': {
+        case "reset-next-move": {
             return {
                 ...state,
                 nextMove: {

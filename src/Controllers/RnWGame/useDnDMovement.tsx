@@ -1,8 +1,8 @@
-import { ComponentType, useCallback, useMemo } from 'react';
-import { SquareCoordinate } from 'Domain/Common/Coordinates';
-import { RnWModel } from 'Domain/RnW/Model';
-import { RnWActions } from 'Domain/RnW/Actions';
-import withDnDMovement, { BoardProps, ComputedBoardProps } from 'Components/Board/withDnDMovement';
+import withDnDMovement, { type BoardProps, type ComputedBoardProps } from "Components/Board/withDnDMovement";
+import type { SquareCoordinate } from "Domain/Common/Coordinates";
+import type { RnWActions } from "Domain/RnW/Actions";
+import type { RnWModel } from "Domain/RnW/Model";
+import { type ComponentType, useCallback, useMemo } from "react";
 
 export default function useDnDMovement<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,
@@ -15,7 +15,7 @@ export default function useDnDMovement<TBoardProps extends BoardProps>(
         function AddDnDMovement(props: ComputedBoardProps<TBoardProps>) {
             const rnwModel = getRnWModel();
 
-            const moveblePositions = rnwModel.getPiecesThatCanMove().map(piece => piece.position);
+            const moveblePositions = rnwModel.getPiecesThatCanMove().map((piece) => piece.position);
 
             const destinationsFrom = (coord: SquareCoordinate) => {
                 const piece = rnwModel.getPieceFromPosition(coord);

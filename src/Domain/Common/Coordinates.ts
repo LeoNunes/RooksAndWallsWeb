@@ -10,17 +10,16 @@ export type EdgeCoordinate = {
 
 export type Coordinate = SquareCoordinate | EdgeCoordinate;
 
-export function isSquareCoordinate(coord: any): coord is SquareCoordinate {
+export function isSquareCoordinate(coord: unknown): coord is SquareCoordinate {
     return (
-        typeof (coord as SquareCoordinate).row === 'number' &&
-        typeof (coord as SquareCoordinate).column === 'number'
+        typeof (coord as SquareCoordinate).row === "number" && typeof (coord as SquareCoordinate).column === "number"
     );
 }
 
-export function isEdgeCoordinate(coord: any): coord is EdgeCoordinate {
+export function isEdgeCoordinate(coord: unknown): coord is EdgeCoordinate {
     return (
-        typeof (coord as EdgeCoordinate).square1 === 'object' &&
-        typeof (coord as EdgeCoordinate).square2 === 'object' &&
+        typeof (coord as EdgeCoordinate).square1 === "object" &&
+        typeof (coord as EdgeCoordinate).square2 === "object" &&
         isSquareCoordinate((coord as EdgeCoordinate).square1) &&
         isSquareCoordinate((coord as EdgeCoordinate).square2)
     );
@@ -32,10 +31,8 @@ export function areSquareCoordinatesEqual(c1: SquareCoordinate, c2: SquareCoordi
 
 export function areEdgeCoordinatesEqual(c1: EdgeCoordinate, c2: EdgeCoordinate): boolean {
     return (
-        (areSquareCoordinatesEqual(c1.square1, c2.square1) &&
-            areSquareCoordinatesEqual(c1.square2, c2.square2)) ||
-        (areSquareCoordinatesEqual(c1.square1, c2.square2) &&
-            areSquareCoordinatesEqual(c1.square2, c2.square1))
+        (areSquareCoordinatesEqual(c1.square1, c2.square1) && areSquareCoordinatesEqual(c1.square2, c2.square2)) ||
+        (areSquareCoordinatesEqual(c1.square1, c2.square2) && areSquareCoordinatesEqual(c1.square2, c2.square1))
     );
 }
 

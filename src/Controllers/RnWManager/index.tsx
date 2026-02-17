@@ -1,12 +1,12 @@
-import { createGame, joinGame } from 'Domain/RnWManager/Actions';
+import RnWAccessGame from "Components/RnWAccessGame/RnWAccessGame";
+import RnWGame from "Controllers/RnWGame";
+import { createGame, joinGame } from "Domain/RnWManager/Actions";
 import {
     RnWManagerStateProvider,
     useRnWManagerDispatch,
     useRnWManagerState,
-} from 'Domain/RnWManager/RnWGameManagerStateProvider';
-import RnWGame from 'Controllers/RnWGame';
-import RnWAccessGame from 'Components/RnWAccessGame/RnWAccessGame';
-import { rnwConfig } from 'RnWConfig';
+} from "Domain/RnWManager/RnWGameManagerStateProvider";
+import { rnwConfig } from "RnWConfig";
 
 export default function RnWGameManager() {
     return (
@@ -16,8 +16,9 @@ export default function RnWGameManager() {
     );
 }
 
+// biome-ignore lint/complexity/noBannedTypes: I need an empty object
 type RnWGameManagerControllerProps = {};
-function RnWGameManagerController(props: RnWGameManagerControllerProps) {
+function RnWGameManagerController(_props: RnWGameManagerControllerProps) {
     const rnwManagerState = useRnWManagerState();
     const rnwManagerDispatch = useRnWManagerDispatch();
 
@@ -34,7 +35,7 @@ function RnWGameManagerController(props: RnWGameManagerControllerProps) {
     if (game && !game.isCreating) {
         return (
             <>
-                <p style={{ textAlign: 'center' }}>Game ID: {game.gameId}</p>
+                <p style={{ textAlign: "center" }}>Game ID: {game.gameId}</p>
                 <RnWGame
                     gameId={game.gameId}
                     board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }}

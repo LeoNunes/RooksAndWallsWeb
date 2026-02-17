@@ -1,14 +1,14 @@
 import {
-    SquareCoordinate,
-    EdgeCoordinate,
-    areSquareCoordinatesEqual,
     areEdgeCoordinatesEqual,
-    edgeToTheRightOf,
+    areSquareCoordinatesEqual,
+    type EdgeCoordinate,
     edgeBelow,
-} from 'Domain/Common/Coordinates';
-import { rnwConfig } from 'RnWConfig';
+    edgeToTheRightOf,
+    type SquareCoordinate,
+} from "Domain/Common/Coordinates";
+import { rnwConfig } from "RnWConfig";
 
-export type Stage = 'waiting_for_players' | 'piece_placement' | 'moves' | 'completed';
+export type Stage = "waiting_for_players" | "piece_placement" | "moves" | "completed";
 
 export type Player = {
     id: number;
@@ -42,7 +42,7 @@ export type RnWState = {
 };
 
 export const rnwStateInitialValue: RnWState = {
-    stage: 'waiting_for_players',
+    stage: "waiting_for_players",
     playerId: 0,
     currentPlayer: undefined,
     players: [],
@@ -66,50 +66,47 @@ export const createModel = (state: RnWState) => ({
     availableSquaresForPlacingPiece: () => availableSquaresForPlacingPiece(state),
     availableEdgesForPlacingWalls: () => availableEdgesForPlacingWalls(state),
     canPlacePiece: (position: SquareCoordinate) => canPlacePiece(state, position),
-    canMoveTo: (piece: Piece, destination: SquareCoordinate) =>
-        canMoveTo(state, piece, destination),
+    canMoveTo: (piece: Piece, destination: SquareCoordinate) => canMoveTo(state, piece, destination),
 });
 
 function isPlayersTurn(state: RnWState) {
     return state.currentPlayer === state.playerId;
 }
 
-export function playerCurrentAction(
-    state: RnWState,
-): 'add_piece' | 'move_piece' | 'add_wall' | undefined {
+export function playerCurrentAction(state: RnWState): "add_piece" | "move_piece" | "add_wall" | undefined {
     if (!isPlayersTurn(state)) return undefined;
 
-    if (state.stage === 'piece_placement') return 'add_piece';
+    if (state.stage === "piece_placement") return "add_piece";
 
-    if (state.stage === 'moves' && state.nextMove.piece === undefined) return 'move_piece';
+    if (state.stage === "moves" && state.nextMove.piece === undefined) return "move_piece";
 
-    if (state.stage === 'moves' && state.nextMove.wallPosition === undefined) return 'add_wall';
+    if (state.stage === "moves" && state.nextMove.wallPosition === undefined) return "add_wall";
 
     return undefined;
 }
 
 export function getPieceById(state: RnWState, id: number) {
-    return state.pieces.find(p => p.id === id);
+    return state.pieces.find((p) => p.id === id);
 }
 
 export function getPieceFromPosition(state: RnWState, position: SquareCoordinate) {
-    return state.pieces.find(p => areSquareCoordinatesEqual(p.position, position));
+    return state.pieces.find((p) => areSquareCoordinatesEqual(p.position, position));
 }
 
 export function getWallFromPosition(state: RnWState, position: EdgeCoordinate) {
-    return state.walls.find(w => areEdgeCoordinatesEqual(w.position, position));
+    return state.walls.find((w) => areEdgeCoordinatesEqual(w.position, position));
 }
 
 export function getPiecesFromPlayer(state: RnWState, playerId: number) {
-    return state.pieces.filter(p => p.owner === playerId);
+    return state.pieces.filter((p) => p.owner === playerId);
 }
 
 export function getPiecesThatCanMove(state: RnWState) {
-    if (playerCurrentAction(state) !== 'move_piece') return [];
+    if (playerCurrentAction(state) !== "move_piece") return [];
 
     return state.pieces
-        .filter(p => p.owner === state.playerId)
-        .filter(piece => possibleDestinations(state, piece).length > 0);
+        .filter((p) => p.owner === state.playerId)
+        .filter((piece) => possibleDestinations(state, piece).length > 0);
 }
 
 export function possibleDestinations(state: RnWState, piece: Piece): SquareCoordinate[] {
@@ -120,10 +117,10 @@ export function possibleDestinations(state: RnWState, piece: Piece): SquareCoord
         [1, 0],
         [-1, 0],
     ];
-    for (let [deltaRow, deltaColumn] of directions) {
+    for (const [deltaRow, deltaColumn] of directions) {
         let currentSquare: SquareCoordinate = piece.position;
         while (true) {
-            let nextSquare: SquareCoordinate = {
+            const nextSquare: SquareCoordinate = {
                 row: currentSquare.row + deltaRow,
                 column: currentSquare.column + deltaColumn,
             };
@@ -149,7 +146,7 @@ export function possibleDestinations(state: RnWState, piece: Piece): SquareCoord
 }
 
 export function availableSquaresForPlacingPiece(state: RnWState) {
-    if (playerCurrentAction(state) !== 'add_piece') return [];
+    if (playerCurrentAction(state) !== "add_piece") return [];
 
     const result: SquareCoordinate[] = [];
     for (let r = 0; r < rnwConfig.boardSize.rows; r++) {
@@ -163,7 +160,7 @@ export function availableSquaresForPlacingPiece(state: RnWState) {
 }
 
 export function availableEdgesForPlacingWalls(state: RnWState) {
-    if (playerCurrentAction(state) !== 'add_wall') return [];
+    if (playerCurrentAction(state) !== "add_wall") return [];
 
     const result: EdgeCoordinate[] = [];
     for (let row = 0; row < rnwConfig.boardSize.rows; row++) {
@@ -190,10 +187,7 @@ export function canPlacePiece(state: RnWState, position: SquareCoordinate) {
 }
 
 export function canMoveTo(state: RnWState, piece: Piece, destination: SquareCoordinate) {
-    return (
-        possibleDestinations(state, piece).find(d => areSquareCoordinatesEqual(d, destination)) !==
-        undefined
-    );
+    return possibleDestinations(state, piece).find((d) => areSquareCoordinatesEqual(d, destination)) !== undefined;
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {

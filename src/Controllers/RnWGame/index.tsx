@@ -1,21 +1,21 @@
-import { ComponentType } from 'react';
-import { useGetter, useImagePreloader } from 'Util';
-import { Dispatch } from 'Domain/Common/DataTypes';
-import { RnWModel, createModel } from 'Domain/RnW/Model';
-import { RnWActions, createAction } from 'Domain/RnW/Actions';
-import { RnWStateProvider, useRnWState, useRnWDispatch } from 'Domain/RnW/RnWStateProvider';
-import { RnWGameState as ServerGameState } from 'Services/RnWServer/Data';
-import { RnWGameAction as ServerGameAction } from 'Services/RnWServer/Actions';
-import { useRnWWebsocket } from 'Services/RnWServer/useRnWWebsocket';
-import BoardBase, { BoardBaseProps } from 'Components/Board/BoardBase';
-import usePieces from './usePieces';
-import useWalls from './useWalls';
-import useDnDMovement from './useDnDMovement';
-import useLastMoveHighlight from './useLastMoveHighlight';
-import usePiecePlacement from './usePiecePlacement';
-import useWallPlacement from './useWallPlacement';
-import useClickMovement from './useClickMovement';
-import { rnwConfig } from 'RnWConfig';
+import BoardBase, { type BoardBaseProps } from "Components/Board/BoardBase";
+import type { Dispatch } from "Domain/Common/DataTypes";
+import { createAction, type RnWActions } from "Domain/RnW/Actions";
+import { createModel, type RnWModel } from "Domain/RnW/Model";
+import { RnWStateProvider, useRnWDispatch, useRnWState } from "Domain/RnW/RnWStateProvider";
+import { rnwConfig } from "RnWConfig";
+import type { RnWGameAction as ServerGameAction } from "Services/RnWServer/Actions";
+import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
+import { useRnWWebsocket } from "Services/RnWServer/useRnWWebsocket";
+import { useGetter, useImagePreloader } from "Util";
+import type { ComponentType } from "react";
+import useClickMovement from "./useClickMovement";
+import useDnDMovement from "./useDnDMovement";
+import useLastMoveHighlight from "./useLastMoveHighlight";
+import usePiecePlacement from "./usePiecePlacement";
+import usePieces from "./usePieces";
+import useWallPlacement from "./useWallPlacement";
+import useWalls from "./useWalls";
 
 export type RnWGameProps = RnWGameControllerProps;
 export default function RnWGame(props: RnWGameProps) {
@@ -41,9 +41,7 @@ function RnWGameController(props: RnWGameControllerProps) {
     const getRnWModel = useGetter(rnwModel);
     const getRnWActions = useGetter(rnwActions);
 
-    useImagePreloader(
-        Object.values(rnwConfig.pieces).flatMap(p => [p.default.uri, p.disabled.uri]),
-    );
+    useImagePreloader(Object.values(rnwConfig.pieces).flatMap((p) => [p.default.uri, p.disabled.uri]));
 
     function onWebsocketUpdate(state: ServerGameState) {
         rnwActions.updateFromServer(state);

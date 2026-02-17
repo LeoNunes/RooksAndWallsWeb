@@ -1,13 +1,8 @@
-import { ReactNode } from 'react';
-import {
-    EdgeCoordinate,
-    SquareCoordinate,
-    edgeBelow,
-    edgeToTheRightOf,
-} from 'Domain/Common/Coordinates';
-import Square from './Square';
-import Edge from './Edge';
-import styles from './BoardBase.module.css';
+import { type EdgeCoordinate, edgeBelow, edgeToTheRightOf, type SquareCoordinate } from "Domain/Common/Coordinates";
+import type { ReactNode } from "react";
+import styles from "./BoardBase.module.css";
+import Edge from "./Edge";
+import Square from "./Square";
 
 export type BoardBaseProps = {
     rows: number;
@@ -20,7 +15,7 @@ export default function BoardBase(props: BoardBaseProps) {
     function createSquare(coordinate: SquareCoordinate) {
         const { row, column } = coordinate;
         return (
-            <Square key={`${row}-${column}`} color={(row + column) % 2 === 0 ? 'black' : 'white'}>
+            <Square key={`${row}-${column}`} color={(row + column) % 2 === 0 ? "black" : "white"}>
                 {props.createSquareContent?.(coordinate)}
             </Square>
         );
@@ -31,8 +26,7 @@ export default function BoardBase(props: BoardBaseProps) {
             square1: { row: row1, column: column1 },
             square2: { row: row2, column: column2 },
         } = coordinate;
-        const orientation =
-            coordinate.square1.row === coordinate.square2.row ? 'vertical' : 'horizontal';
+        const orientation = coordinate.square1.row === coordinate.square2.row ? "vertical" : "horizontal";
         return (
             <Edge key={`${row1}-${column1}-${row2}-${column2}`} orientation={orientation}>
                 {props.createEdgeContent?.(coordinate)}
@@ -41,12 +35,7 @@ export default function BoardBase(props: BoardBaseProps) {
     }
 
     function createCornerSpace(coordinate: SquareCoordinate) {
-        return (
-            <div
-                key={`corner-${coordinate.row}-${coordinate.column}`}
-                className={styles.boardCornerSpace}
-            />
-        );
+        return <div key={`corner-${coordinate.row}-${coordinate.column}`} className={styles.boardCornerSpace} />;
     }
 
     function buildRow(row: number) {
@@ -91,7 +80,7 @@ export default function BoardBase(props: BoardBaseProps) {
     return (
         <div className={styles.boardContainer}>
             <div className={styles.boardWrapper}>
-                <div className={styles.board}>{rows.flatMap(row => buildRow(row))}</div>
+                <div className={styles.board}>{rows.flatMap((row) => buildRow(row))}</div>
             </div>
         </div>
     );

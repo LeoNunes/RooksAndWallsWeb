@@ -47,7 +47,7 @@
     }
 
     /* Firefox */
-    & input[type='number'] {
+    & input[type="number"] {
         appearance: textfield;
         -moz-appearance: textfield;
     }

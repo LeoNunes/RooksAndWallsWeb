@@ -1,14 +1,14 @@
+import type { AsyncAction, AsyncDispatch } from "Domain/Common/DataTypes";
 import {
-    Dispatch,
-    Reducer,
-    SetStateAction,
+    type Dispatch,
+    type Reducer,
+    type SetStateAction,
     useCallback,
     useEffect,
     useReducer,
     useRef,
     useState,
-} from 'react';
-import { AsyncAction, AsyncDispatch } from 'Domain/Common/DataTypes';
+} from "react";
 
 export function useAsyncReducer<StateType, ActionType extends object>(
     reducer: Reducer<StateType, ActionType>,
@@ -30,13 +30,13 @@ export function useAsyncReducer<StateType, ActionType extends object>(
                 baseDispatch(action);
             }
 
-            if (typeof action === 'function') {
+            if (typeof action === "function") {
                 await action(asyncDispatch, getState);
             } else {
                 dispatchAndUpdateIntermediateState(action);
             }
         },
-        [reducer, intermediateState],
+        [reducer],
     );
 
     return [baseState, asyncDispatch];
@@ -45,25 +45,23 @@ export function useAsyncReducer<StateType, ActionType extends object>(
 export function useGetter<S>(value: S): () => S {
     const valueRef = useRef(value);
     valueRef.current = value;
-    return useCallback(() => valueRef.current, [valueRef]);
+    return useCallback(() => valueRef.current, []);
 }
 
-export function useGetState<S>(
-    initialState: S | (() => S),
-): [() => S, Dispatch<SetStateAction<S>>] {
+export function useGetState<S>(initialState: S | (() => S)): [() => S, Dispatch<SetStateAction<S>>] {
     const [state, setState] = useState(initialState);
     const getState = useGetter(state);
 
     return [getState, setState];
 }
 
-function preloadImage(src: string) {
+function preloadImage(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.onload = function () {
+        img.onload = () => {
             resolve(img);
         };
-        img.onerror = img.onabort = function () {
+        img.onerror = img.onabort = () => {
             reject(src);
         };
         img.src = src;
@@ -82,7 +80,7 @@ export function useImagePreloader(imageList: string[]) {
                 return;
             }
 
-            const imagesPromiseList: Promise<any>[] = [];
+            const imagesPromiseList: Promise<HTMLImageElement>[] = [];
             for (const i of imageList) {
                 imagesPromiseList.push(preloadImage(i));
             }

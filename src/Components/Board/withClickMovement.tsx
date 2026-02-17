@@ -1,14 +1,14 @@
+import { areSquareCoordinatesEqual, type SquareCoordinate } from "Domain/Common/Coordinates";
+import { removeKeysFromObject, type WithNoIntersection } from "Util";
 import {
-    ComponentType,
-    Dispatch,
-    PropsWithChildren,
-    ReactNode,
-    SetStateAction,
+    type ComponentType,
+    type Dispatch,
+    type PropsWithChildren,
+    type ReactNode,
+    type SetStateAction,
     useState,
-} from 'react';
-import { WithNoIntersection, removeKeysFromObject } from 'Util';
-import { SquareCoordinate, areSquareCoordinatesEqual } from 'Domain/Common/Coordinates';
-import './withClickMovement.css';
+} from "react";
+import "./withClickMovement.css";
 
 export type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
@@ -18,10 +18,7 @@ type BaseWithClickMovementProps = {
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[];
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<
-    TBoardProps,
-    BaseWithClickMovementProps
->;
+export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithClickMovementProps>;
 export type WithClickMovementProps<TBoardProps> = TBoardProps & BaseWithClickMovementProps;
 
 export default function withClickMovement<TBoardProps extends BoardProps>(
@@ -34,20 +31,9 @@ export default function withClickMovement<TBoardProps extends BoardProps>(
         function createClickableArea(coord: SquareCoordinate) {
             return (
                 <ClickableArea
-                    isSelected={
-                        selected !== undefined && areSquareCoordinatesEqual(coord, selected)
-                    }
-                    isHighlighted={
-                        highlightedPositions.find(c => areSquareCoordinatesEqual(coord, c)) !==
-                        undefined
-                    }
-                    handleClick={handleClick(
-                        coord,
-                        props,
-                        selected,
-                        setSelected,
-                        setHighlightedPositions,
-                    )}
+                    isSelected={selected !== undefined && areSquareCoordinatesEqual(coord, selected)}
+                    isHighlighted={highlightedPositions.find((c) => areSquareCoordinatesEqual(coord, c)) !== undefined}
+                    handleClick={handleClick(coord, props, selected, setSelected, setHighlightedPositions)}
                 >
                     {props.createSquareContent?.(coord)}
                 </ClickableArea>
@@ -75,17 +61,11 @@ const handleClick =
         if (selected) {
             setSelected(undefined);
             setHighlightedPositions([]);
-            if (
-                props
-                    .destinationsFrom(selected)
-                    .find(c => areSquareCoordinatesEqual(c, clickCoordinate))
-            ) {
+            if (props.destinationsFrom(selected).find((c) => areSquareCoordinatesEqual(c, clickCoordinate))) {
                 props.onMove(selected, clickCoordinate);
             }
         } else {
-            const isMoveble = !!props.moveblePositions.find(p =>
-                areSquareCoordinatesEqual(p, clickCoordinate),
-            );
+            const isMoveble = !!props.moveblePositions.find((p) => areSquareCoordinatesEqual(p, clickCoordinate));
             if (!isMoveble) return;
             setSelected(clickCoordinate);
             setHighlightedPositions(props.destinationsFrom(clickCoordinate));
@@ -100,10 +80,10 @@ type ClickableAreaProps = PropsWithChildren<{
 function ClickableArea(props: ClickableAreaProps) {
     const { isSelected: selected, isHighlighted: highlighted, handleClick } = props;
     return (
+        // biome-ignore lint/a11y/noStaticElementInteractions: Ignore
+        // biome-ignore lint/a11y/useKeyWithClickEvents: Ignore
         <div
-            className={`click-movement ${selected ? 'selected' : ''} ${
-                highlighted ? 'highlighted' : ''
-            }`}
+            className={`click-movement ${selected ? "selected" : ""} ${highlighted ? "highlighted" : ""}`}
             onClick={handleClick}
         >
             {props.children}

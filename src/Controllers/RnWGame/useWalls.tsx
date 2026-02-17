@@ -1,6 +1,6 @@
-import { ComponentType, useCallback, useMemo } from 'react';
-import { RnWModel } from 'Domain/RnW/Model';
-import withWalls, { BoardProps, ComputedBoardProps, WallData } from 'Components/Board/withWalls';
+import withWalls, { type BoardProps, type ComputedBoardProps, type WallData } from "Components/Board/withWalls";
+import type { RnWModel } from "Domain/RnW/Model";
+import { type ComponentType, useCallback, useMemo } from "react";
 
 export default function useWalls<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,
@@ -11,7 +11,7 @@ export default function useWalls<TBoardProps extends BoardProps>(
     return useCallback(
         function AddWalls(props: ComputedBoardProps<TBoardProps>) {
             const rnwModel = getRnWModel();
-            const wallsData: WallData[] = rnwModel.walls.map(wall => ({
+            const wallsData: WallData[] = rnwModel.walls.map((wall) => ({
                 coordinate: wall.position,
             }));
             if (rnwModel.nextMove.wallPosition !== undefined) {

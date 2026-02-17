@@ -1,8 +1,8 @@
-import { PropsWithChildren } from 'react';
-import './Square.css';
+import type { PropsWithChildren } from "react";
+import "./Square.css";
 
 type SquareProps = PropsWithChildren<{
-    color: 'black' | 'white';
+    color: "black" | "white";
 }>;
 export default function Square(props: SquareProps) {
     const { color, children } = props;

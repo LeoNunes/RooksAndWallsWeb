@@ -1,11 +1,11 @@
-import { ComponentType, useCallback, useMemo } from 'react';
-import { ChessPieceTypes } from 'Domain/Common/PieceTypes';
-import { RnWModel } from 'Domain/RnW/Model';
 import withChessPieces, {
-    PieceData,
-    BoardProps,
-    ComputedBoardProps,
-} from 'Components/Board/withChessPieces';
+    type BoardProps,
+    type ComputedBoardProps,
+    type PieceData,
+} from "Components/Board/withChessPieces";
+import type { ChessPieceTypes } from "Domain/Common/PieceTypes";
+import type { RnWModel } from "Domain/RnW/Model";
+import { type ComponentType, useCallback, useMemo } from "react";
 
 export default function usePieces<TBoardProps extends BoardProps>(
     Board: ComponentType<ComputedBoardProps<TBoardProps>>,
@@ -18,17 +18,18 @@ export default function usePieces<TBoardProps extends BoardProps>(
             const rnwModel = getRnWModel();
             const nextMove = rnwModel.nextMove;
             const piecesData: PieceData[] = rnwModel.pieces
-                .map(piece => ({
-                    coordinate:
-                        nextMove.piece?.id === piece.id ? nextMove.piecePosition!! : piece.position,
+                .map((piece) => ({
+                    // TODO: Fix this
+                    // biome-ignore lint/style/noNonNullAssertion: TODO
+                    coordinate: nextMove.piece?.id === piece.id ? nextMove.piecePosition! : piece.position,
                     player: piece.owner,
-                    type: 'rook' as ChessPieceTypes,
+                    type: "rook" as ChessPieceTypes,
                 }))
                 .concat(
-                    rnwModel.deadPieces.map(piece => ({
+                    rnwModel.deadPieces.map((piece) => ({
                         coordinate: piece.position,
                         player: piece.owner,
-                        type: 'rook' as ChessPieceTypes,
+                        type: "rook" as ChessPieceTypes,
                         disabled: true,
                     })),
                 );

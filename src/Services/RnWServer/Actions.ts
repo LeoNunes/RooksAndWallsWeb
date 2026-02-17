@@ -1,7 +1,7 @@
-import { Immutable } from 'Util';
-import { EdgeCoordinate, SquareCoordinate } from 'Domain/Common/Coordinates';
-import { CreateGameRequest, CreateGameResponse } from './Data';
-import { apiConfig } from 'RnWConfig';
+import type { EdgeCoordinate, SquareCoordinate } from "Domain/Common/Coordinates";
+import { apiConfig } from "RnWConfig";
+import type { Immutable } from "Util";
+import type { CreateGameRequest, CreateGameResponse } from "./Data";
 
 export type RnWGameAction = Immutable<{
     addPiece?: AddPieceAction;
@@ -42,12 +42,12 @@ export async function createGame(request: CreateGameRequest): Promise<CreateGame
     const response = await fetch(apiConfig.createGame.endpoint(), {
         method: apiConfig.createGame.method,
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(request),
     });
     if (!response.ok) {
-        throw new Error('Game creation failed');
+        throw new Error("Game creation failed");
     }
     const data: CreateGameResponse = await response.json();
 

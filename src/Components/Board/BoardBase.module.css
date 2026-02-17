@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-@container board-container (max-aspect-ratio: 1/1) {
+@container board-container (max-aspect-ratio: 1 / 1) {
     .boardWrapper {
         flex-direction: row;
     }
