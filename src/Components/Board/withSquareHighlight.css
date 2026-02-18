@@ -1,0 +1,5 @@
+.square-highlight {
+    display: flex;
+    flex: 1;
+    background-color: #d5bb5e;
+}

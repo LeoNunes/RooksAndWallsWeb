@@ -1,6 +1,5 @@
 import { Wall } from "Components/Pieces/Wall";
 import { areEdgeCoordinatesEqual, type EdgeCoordinate } from "Domain/Common/Coordinates";
-import { removeKeysFromObject, type WithNoIntersection } from "Util";
 import type { ComponentType, ReactNode } from "react";
 
 export type WallData = {
@@ -9,14 +8,13 @@ export type WallData = {
 type BaseWithWallsProps = {
     wallsData: WallData[];
 };
-export type BoardProps = {
+type BoardProps = {
     createEdgeContent?: (coord: EdgeCoordinate) => ReactNode;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithWallsProps>;
 export type WithWallsProps<TBoardProps> = TBoardProps & BaseWithWallsProps;
 
 export default function withWalls<TBoardProps extends BoardProps>(
-    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
+    Board: ComponentType<TBoardProps>,
 ): ComponentType<WithWallsProps<TBoardProps>> {
     return function WithWalls(props: WithWallsProps<TBoardProps>) {
         function createWalls(coord: EdgeCoordinate) {
@@ -26,9 +24,6 @@ export default function withWalls<TBoardProps extends BoardProps>(
             return <Wall>{props.createEdgeContent?.(coord)}</Wall>;
         }
 
-        const boardProps = removeKeysFromObject<TBoardProps, BaseWithWallsProps>(props, {
-            wallsData: true,
-        });
-        return <Board {...boardProps} createEdgeContent={createWalls} />;
+        return <Board {...props} createEdgeContent={createWalls} />;
     };
 }

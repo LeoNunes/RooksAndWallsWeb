@@ -1,10 +1,10 @@
-.placeble-area-container {
+.square-placeble-area-container {
     display: flex;
     flex: 1;
     position: relative;
 }
 
-.placeble-area {
+.square-placeble-area {
     display: flex;
     position: absolute;
     width: 100%;

@@ -1,4 +1,12 @@
-import BoardBase, { type BoardBaseProps } from "Components/Board/BoardBase";
+import BoardBase from "Components/Board/BoardBase";
+import withChessPieces from "Components/Board/withChessPieces";
+import withClickMovement from "Components/Board/withClickMovement";
+import withDnDMovement from "Components/Board/withDnDMovement";
+import withEdgeHighlight from "Components/Board/withEdgeHighlight";
+import withEdgePlacement from "Components/Board/withEdgePlacement";
+import withSquareHighlight from "Components/Board/withSquareHighlight";
+import withSquarePlacement from "Components/Board/withSquarePlacement";
+import withWalls from "Components/Board/withWalls";
 import type { Dispatch } from "Domain/Common/DataTypes";
 import { createAction, type RnWActions } from "Domain/RnW/Actions";
 import { createModel, type RnWModel } from "Domain/RnW/Model";
@@ -8,10 +16,9 @@ import type { RnWGameAction as ServerGameAction } from "Services/RnWServer/Actio
 import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
 import { useRnWWebsocket } from "Services/RnWServer/useRnWWebsocket";
 import { useGetter, useImagePreloader } from "Util";
-import type { ComponentType } from "react";
-import useClickMovement from "./useClickMovement";
-import useDnDMovement from "./useDnDMovement";
+import { useCallback, useMemo } from "react";
 import useLastMoveHighlight from "./useLastMoveHighlight";
+import useMovement from "./useMovement";
 import usePiecePlacement from "./usePiecePlacement";
 import usePieces from "./usePieces";
 import useWallPlacement from "./useWallPlacement";
@@ -36,36 +43,56 @@ type RnWGameControllerProps = {
 function RnWGameController(props: RnWGameControllerProps) {
     const rnwState = useRnWState();
     const rnwDispatch = useRnWDispatch();
-    const rnwModel = createModel(rnwState);
-    const rnwActions = createAction(rnwDispatch);
+    const rnwModel = useMemo(() => createModel(rnwState), [rnwState]);
+    const rnwActions = useMemo(() => createAction(rnwDispatch), [rnwDispatch]);
     const getRnWModel = useGetter(rnwModel);
     const getRnWActions = useGetter(rnwActions);
 
     useImagePreloader(Object.values(rnwConfig.pieces).flatMap((p) => [p.default.uri, p.disabled.uri]));
 
-    function onWebsocketUpdate(state: ServerGameState) {
-        rnwActions.updateFromServer(state);
-    }
+    const onWebsocketUpdate = useCallback(
+        (state: ServerGameState) => {
+            rnwActions.updateFromServer(state);
+        },
+        [rnwActions],
+    );
     const websocketDispatch = useRnWWebsocket(props.gameId, onWebsocketUpdate);
 
-    const Board = useBoardComponent(getRnWModel, getRnWActions, websocketDispatch);
-    return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} />;
+    const Board = rnWBoard();
+    const boardProperties = useBoardProperties(getRnWModel, getRnWActions, websocketDispatch);
+    return <Board rows={props.board.rows} columns={props.board.columns} haveEdges={true} {...boardProperties} />;
 }
 
-function useBoardComponent(
+function rnWBoard() {
+    return withChessPieces(
+        withWalls(
+            withDnDMovement(
+                withSquareHighlight(
+                    withEdgeHighlight(withSquarePlacement(withEdgePlacement(withClickMovement(BoardBase)))),
+                ),
+            ),
+        ),
+    );
+}
+
+function useBoardProperties(
     getRnWModel: () => RnWModel,
     getRnWActions: () => RnWActions,
     websocketDispatch: Dispatch<ServerGameAction>,
-): ComponentType<BoardBaseProps> {
-    let Board: ComponentType<BoardBaseProps> = BoardBase;
+) {
+    const piecesProperties = usePieces(getRnWModel);
+    const wallsProperties = useWalls(getRnWModel);
+    const movementProperties = useMovement(getRnWModel, getRnWActions);
+    const lastMoveHighlightProperties = useLastMoveHighlight(getRnWModel);
+    const piecePlacementProperties = usePiecePlacement(getRnWModel, getRnWActions, websocketDispatch);
+    const wallPlacementProperties = useWallPlacement(getRnWModel, getRnWActions, websocketDispatch);
 
-    Board = useWallPlacement(Board, getRnWModel, getRnWActions, websocketDispatch);
-    Board = useClickMovement(Board, getRnWModel, getRnWActions);
-    Board = usePiecePlacement(Board, getRnWModel, getRnWActions, websocketDispatch);
-    Board = useLastMoveHighlight(Board, getRnWModel);
-    Board = useDnDMovement(Board, getRnWModel, getRnWActions);
-    Board = useWalls(Board, getRnWModel);
-    Board = usePieces(Board, getRnWModel);
-
-    return Board;
+    return {
+        ...piecesProperties,
+        ...wallsProperties,
+        ...movementProperties,
+        ...lastMoveHighlightProperties,
+        ...piecePlacementProperties,
+        ...wallPlacementProperties,
+    };
 }

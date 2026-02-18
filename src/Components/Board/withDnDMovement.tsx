@@ -1,5 +1,4 @@
 import { areSquareCoordinatesEqual, type SquareCoordinate } from "Domain/Common/Coordinates";
-import { removeKeysFromObject, type WithNoIntersection } from "Util";
 import {
     DndContext,
     type DragEndEvent,
@@ -15,7 +14,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { type ComponentType, type PropsWithChildren, type ReactNode, useState } from "react";
 import "./withDnDMovement.css";
 
-export type BoardProps = {
+type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
 };
 type BaseWithDnDMovementProps = {
@@ -23,11 +22,10 @@ type BaseWithDnDMovementProps = {
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[];
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void;
 };
-export type ComputedBoardProps<TBoardProps> = WithNoIntersection<TBoardProps, BaseWithDnDMovementProps>;
 export type WithDnDMovementProps<TBoardProps> = TBoardProps & BaseWithDnDMovementProps;
 
 export default function withDnDMovement<TBoardProps extends BoardProps>(
-    Board: ComponentType<ComputedBoardProps<TBoardProps>>,
+    Board: ComponentType<TBoardProps>,
 ): ComponentType<WithDnDMovementProps<TBoardProps>> {
     return function WithDnDMovement(props: WithDnDMovementProps<TBoardProps>) {
         const [destinations, setDestinations] = useState<SquareCoordinate[]>([]);
@@ -65,12 +63,6 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
             }
         }
 
-        const boardProps = removeKeysFromObject<TBoardProps, BaseWithDnDMovementProps>(props, {
-            destinationsFrom: true,
-            moveblePositions: true,
-            onMove: true,
-        });
-
         return (
             <DndContext
                 sensors={sensors}
@@ -78,7 +70,7 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
                 onDragStart={handleDragStart}
                 collisionDetection={pointerWithin}
             >
-                <Board {...boardProps} createSquareContent={createDnDArea} />
+                <Board {...props} createSquareContent={createDnDArea} />
             </DndContext>
         );
     };
