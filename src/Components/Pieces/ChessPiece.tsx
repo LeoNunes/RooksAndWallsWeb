@@ -14,7 +14,7 @@ export default function ChessPiece(props: PropsWithChildren<ChessPieceProps>) {
     const uri = props.disabled ? piece.disabled.uri : piece.default.uri;
 
     return (
-        <div className="piece" style={{ backgroundImage: `url(${uri})` }}>
+        <div className="piece" style={{ backgroundImage: `url("${uri}")` }}>
             {props.children}
         </div>
     );
