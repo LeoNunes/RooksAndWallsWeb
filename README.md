@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# Rooks and Walls - Web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend application for the Rooks and Walls project. Built with React 19 and Vite.
 
 ## Available Scripts
 
-In the project directory, you can run:
+- `npm run dev` — Start the development server at [http://localhost:5173](http://localhost:5173)
+- `npm run build` — Type-check and build for production (output in `dist/`)
+- `npm run preview` — Preview the production build locally
+- `npm run test` — Run tests in watch mode
+- `npm run test:run` — Run tests once
+- `npm run typecheck` — Type-check without emitting files
+- `npm run lint` — Lint the codebase with Biome
+- `npm run lint:fix` — Lint and auto-fix
 
-### `npm start`
+## Environment Configuration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The app loads its runtime configuration from `/envConfig.json` before rendering. This file is fetched at startup via `src/EnvConfig.ts` and must be present before the app initialises.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Local Development
 
-### `npm test`
+A placeholder `public/envConfig.json` is included in the repo and is served automatically by Vite during `npm run dev`:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```json
+{ "apiBaseUrl": "http://127.0.0.1:5000", "wsBaseUrl": "ws://127.0.0.1:5000" }
+```
 
-### `npm run build`
+Edit this file to point at a different local or remote backend if needed. It is not used in deployed environments.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Deployed Environments
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+In AWS, `envConfig.json` is written to the S3 bucket by the `WebPipeline` at deploy time (see [RooksAndWallsCDK](https://github.com/LeoNunes/RooksAndWallsCDK/blob/main/README.md)). The values are derived from the CDK config and are never stored in this repository.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Deployment
 
-### `npm run eject`
+Deployments are managed by the `WebPipeline` in [RooksAndWallsCDK](https://github.com/LeoNunes/RooksAndWallsCDK). Pushing to `main` triggers the pipeline, which:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Builds the app with `npm ci && npm run build`
+2. For each environment wave, writes a environment-specific `envConfig.json` and syncs the `dist/` output to the environment's S3 bucket
+3. Invalidates the CloudFront distribution so the new version is served immediately
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The app is served globally via CloudFront. The Beta environment is available at `https://beta.games.leonunes.me`.

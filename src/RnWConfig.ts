@@ -1,3 +1,4 @@
+import { getEnvConfig } from "./EnvConfig";
 import blueRookImage from "./resources/img/bluerook.svg";
 import blueRookDisabledImage from "./resources/img/bluerookdisabled.svg";
 import greenRookImage from "./resources/img/greenrook.svg";
@@ -66,19 +67,15 @@ export const rnwConfig: RnWConfig = {
     },
 };
 
-const apiBaseUrl = "https://beta.api.rw.leonunes.me";
-// const apiBaseUrl = 'http://127.0.0.1:5000';
 const apiPrefix = "/rw";
 export const apiConfig = {
     createGame: {
-        endpoint: () => `${apiBaseUrl}${apiPrefix}/game`,
+        endpoint: () => `${getEnvConfig().apiBaseUrl}${apiPrefix}/game`,
         method: "POST",
     },
 };
 
-const wsBaseUrl = "wss://beta.api.rw.leonunes.me";
-// const wsBaseUrl = 'ws://127.0.0.1:5000';
 const wsGamePath = "/rw/game/{gameId}";
 export const webSocketConfig = {
-    urlForGame: (gameId: number) => `${wsBaseUrl}${wsGamePath.replace("{gameId}", gameId.toString())}`,
+    urlForGame: (gameId: number) => `${getEnvConfig().wsBaseUrl}${wsGamePath.replace("{gameId}", gameId.toString())}`,
 };
