@@ -1,6 +1,17 @@
 # Rooks and Walls - Web
 
-Frontend application for the Rooks and Walls project. Built with React 19 and Vite.
+Frontend application for the Rooks and Walls project. Built with React 19, Vite, and React Router v7.
+
+## Routing
+
+Page navigation is handled by [React Router v7](https://reactrouter.com) in library mode (`createBrowserRouter`).
+
+| Route | Component | Description |
+|---|---|---|
+| `/` | `RnWGameManager` | Home page — create or join a game |
+| `/game/rw/:gameId` | `GamePage` | Active game board |
+
+Navigating to `/game/rw/:gameId` with a missing or non-numeric `gameId` redirects back to `/`.
 
 ## Available Scripts
 

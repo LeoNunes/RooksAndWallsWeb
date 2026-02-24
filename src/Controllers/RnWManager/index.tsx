@@ -1,5 +1,5 @@
+import LoadingOverlay from "Components/LoadingOverlay/LoadingOverlay";
 import RnWAccessGame from "Components/RnWAccessGame/RnWAccessGame";
-import RnWGame from "Controllers/RnWGame";
 import { createGame, joinGame } from "Domain/RnWManager/Actions";
 import {
     RnWManagerStateProvider,
@@ -7,6 +7,8 @@ import {
     useRnWManagerState,
 } from "Domain/RnWManager/RnWGameManagerStateProvider";
 import { rnwConfig } from "RnWConfig";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function RnWGameManager() {
     return (
@@ -21,6 +23,15 @@ type RnWGameManagerControllerProps = {};
 function RnWGameManagerController(_props: RnWGameManagerControllerProps) {
     const rnwManagerState = useRnWManagerState();
     const rnwManagerDispatch = useRnWManagerDispatch();
+    const navigate = useNavigate();
+
+    const game = rnwManagerState.games.at(0);
+
+    useEffect(() => {
+        if (game && !game.isCreating) {
+            navigate(`/game/rw/${game.gameId}`);
+        }
+    }, [game, navigate]);
 
     function handleCreateGame(players: number, piecesPerPlayer: number): void {
         rnwManagerDispatch(createGame(players, piecesPerPlayer));
@@ -30,30 +41,19 @@ function RnWGameManagerController(_props: RnWGameManagerControllerProps) {
         rnwManagerDispatch(joinGame(gameId));
     }
 
-    const game = rnwManagerState.games.at(0);
-
-    if (game && !game.isCreating) {
-        return (
-            <>
-                <p style={{ textAlign: "center" }}>Game ID: {game.gameId}</p>
-                <RnWGame
-                    gameId={game.gameId}
-                    board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }}
-                />
-            </>
-        );
-    }
-
     return (
-        <RnWAccessGame
-            maxPlayers={rnwConfig.maxNumberOfPlayers}
-            minPlayers={rnwConfig.minNumberOfPlayers}
-            defaultPlayers={rnwConfig.defaultNumberOfPlayers}
-            maxPiecesPerPlayer={rnwConfig.maxPiecesPerPlayer}
-            minPiecesPerPlayer={rnwConfig.minPiecesPerPlayer}
-            defaultPiecesPerPlayer={rnwConfig.defaultPiecesPerPlayer}
-            createGame={handleCreateGame}
-            joinGame={handleJoinGame}
-        />
+        <>
+            <RnWAccessGame
+                maxPlayers={rnwConfig.maxNumberOfPlayers}
+                minPlayers={rnwConfig.minNumberOfPlayers}
+                defaultPlayers={rnwConfig.defaultNumberOfPlayers}
+                maxPiecesPerPlayer={rnwConfig.maxPiecesPerPlayer}
+                minPiecesPerPlayer={rnwConfig.minPiecesPerPlayer}
+                defaultPiecesPerPlayer={rnwConfig.defaultPiecesPerPlayer}
+                createGame={handleCreateGame}
+                joinGame={handleJoinGame}
+            />
+            {game?.isCreating && <LoadingOverlay />}
+        </>
     );
 }
