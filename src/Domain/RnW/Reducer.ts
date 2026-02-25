@@ -41,7 +41,11 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                 stage: serverState.stage,
                 playerId: serverState.playerId,
                 currentPlayer: serverState.currentTurn,
+                numberOfPlayers: serverState.config.numberOfPlayers,
                 players: serverState.players.map((p) => ({
+                    id: p.id,
+                })),
+                remainingPlayers: serverState.remainingPlayers.map((p) => ({
                     id: p.id,
                 })),
                 pieces: serverState.pieces.map((p) => ({

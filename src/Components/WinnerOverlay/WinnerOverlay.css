@@ -1,0 +1,46 @@
+.winner-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.winner-overlay-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px;
+    border-radius: 12px;
+    background-color: #eeeed2;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.winner-overlay-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #183b09;
+}
+
+.winner-overlay-title.gold {
+    color: #c09526;
+}
+
+.winner-overlay-dismiss {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 6px;
+    background-color: #183b09;
+    color: #eeeed2;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.winner-overlay-dismiss:hover {
+    opacity: 0.9;
+}

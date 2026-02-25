@@ -24,6 +24,7 @@ export type RnWGameState = Immutable<{
     currentTurn?: number;
     playerId: number;
     players: Player[];
+    remainingPlayers: Player[];
     pieces: Piece[];
     walls: Wall[];
     deadPieces: Piece[];
@@ -62,6 +63,7 @@ export function isRnWGameState(obj: unknown): obj is RnWGameState {
         isGameStage(gameState.stage) &&
         typeof gameState.playerId === "number" &&
         isArrayOf<Player>(gameState.players, isPlayer) &&
+        isArrayOf<Player>(gameState.remainingPlayers, isPlayer) &&
         isArrayOf<Piece>(gameState.pieces, isPiece) &&
         isArrayOf<Wall>(gameState.walls, isWall) &&
         isArrayOf<Piece>(gameState.deadPieces, isPiece)

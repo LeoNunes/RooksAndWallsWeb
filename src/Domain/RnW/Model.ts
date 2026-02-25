@@ -34,7 +34,9 @@ export type RnWState = {
     stage: Stage;
     playerId: number;
     currentPlayer: number | undefined;
+    numberOfPlayers: number;
     players: Player[];
+    remainingPlayers: Player[];
     pieces: Piece[];
     walls: Wall[];
     deadPieces: Piece[];
@@ -45,17 +47,22 @@ export const rnwStateInitialValue: RnWState = {
     stage: "waiting_for_players",
     playerId: 0,
     currentPlayer: undefined,
+    numberOfPlayers: 0,
     players: [],
+    remainingPlayers: [],
     pieces: [],
     walls: [],
     deadPieces: [],
     nextMove: {},
 };
 
+export type GameResult = { type: "in_progress" } | { type: "draw" } | { type: "winners"; playerIds: number[] };
+
 export type RnWModel = ReturnType<typeof createModel>;
 export const createModel = (state: RnWState) => ({
     ...state,
     playerCurrentAction: () => playerCurrentAction(state),
+    gameResult: () => gameResult(state),
     getPlayerId: () => state.playerId,
     getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
@@ -188,6 +195,12 @@ export function canPlacePiece(state: RnWState, position: SquareCoordinate) {
 
 export function canMoveTo(state: RnWState, piece: Piece, destination: SquareCoordinate) {
     return possibleDestinations(state, piece).find((d) => areSquareCoordinatesEqual(d, destination)) !== undefined;
+}
+
+export function gameResult(state: RnWState): GameResult {
+    if (state.stage !== "completed") return { type: "in_progress" };
+    if (state.remainingPlayers.length === 0) return { type: "draw" };
+    return { type: "winners", playerIds: state.remainingPlayers.map((p) => p.id) };
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {
