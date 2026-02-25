@@ -1,0 +1,53 @@
+---
+description: Business logic in the model; discriminated unions for domain states; full-stack propagation of new fields; runtime validation in sync with types
+alwaysApply: true
+---
+
+# Domain Model
+
+## Business logic belongs in the model, not in controllers
+
+If a controller derives a meaningful domain concept inline, move it to the model as a named function with a typed return value.
+
+```typescript
+// ❌ BAD — domain logic inside a controller
+const winners = state.remainingPlayers.filter(...);
+const isDraw = winners.length === 0;
+
+// ✅ GOOD — named function in Model.ts
+export type GameResult =
+    | { type: "in_progress" }
+    | { type: "draw" }
+    | { type: "winners"; playerIds: number[] };
+
+export function gameResult(state: RnWState): GameResult { ... }
+```
+
+## Use discriminated unions for domain states
+
+Model mutually exclusive states with a `type` discriminant, not optional fields.
+
+```typescript
+// ❌ BAD
+type Result = { isDraw?: boolean; winnerId?: number; isInProgress?: boolean };
+
+// ✅ GOOD
+type Result =
+    | { type: "in_progress" }
+    | { type: "draw" }
+    | { type: "winner"; winnerId: number };
+```
+
+## New data propagates through the full stack in order
+
+When adding a field from an external source, update each layer in sequence:
+
+1. External data type (e.g., `Data.ts`)
+2. Domain state type + initial value (e.g., `Model.ts`)
+3. Reducer / mapping layer (e.g., `Reducer.ts`)
+
+Never do a partial update across layers.
+
+## Runtime validation must stay in sync with types
+
+Update type guards and schema validators at the same time as the types they validate.

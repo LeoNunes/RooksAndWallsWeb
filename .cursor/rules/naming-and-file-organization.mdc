@@ -1,0 +1,23 @@
+---
+description: Name by architectural role not current implementation; split files by concern; index.tsx is an orchestrator only
+alwaysApply: true
+---
+
+# Naming & File Organization
+
+## Name things after their architectural role, not current implementation
+
+A component named after what it *looks like today* will become misleading as the UI evolves. Name after what the thing *does*.
+
+```
+// ❌ BAD — tied to current visual form
+PlayerSidebar, InfoPanel, BottomBar
+
+// ✅ GOOD — describes the role
+GameFrame      (wraps content with contextual game info)
+GameResult     (represents the outcome of a game)
+```
+
+## When a file handles multiple concerns, split it
+
+If a file contains an orchestrator, a controller, and business logic, break it into separate files — one per responsibility.

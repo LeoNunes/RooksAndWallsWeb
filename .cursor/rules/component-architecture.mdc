@@ -1,0 +1,54 @@
+---
+description: Visual components are props-only; controllers bridge state to UI; dependency injection via children
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# Component Architecture
+
+## Visual components are props-only
+
+Components in `src/Components/` must not access global state, context, or external services. All data comes exclusively from props.
+
+```tsx
+// ❌ BAD — component reads state directly
+export function PlayerCard() {
+    const state = useGameState();
+    return <div>{state.playerName}</div>;
+}
+
+// ✅ GOOD — all data comes from props
+export type PlayerCardProps = { name: string; isActive: boolean };
+export function PlayerCard({ name, isActive }: PlayerCardProps) {
+    return <div className={isActive ? "active" : ""}>{name}</div>;
+}
+```
+
+## Controllers are the bridge
+
+Components in `src/Controllers/` read state and config, derive the data visual components need, and pass it as props. No rendering logic beyond composition.
+
+## Inject dependencies through `children` or props
+
+Wrappers receive what they wrap as children — never import and instantiate sub-components directly inside a wrapper. This decouples layout from content.
+
+```tsx
+// ❌ BAD — wrapper is coupled to its content
+export function GameFrame() {
+    return <div className="frame"><GameBoard /></div>;
+}
+
+// ✅ GOOD — content is injected
+export function GameFrame({ children }: PropsWithChildren) {
+    return <div className="frame">{children}</div>;
+}
+```
+
+## Composition pattern
+
+```
+Orchestrator (sets up providers)
+└── FrameController (PropsWithChildren — layout + contextual info)
+    └── ContentController (domain behavior)
+        └── VisualComponent (props-only)
+```
