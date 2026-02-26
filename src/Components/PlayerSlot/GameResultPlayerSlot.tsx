@@ -20,10 +20,15 @@ export default function GameResultPlayerSlot({
 
     return (
         <div className={classes}>
-            <img className="player-slot-icon" src={iconUrl} alt={color} />
+            {isWinner ? (
+                <span className="player-slot-rank-icon">{"\uD83C\uDFC6"}</span>
+            ) : (
+                <img className="player-slot-icon" src={iconUrl} alt={color} />
+            )}
             <div className="player-slot-info">
                 <span className="player-slot-name">{displayName}</span>
                 {badge && <span className="player-slot-badge">{badge}</span>}
+                {isWinner && <div className="player-slot-color-bar gold" />}
             </div>
         </div>
     );

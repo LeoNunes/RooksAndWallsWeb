@@ -63,6 +63,7 @@ export const createModel = (state: RnWState) => ({
     ...state,
     playerCurrentAction: () => playerCurrentAction(state),
     gameResult: () => gameResult(state),
+    isPlayerEliminated: (playerId: number) => isPlayerEliminated(state, playerId),
     getPlayerId: () => state.playerId,
     getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
@@ -201,6 +202,12 @@ export function gameResult(state: RnWState): GameResult {
     if (state.stage !== "completed") return { type: "in_progress" };
     if (state.remainingPlayers.length === 0) return { type: "draw" };
     return { type: "winners", playerIds: state.remainingPlayers.map((p) => p.id) };
+}
+
+export function isPlayerEliminated(state: RnWState, playerId: number): boolean {
+    if (state.stage === "waiting_for_players") return false;
+    if (!state.players.some((player) => player.id === playerId)) return false;
+    return !state.remainingPlayers.some((player) => player.id === playerId);
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {

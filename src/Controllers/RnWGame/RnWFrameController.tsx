@@ -6,6 +6,7 @@ import { rnwConfig } from "RnWConfig";
 import type { PropsWithChildren, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import RnWPlayerSlotController from "./RnWPlayerSlotController";
+import RnWSidebarFooterController from "./RnWSidebarFooterController";
 
 export default function RnWFrameController({ children }: PropsWithChildren) {
     const state = useRnWState();
@@ -38,7 +39,12 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
     );
 
     return (
-        <GameFrame sidebarHeader={sidebarHeader} playerSlots={playerSlots} winner={winner}>
+        <GameFrame
+            sidebarHeader={sidebarHeader}
+            playerSlots={playerSlots}
+            sidebarFooter={<RnWSidebarFooterController />}
+            winner={winner}
+        >
             {children}
         </GameFrame>
     );
@@ -47,9 +53,9 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
 function deriveSidebarHeader(stage: Stage): string {
     switch (stage) {
         case "waiting_for_players":
-            return "Waiting for players";
+            return "Lobby";
         case "completed":
-            return "Final Standings";
+            return "Player Standings";
         default:
             return "Players";
     }
@@ -64,15 +70,17 @@ function deriveWinner(
     if (result.type === "in_progress") return undefined;
 
     if (result.type === "draw") {
-        return { visible: !overlayDismissed, outcome: "draw", onDismiss };
-    }
-
-    const localWins = result.playerIds.includes(state.playerId);
-    if (localWins) {
-        return { visible: !overlayDismissed, outcome: "local_wins", onDismiss };
+        return { visible: !overlayDismissed, outcome: "draw", subtitle: "No one wins!", onDismiss };
     }
 
     const winnerColor = rnwConfig.players[result.playerIds[0]].color;
     const winnerName = winnerColor.charAt(0).toUpperCase() + winnerColor.slice(1);
-    return { visible: !overlayDismissed, outcome: "other_wins", winnerName, onDismiss };
+    const subtitle = `${winnerName} wins the game!`;
+    const localWins = result.playerIds.includes(state.playerId);
+
+    if (localWins) {
+        return { visible: !overlayDismissed, outcome: "local_wins", subtitle, onDismiss };
+    }
+
+    return { visible: !overlayDismissed, outcome: "other_wins", winnerName, subtitle, onDismiss };
 }

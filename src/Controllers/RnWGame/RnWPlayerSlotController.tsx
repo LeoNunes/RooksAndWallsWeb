@@ -1,7 +1,8 @@
 import ActivePlayerSlot from "Components/PlayerSlot/ActivePlayerSlot";
 import GameResultPlayerSlot from "Components/PlayerSlot/GameResultPlayerSlot";
+import LobbyPlayerSlot from "Components/PlayerSlot/LobbyPlayerSlot";
 import WaitingForPlayerSlot from "Components/PlayerSlot/WaitingForPlayerSlot";
-import { gameResult } from "Domain/RnW/Model";
+import { gameResult, isPlayerEliminated } from "Domain/RnW/Model";
 import { useRnWState } from "Domain/RnW/RnWStateProvider";
 import { rnwConfig } from "RnWConfig";
 import { useMemo } from "react";
@@ -14,29 +15,24 @@ export default function RnWPlayerSlotController({ playerId }: RnWPlayerSlotContr
     const state = useRnWState();
     const result = useMemo(() => gameResult(state), [state]);
     const hasPlayerInSlot = state.players.some((player) => player.id === playerId);
-
-    if (state.stage === "waiting_for_players" && !hasPlayerInSlot) {
-        return <WaitingForPlayerSlot />;
-    }
+    const playerEliminated = isPlayerEliminated(state, playerId);
 
     const playerConfig = rnwConfig.players[playerId];
     const color = playerConfig.color;
     const iconUrl = rnwConfig.pieces[color].default.uri;
     const isLocal = playerId === state.playerId;
-    const isCurrentTurn = state.currentPlayer === playerId;
-    const displayName = isLocal ? "You" : color.charAt(0).toUpperCase() + color.slice(1);
-    const isWinner = result.type === "winners" && result.playerIds.includes(playerId);
+    const colorLabel = color.charAt(0).toUpperCase() + color.slice(1);
 
-    let badge: string | undefined;
-    if (result.type !== "in_progress" && isWinner) {
-        badge = "Winner!";
-    } else if (isCurrentTurn && isLocal) {
-        badge = "Your turn";
-    } else if (isCurrentTurn) {
-        badge = "Playing";
+    if (state.stage === "waiting_for_players") {
+        if (!hasPlayerInSlot) return <WaitingForPlayerSlot />;
+        return <LobbyPlayerSlot color={color} iconUrl={iconUrl} displayName={isLocal ? "You" : colorLabel} />;
     }
 
     if (state.stage === "completed") {
+        const isWinner = result.type === "winners" && result.playerIds.includes(playerId);
+        const displayName = isLocal && isWinner ? "You \u2013 Winner!" : isLocal ? "You" : `${colorLabel} Player`;
+        const badge = isWinner ? "Winner!" : "Eliminated";
+
         return (
             <GameResultPlayerSlot
                 color={color}
@@ -46,6 +42,27 @@ export default function RnWPlayerSlotController({ playerId }: RnWPlayerSlotContr
                 badge={badge}
             />
         );
+    }
+
+    if (playerEliminated) {
+        return (
+            <GameResultPlayerSlot
+                color={color}
+                iconUrl={iconUrl}
+                displayName={isLocal ? "You" : colorLabel}
+                isWinner={false}
+                badge="Eliminated"
+            />
+        );
+    }
+
+    const isCurrentTurn = state.currentPlayer === playerId;
+    const displayName = isLocal ? "You" : colorLabel;
+    let badge: string | undefined;
+    if (isCurrentTurn && isLocal) {
+        badge = "Your turn";
+    } else if (isCurrentTurn) {
+        badge = "Playing";
     }
 
     return (

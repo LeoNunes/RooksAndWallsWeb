@@ -8,7 +8,6 @@ const router = createBrowserRouter([
         path: "/",
         element: (
             <div className="App">
-                <h1>Rooks And Walls</h1>
                 <RnWGameManager />
             </div>
         ),
@@ -17,7 +16,6 @@ const router = createBrowserRouter([
         path: "/game/rw/:gameId",
         element: (
             <div className="App">
-                <h1>Rooks And Walls</h1>
                 <GamePage />
             </div>
         ),

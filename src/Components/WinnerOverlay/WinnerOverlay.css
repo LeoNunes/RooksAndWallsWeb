@@ -12,35 +12,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     padding: 32px 48px;
     border-radius: 12px;
-    background-color: #eeeed2;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background-color: #1e4d12;
+    border: 3px solid #3a7a28;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.winner-overlay-trophy {
+    font-size: 3rem;
+    line-height: 1.1;
+    text-align: center;
+    white-space: pre-line;
 }
 
 .winner-overlay-title {
     margin: 0;
     font-size: 2rem;
     font-weight: 800;
-    color: #183b09;
+    color: #f5f0e8;
 }
 
 .winner-overlay-title.gold {
-    color: #c09526;
+    color: #f0d060;
+}
+
+.winner-overlay-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #c8d8c0;
 }
 
 .winner-overlay-dismiss {
-    padding: 8px 24px;
+    margin-top: 4px;
+    padding: 8px 32px;
     border: none;
     border-radius: 6px;
     background-color: #183b09;
-    color: #eeeed2;
+    color: #f5f0e8;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
 }
 
 .winner-overlay-dismiss:hover {
-    opacity: 0.9;
+    background-color: #0f2a06;
 }
