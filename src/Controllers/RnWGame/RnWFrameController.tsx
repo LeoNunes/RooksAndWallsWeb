@@ -1,10 +1,11 @@
-import GameFrame, { type PlayerSlotProps } from "Components/GameFrame/GameFrame";
+import GameFrame from "Components/GameFrame/GameFrame";
 import type { WinnerOverlayProps } from "Components/WinnerOverlay/WinnerOverlay";
-import { type GameResult, gameResult, type RnWState } from "Domain/RnW/Model";
+import { type GameResult, gameResult, type RnWState, type Stage } from "Domain/RnW/Model";
 import { useRnWState } from "Domain/RnW/RnWStateProvider";
 import { rnwConfig } from "RnWConfig";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import RnWPlayerSlotController from "./RnWPlayerSlotController";
 
 export default function RnWFrameController({ children }: PropsWithChildren) {
     const state = useRnWState();
@@ -17,7 +18,18 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
     }, [state.stage]);
 
     const result = useMemo(() => gameResult(state), [state]);
-    const slots = useMemo(() => deriveSlots(state, result), [state, result]);
+    const sidebarHeader = useMemo(() => deriveSidebarHeader(state.stage), [state.stage]);
+    const playerIds = useMemo(
+        () => Array.from({ length: state.numberOfPlayers }, (_, i) => i),
+        [state.numberOfPlayers],
+    );
+    const playerSlots = useMemo<ReactNode[]>(
+        () =>
+            playerIds.map((playerId) => (
+                <RnWPlayerSlotController key={`player-slot-${playerId}`} playerId={playerId} />
+            )),
+        [playerIds],
+    );
 
     const onDismiss = useCallback(() => setOverlayDismissed(true), []);
     const winner = useMemo(
@@ -26,46 +38,21 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
     );
 
     return (
-        <GameFrame slots={slots} stage={state.stage} winner={winner}>
+        <GameFrame sidebarHeader={sidebarHeader} playerSlots={playerSlots} winner={winner}>
             {children}
         </GameFrame>
     );
 }
 
-function deriveSlots(state: RnWState, result: GameResult): PlayerSlotProps[] {
-    const slots: PlayerSlotProps[] = [];
-    const winnerIds = result.type === "winners" ? result.playerIds : [];
-
-    for (let i = 0; i < state.numberOfPlayers; i++) {
-        const playerConfig = rnwConfig.players[i];
-        const color = playerConfig.color;
-        const hasJoined = state.players.some((p) => p.id === i);
-        const isLocal = i === state.playerId;
-        const isCurrentTurn = state.currentPlayer === i;
-        const isWinner = winnerIds.includes(i);
-
-        let badge: string | undefined;
-        if (result.type !== "in_progress" && isWinner) {
-            badge = "Winner!";
-        } else if (isCurrentTurn && isLocal) {
-            badge = "Your turn";
-        } else if (isCurrentTurn) {
-            badge = "Playing";
-        }
-
-        slots.push({
-            color,
-            iconUrl: rnwConfig.pieces[color].default.uri,
-            displayName: isLocal ? "You" : color.charAt(0).toUpperCase() + color.slice(1),
-            isCurrentTurn,
-            badge,
-            hasJoined,
-            isEliminated: result.type === "draw" || (result.type === "winners" && hasJoined && !isWinner),
-            isWinner,
-        });
+function deriveSidebarHeader(stage: Stage): string {
+    switch (stage) {
+        case "waiting_for_players":
+            return "Waiting for players";
+        case "completed":
+            return "Final Standings";
+        default:
+            return "Players";
     }
-
-    return slots;
 }
 
 function deriveWinner(
