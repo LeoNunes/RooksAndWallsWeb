@@ -12,6 +12,7 @@ export default defineConfig({
             Components: path.resolve(__dirname, "./src/Components"),
             Controllers: path.resolve(__dirname, "./src/Controllers"),
             Services: path.resolve(__dirname, "./src/Services"),
+            RnWAssets: path.resolve(__dirname, "./src/RnWAssets.ts"),
             RnWConfig: path.resolve(__dirname, "./src/RnWConfig.ts"),
         },
     },
