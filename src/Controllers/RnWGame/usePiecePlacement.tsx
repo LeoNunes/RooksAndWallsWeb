@@ -3,6 +3,7 @@ import type { SquareCoordinate } from "Domain/Common/Coordinates";
 import type { Dispatch } from "Domain/Common/DataTypes";
 import type { RnWActions } from "Domain/RnW/Actions";
 import type { RnWModel } from "Domain/RnW/Model";
+import { rnwConfig } from "RnWConfig";
 import type { RnWGameAction as ServerGameAction } from "Services/RnWServer/Actions";
 import { useCallback } from "react";
 
@@ -15,12 +16,15 @@ export default function usePiecePlacement(
 
     const placebleCoordinates = rnwModel.availableSquaresForPlacingPiece();
 
-    const placeble = useCallback(() => <ChessPiece player={rnwModel.playerId} type="rook" />, [rnwModel.playerId]);
+    const placeble = useCallback(
+        () => <ChessPiece color={rnwConfig.players[rnwModel.localPlayer.number].color} type="rook" />,
+        [rnwModel.localPlayer.number],
+    );
 
     function onPlace(coord: SquareCoordinate) {
         if (!rnwModel.canPlacePiece(coord)) return;
 
-        getRnWActions().addPiece(rnwModel.playerId, coord, websocketDispatch);
+        getRnWActions().addPiece(rnwModel.localPlayer, coord, websocketDispatch);
     }
 
     return {

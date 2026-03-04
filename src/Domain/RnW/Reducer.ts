@@ -34,35 +34,43 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
                 ],
             };
         }
+        /** biome-ignore-start lint/style/noNonNullAssertion: It is expected that all players are in the players array */
         case "update-from-server": {
             const { serverState } = action;
+            const players = serverState.players.map((p, index) => ({
+                id: p.id,
+                number: index,
+            }));
+            const playersById = new Map(players.map((p) => [p.id, p]));
+            const currentPlayerIndex = serverState.players.findIndex((p) => p.id === serverState.currentTurn);
             return {
                 ...state,
                 stage: serverState.stage,
-                playerId: serverState.playerId,
-                currentPlayer: serverState.currentTurn,
+                localPlayer: playersById.get(serverState.playerId)!,
+                currentPlayer: currentPlayerIndex >= 0 ? players[currentPlayerIndex] : undefined,
                 numberOfPlayers: serverState.config.numberOfPlayers,
-                players: serverState.players.map((p) => ({
-                    id: p.id,
-                })),
-                remainingPlayers: serverState.remainingPlayers.map((p) => ({
-                    id: p.id,
-                })),
-                pieces: serverState.pieces.map((p) => ({
-                    id: p.id,
-                    owner: p.owner,
-                    position: p.position,
-                })),
+                players,
+                remainingPlayers: serverState.remainingPlayers.map((rp) => playersById.get(rp.id)!),
+                pieces: serverState.pieces.map((p) => {
+                    return {
+                        id: p.id,
+                        owner: playersById.get(p.owner)!,
+                        position: p.position,
+                    };
+                }),
                 walls: serverState.walls.map((w) => ({
                     position: w.position,
                 })),
-                deadPieces: serverState.deadPieces.map((p) => ({
-                    id: p.id,
-                    owner: p.owner,
-                    position: p.position,
-                })),
+                deadPieces: serverState.deadPieces.map((p) => {
+                    return {
+                        id: p.id,
+                        owner: playersById.get(p.owner)!,
+                        position: p.position,
+                    };
+                }),
             };
         }
+        /** biome-ignore-end lint/style/noNonNullAssertion: It is expected that all players are in the players array */
         case "set-next-move-piece": {
             return {
                 ...state,

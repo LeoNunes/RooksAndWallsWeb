@@ -20,16 +20,13 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
 
     const result = useMemo(() => gameResult(state), [state]);
     const sidebarHeader = useMemo(() => deriveSidebarHeader(state.stage), [state.stage]);
-    const playerIds = useMemo(
-        () => Array.from({ length: state.numberOfPlayers }, (_, i) => i),
-        [state.numberOfPlayers],
-    );
     const playerSlots = useMemo<ReactNode[]>(
         () =>
-            playerIds.map((playerId) => (
-                <RnWPlayerSlotController key={`player-slot-${playerId}`} playerId={playerId} />
+            Array.from({ length: state.numberOfPlayers }, (_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: The order of the players never changes
+                <RnWPlayerSlotController key={`player-slot-${i}`} player={state.players[i]} />
             )),
-        [playerIds],
+        [state.numberOfPlayers, state.players],
     );
 
     const onDismiss = useCallback(() => setOverlayDismissed(true), []);
@@ -73,10 +70,10 @@ function deriveWinner(
         return { visible: !overlayDismissed, outcome: "draw", subtitle: "No one wins!", onDismiss };
     }
 
-    const winnerColor = rnwConfig.players[result.playerIds[0]].color;
+    const winnerColor = rnwConfig.players[result.player.number].color;
     const winnerName = winnerColor.charAt(0).toUpperCase() + winnerColor.slice(1);
     const subtitle = `${winnerName} wins the game!`;
-    const localWins = result.playerIds.includes(state.playerId);
+    const localWins = result.player.id === state.localPlayer.id;
 
     if (localWins) {
         return { visible: !overlayDismissed, outcome: "local_wins", subtitle, onDismiss };

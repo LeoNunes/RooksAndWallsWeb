@@ -1,6 +1,7 @@
 import type { PieceData } from "Components/Board/withChessPieces";
 import type { ChessPieceTypes } from "Domain/Common/PieceTypes";
 import type { RnWModel } from "Domain/RnW/Model";
+import { rnwConfig } from "RnWConfig";
 
 export default function usePieces(getRnWModel: () => RnWModel) {
     const rnwModel = getRnWModel();
@@ -10,13 +11,13 @@ export default function usePieces(getRnWModel: () => RnWModel) {
             // TODO: Fix this
             // biome-ignore lint/style/noNonNullAssertion: TODO
             coordinate: nextMove.piece?.id === piece.id ? nextMove.piecePosition! : piece.position,
-            player: piece.owner,
+            color: rnwConfig.players[piece.owner.number].color,
             type: "rook" as ChessPieceTypes,
         }))
         .concat(
             rnwModel.deadPieces.map((piece) => ({
                 coordinate: piece.position,
-                player: piece.owner,
+                color: rnwConfig.players[piece.owner.number].color,
                 type: "rook" as ChessPieceTypes,
                 disabled: true,
             })),

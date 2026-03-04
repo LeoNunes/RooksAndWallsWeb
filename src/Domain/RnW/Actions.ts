@@ -2,7 +2,7 @@ import type { EdgeCoordinate, SquareCoordinate } from "Domain/Common/Coordinates
 import type { AsyncAction, Dispatch } from "Domain/Common/DataTypes";
 import { addPieceAction, moveAction, type RnWGameAction as ServerGameAction } from "Services/RnWServer/Actions";
 import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
-import type { Piece, RnWState } from "./Model";
+import type { Piece, Player, RnWState } from "./Model";
 
 export type RnWBaseAction =
     | AddPieceActionType
@@ -19,7 +19,7 @@ export type RnWDispatch = Dispatch<RnWAction>;
 export type RnWActions = ReturnType<typeof createAction>;
 export function createAction(dispatch: RnWDispatch) {
     return {
-        addPiece: (owner: number, position: SquareCoordinate, websocketDispatch: Dispatch<ServerGameAction>) => {
+        addPiece: (owner: Player, position: SquareCoordinate, websocketDispatch: Dispatch<ServerGameAction>) => {
             dispatch(addPiece(owner, position, websocketDispatch));
         },
         setNextMovePiece: (piece: Piece, position: SquareCoordinate) => {
@@ -39,10 +39,10 @@ export function createAction(dispatch: RnWDispatch) {
 
 export type AddPieceActionType = {
     type: "add-piece";
-    owner: number;
+    owner: Player;
     position: SquareCoordinate;
 };
-function addPieceBase(owner: number, position: SquareCoordinate): AddPieceActionType {
+function addPieceBase(owner: Player, position: SquareCoordinate): AddPieceActionType {
     return {
         type: "add-piece",
         owner: owner,
@@ -50,7 +50,7 @@ function addPieceBase(owner: number, position: SquareCoordinate): AddPieceAction
     };
 }
 export function addPiece(
-    owner: number,
+    owner: Player,
     position: SquareCoordinate,
     websocketDispatch: Dispatch<ServerGameAction>,
 ): RnWAction {
