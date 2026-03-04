@@ -12,11 +12,11 @@ export default function useWallPlacement(
 ) {
     const rnwModel = getRnWModel();
 
-    function placeble(props: React.PropsWithChildren) {
+    function placeable(props: React.PropsWithChildren) {
         return <Wall>{props.children}</Wall>;
     }
 
-    const placebleCoordinates = rnwModel.availableEdgesForPlacingWalls();
+    const placeableCoordinates = rnwModel.availableEdgesForPlacingWalls();
 
     function onPlace(coord: EdgeCoordinate) {
         getRnWActions().setNextMoveWall(coord);
@@ -24,8 +24,8 @@ export default function useWallPlacement(
     }
 
     return {
-        edgePlaceble: placeble,
-        edgePlacebleCoordinates: placebleCoordinates,
+        edgePlaceable: placeable,
+        edgePlaceableCoordinates: placeableCoordinates,
         onEdgePlace: onPlace,
     };
 }

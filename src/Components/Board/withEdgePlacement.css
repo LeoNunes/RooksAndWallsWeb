@@ -1,10 +1,10 @@
-.edge-placeble-area-container {
+.edge-placeable-area-container {
     display: flex;
     flex: 1;
     position: relative;
 }
 
-.edge-placeble-area {
+.edge-placeable-area {
     display: flex;
     position: absolute;
     width: 100%;

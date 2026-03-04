@@ -3,8 +3,8 @@ import type { ComponentType, PropsWithChildren, ReactNode } from "react";
 import "./withEdgePlacement.css";
 
 type BaseWithEdgePlacementProps = {
-    edgePlacebleCoordinates: EdgeCoordinate[];
-    edgePlaceble: ComponentType;
+    edgePlaceableCoordinates: EdgeCoordinate[];
+    edgePlaceable: ComponentType;
     onEdgePlace: (coord: EdgeCoordinate) => void;
 };
 
@@ -17,36 +17,36 @@ export default function withEdgePlacement<TBoardProps extends BoardProps>(
     Board: ComponentType<TBoardProps>,
 ): ComponentType<WithEdgePlacementProps<TBoardProps>> {
     return function WithEdgePlacement(props: WithEdgePlacementProps<TBoardProps>) {
-        function createPlacebleAreas(coord: EdgeCoordinate) {
-            if (props.edgePlacebleCoordinates.find((c) => areCoordinatesEqual(c, coord)) === undefined) {
+        function createPlaceableAreas(coord: EdgeCoordinate) {
+            if (props.edgePlaceableCoordinates.find((c) => areCoordinatesEqual(c, coord)) === undefined) {
                 return props.createEdgeContent?.(coord);
             }
 
             return (
-                <PlacebleArea placeble={props.edgePlaceble} onClick={() => props.onEdgePlace(coord)}>
+                <PlaceableArea placeable={props.edgePlaceable} onClick={() => props.onEdgePlace(coord)}>
                     {props.createEdgeContent?.(coord)}
-                </PlacebleArea>
+                </PlaceableArea>
             );
         }
 
-        return <Board {...props} createEdgeContent={createPlacebleAreas} />;
+        return <Board {...props} createEdgeContent={createPlaceableAreas} />;
     };
 }
 
 /** biome-ignore-start lint/a11y/noStaticElementInteractions: Ignore */
 /** biome-ignore-start lint/a11y/useKeyWithClickEvents: Ignore */
-type PlacebleAreaProps = PropsWithChildren<{
-    placeble: ComponentType;
+type PlaceableAreaProps = PropsWithChildren<{
+    placeable: ComponentType;
     onClick: () => void;
 }>;
-function PlacebleArea(props: PlacebleAreaProps) {
-    const Placeble = props.placeble;
+function PlaceableArea(props: PlaceableAreaProps) {
+    const Placeable = props.placeable;
 
     return (
-        <div className="edge-placeble-area-container">
+        <div className="edge-placeable-area-container">
             {props.children}
-            <div className="edge-placeble-area" onClick={props.onClick}>
-                <Placeble />
+            <div className="edge-placeable-area" onClick={props.onClick}>
+                <Placeable />
             </div>
         </div>
     );

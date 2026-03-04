@@ -14,9 +14,9 @@ export default function usePiecePlacement(
 ) {
     const rnwModel = getRnWModel();
 
-    const placebleCoordinates = rnwModel.availableSquaresForPlacingPiece();
+    const placeableCoordinates = rnwModel.availableSquaresForPlacingPiece();
 
-    const placeble = useCallback(
+    const placeable = useCallback(
         () => <ChessPiece color={rnwConfig.players[rnwModel.localPlayer.number].color} type="rook" />,
         [rnwModel.localPlayer.number],
     );
@@ -28,8 +28,8 @@ export default function usePiecePlacement(
     }
 
     return {
-        squarePlaceble: placeble,
-        squarePlacebleCoordinates: placebleCoordinates,
+        squarePlaceable: placeable,
+        squarePlaceableCoordinates: placeableCoordinates,
         onSquarePlace: onPlace,
     };
 }
