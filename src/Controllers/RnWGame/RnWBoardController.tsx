@@ -11,7 +11,7 @@ import type { Dispatch } from "Domain/Common/DataTypes";
 import { createAction, type RnWActions } from "Domain/RnW/Actions";
 import { createModel, type RnWModel } from "Domain/RnW/Model";
 import { useRnWDispatch, useRnWState } from "Domain/RnW/RnWStateProvider";
-import { rnwConfig } from "RnWConfig";
+import { rnwAssets } from "RnWAssets";
 import type { RnWGameAction as ServerGameAction } from "Services/RnWServer/Actions";
 import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
 import { useRnWWebsocket } from "Services/RnWServer/useRnWWebsocket";
@@ -40,7 +40,7 @@ export default function RnWBoardController(props: RnWBoardControllerProps) {
     const getRnWModel = useGetter(rnwModel);
     const getRnWActions = useGetter(rnwActions);
 
-    useImagePreloader(Object.values(rnwConfig.pieces).flatMap((p) => [p.default.uri, p.disabled.uri]));
+    useImagePreloader(Object.values(rnwAssets.pieces).flatMap((p) => [p.default.uri, p.disabled.uri]));
 
     const onWebsocketUpdate = useCallback(
         (state: ServerGameState) => {
