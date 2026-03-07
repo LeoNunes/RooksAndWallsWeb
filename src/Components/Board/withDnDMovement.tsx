@@ -18,7 +18,7 @@ type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
 };
 type BaseWithDnDMovementProps = {
-    moveblePositions: SquareCoordinate[];
+    movablePositions: SquareCoordinate[];
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[];
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void;
 };
@@ -35,8 +35,8 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
             return (
                 <DragAndDropArea
                     coord={coord}
-                    canDrag={props.moveblePositions.find((p) => areSquareCoordinatesEqual(p, coord)) !== undefined}
-                    canDrop={destinations.find((d) => areSquareCoordinatesEqual(d, coord)) !== undefined}
+                    canDrag={props.movablePositions.some((p) => areSquareCoordinatesEqual(p, coord))}
+                    canDrop={destinations.some((d) => areSquareCoordinatesEqual(d, coord))}
                 >
                     {props.createSquareContent?.(coord)}
                 </DragAndDropArea>
@@ -56,9 +56,7 @@ export default function withDnDMovement<TBoardProps extends BoardProps>(
 
             if (!dragData || !dropData) return;
 
-            if (
-                props.destinationsFrom(dragData.origin).find((c) => areSquareCoordinatesEqual(c, dropData.destination))
-            ) {
+            if (destinations.some((c) => areSquareCoordinatesEqual(c, dropData.destination))) {
                 props.onMove(dragData.origin, dropData.destination);
             }
         }

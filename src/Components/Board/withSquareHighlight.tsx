@@ -15,7 +15,7 @@ export default function withSquareHighlight<TBoardProps extends BoardProps>(
 ): ComponentType<WithSquareHighlightProps<TBoardProps>> {
     return function WithSquareHighlight(props: WithSquareHighlightProps<TBoardProps>) {
         function createHighlightedArea(coord: SquareCoordinate) {
-            if (!props.highlightedSquares.find((highlight) => areCoordinatesEqual(highlight, coord))) {
+            if (!props.highlightedSquares.some((highlight) => areCoordinatesEqual(highlight, coord))) {
                 return props.createSquareContent?.(coord);
             }
 

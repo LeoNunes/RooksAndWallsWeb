@@ -15,7 +15,7 @@ export default function withEdgeHighlight<TBoardProps extends BoardProps>(
 ): ComponentType<WithEdgeHighlightProps<TBoardProps>> {
     return function WithEdgeHighlight(props: WithEdgeHighlightProps<TBoardProps>) {
         function createHighlightedArea(coord: EdgeCoordinate) {
-            if (!props.highlightedEdges.find((highlight) => areCoordinatesEqual(highlight, coord))) {
+            if (!props.highlightedEdges.some((highlight) => areCoordinatesEqual(highlight, coord))) {
                 return props.createEdgeContent?.(coord);
             }
 

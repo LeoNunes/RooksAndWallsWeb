@@ -18,7 +18,7 @@ export default function withSquarePlacement<TBoardProps extends BoardProps>(
 ): ComponentType<WithSquarePlacementProps<TBoardProps>> {
     return function WithSquarePlacement(props: WithSquarePlacementProps<TBoardProps>) {
         function createPlaceableAreas(coord: SquareCoordinate) {
-            if (props.squarePlaceableCoordinates.find((c) => areCoordinatesEqual(c, coord)) === undefined) {
+            if (!props.squarePlaceableCoordinates.some((c) => areCoordinatesEqual(c, coord))) {
                 return props.createSquareContent?.(coord);
             }
 

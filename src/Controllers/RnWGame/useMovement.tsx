@@ -5,7 +5,7 @@ import type { RnWModel } from "Domain/RnW/Model";
 export default function useMovement(getRnWModel: () => RnWModel, getRnWActions: () => RnWActions) {
     const rnwModel = getRnWModel();
 
-    const moveblePositions = rnwModel.getPiecesThatCanMove().map((piece) => piece.position);
+    const movablePositions = rnwModel.getPiecesThatCanMove().map((piece) => piece.position);
 
     const destinationsFrom = (coord: SquareCoordinate) => {
         const piece = rnwModel.getPieceFromPosition(coord);
@@ -21,7 +21,7 @@ export default function useMovement(getRnWModel: () => RnWModel, getRnWActions: 
     };
 
     return {
-        moveblePositions: moveblePositions,
+        movablePositions: movablePositions,
         destinationsFrom: destinationsFrom,
         onMove: onMove,
     };

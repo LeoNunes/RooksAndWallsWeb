@@ -13,7 +13,7 @@ type BoardProps = {
     createSquareContent?: (coord: SquareCoordinate) => ReactNode;
 };
 type BaseWithClickMovementProps = {
-    moveblePositions: SquareCoordinate[];
+    movablePositions: SquareCoordinate[];
     destinationsFrom: (coord: SquareCoordinate) => SquareCoordinate[];
     onMove: (from: SquareCoordinate, to: SquareCoordinate) => void;
 };
@@ -24,14 +24,14 @@ export default function withClickMovement<TBoardProps extends BoardProps>(
 ): ComponentType<WithClickMovementProps<TBoardProps>> {
     return function WithClickMovement(props: WithClickMovementProps<TBoardProps>) {
         const [selected, setSelected] = useState<SquareCoordinate | undefined>(undefined);
-        const [highlightedPositions, setHighlightedPositions] = useState<SquareCoordinate[]>([]);
+        const highlightedPositions = selected ? props.destinationsFrom(selected) : [];
 
         function createClickableArea(coord: SquareCoordinate) {
             return (
                 <ClickableArea
                     isSelected={selected !== undefined && areSquareCoordinatesEqual(coord, selected)}
-                    isHighlighted={highlightedPositions.find((c) => areSquareCoordinatesEqual(coord, c)) !== undefined}
-                    handleClick={handleClick(coord, props, selected, setSelected, setHighlightedPositions)}
+                    isHighlighted={highlightedPositions.some((c) => areSquareCoordinatesEqual(coord, c))}
+                    handleClick={handleClick(coord, props, selected, setSelected)}
                 >
                     {props.createSquareContent?.(coord)}
                 </ClickableArea>
@@ -48,20 +48,16 @@ const handleClick =
         props: WithClickMovementProps<TBoardProps>,
         selected: SquareCoordinate | undefined,
         setSelected: Dispatch<SetStateAction<SquareCoordinate | undefined>>,
-        setHighlightedPositions: Dispatch<SetStateAction<SquareCoordinate[]>>,
     ) =>
     () => {
         if (selected) {
             setSelected(undefined);
-            setHighlightedPositions([]);
-            if (props.destinationsFrom(selected).find((c) => areSquareCoordinatesEqual(c, clickCoordinate))) {
+            if (props.destinationsFrom(selected).some((c) => areSquareCoordinatesEqual(c, clickCoordinate))) {
                 props.onMove(selected, clickCoordinate);
             }
         } else {
-            const isMoveble = !!props.moveblePositions.find((p) => areSquareCoordinatesEqual(p, clickCoordinate));
-            if (!isMoveble) return;
+            if (!props.movablePositions.some((p) => areSquareCoordinatesEqual(p, clickCoordinate))) return;
             setSelected(clickCoordinate);
-            setHighlightedPositions(props.destinationsFrom(clickCoordinate));
         }
     };
 

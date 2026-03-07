@@ -18,7 +18,7 @@ export default function withEdgePlacement<TBoardProps extends BoardProps>(
 ): ComponentType<WithEdgePlacementProps<TBoardProps>> {
     return function WithEdgePlacement(props: WithEdgePlacementProps<TBoardProps>) {
         function createPlaceableAreas(coord: EdgeCoordinate) {
-            if (props.edgePlaceableCoordinates.find((c) => areCoordinatesEqual(c, coord)) === undefined) {
+            if (!props.edgePlaceableCoordinates.some((c) => areCoordinatesEqual(c, coord))) {
                 return props.createEdgeContent?.(coord);
             }
 
