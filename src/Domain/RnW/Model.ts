@@ -10,11 +10,12 @@ import { rnwConfig } from "RnWConfig";
 
 export type Stage = "waiting_for_players" | "piece_placement" | "moves" | "completed";
 
-export type PlayerId = number;
+export type PlayerId = string;
 
 export type Player = {
     id: PlayerId;
     number: number;
+    displayName: string;
 };
 
 export type Piece = {
@@ -56,7 +57,7 @@ export type RnWState = {
 
 export const rnwStateInitialValue: RnWState = {
     stage: "waiting_for_players",
-    localPlayer: { id: 0, number: 0 },
+    localPlayer: { id: "", number: 0, displayName: "" },
     currentPlayer: undefined,
     numberOfPlayers: 0,
     players: [],
