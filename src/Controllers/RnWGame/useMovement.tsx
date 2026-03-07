@@ -17,7 +17,7 @@ export default function useMovement(getRnWModel: () => RnWModel, getRnWActions: 
         if (piece === undefined) return;
         if (!rnwModel.canMoveTo(piece, to)) return;
 
-        getRnWActions().setNextMovePiece(piece, to);
+        getRnWActions().setNextMovePieceMovement(piece, to);
     };
 
     return {

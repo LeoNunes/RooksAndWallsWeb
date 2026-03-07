@@ -27,10 +27,18 @@ export type Wall = {
     position: EdgeCoordinate;
 };
 
+type PieceMovement = {
+    piece: Piece;
+    position: SquareCoordinate;
+};
+
+type WallPlacement = {
+    position: EdgeCoordinate;
+};
+
 type NextMove = {
-    piece?: Piece;
-    piecePosition?: SquareCoordinate;
-    wallPosition?: EdgeCoordinate;
+    pieceMovement?: PieceMovement;
+    wallPlacement?: WallPlacement;
 };
 
 export type RnWState = {
@@ -65,6 +73,7 @@ export type RnWModel = ReturnType<typeof createModel>;
 export const createModel = (state: RnWState) => ({
     ...state,
     playerCurrentAction: () => localPlayerCurrentAction(state),
+    moveType: () => currentMoveType(state),
     gameResult: () => gameResult(state),
     isPlayerEliminated: (player: Player) => isPlayerEliminated(state, player),
     getPieceById: (id: number) => getPieceById(state, id),
@@ -83,14 +92,24 @@ function isPlayersTurn(state: RnWState) {
     return state.currentPlayer?.id === state.localPlayer.id;
 }
 
+export type MoveType = "normal" | "wall_only";
+
+export function currentMoveType(state: RnWState): MoveType | undefined {
+    if (!isPlayersTurn(state) || state.stage !== "moves") return undefined;
+    const canMove = state.pieces
+        .filter((p) => p.owner.id === state.localPlayer.id)
+        .some((p) => possibleDestinations(state, p).length > 0);
+    return canMove ? "normal" : "wall_only";
+}
+
 export function localPlayerCurrentAction(state: RnWState): "add_piece" | "move_piece" | "add_wall" | undefined {
     if (!isPlayersTurn(state)) return undefined;
 
     if (state.stage === "piece_placement") return "add_piece";
 
-    if (state.stage === "moves" && state.nextMove.piece === undefined) return "move_piece";
-
-    if (state.stage === "moves" && state.nextMove.wallPosition === undefined) return "add_wall";
+    const moveType = currentMoveType(state);
+    if (moveType === "normal" && state.nextMove.pieceMovement === undefined) return "move_piece";
+    if (state.stage === "moves" && state.nextMove.wallPlacement === undefined) return "add_wall";
 
     return undefined;
 }

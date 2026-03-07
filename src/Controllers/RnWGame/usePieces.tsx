@@ -8,9 +8,8 @@ export default function usePieces(getRnWModel: () => RnWModel) {
     const nextMove = rnwModel.nextMove;
     const piecesData: PieceData[] = rnwModel.pieces
         .map((piece) => ({
-            // TODO: Fix this
-            // biome-ignore lint/style/noNonNullAssertion: TODO
-            coordinate: nextMove.piece?.id === piece.id ? nextMove.piecePosition! : piece.position,
+            coordinate:
+                nextMove.pieceMovement?.piece.id === piece.id ? nextMove.pieceMovement.position : piece.position,
             color: rnwConfig.players[piece.owner.number].color,
             type: "rook" as ChessPieceTypes,
         }))

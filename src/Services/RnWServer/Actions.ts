@@ -19,21 +19,28 @@ export function addPieceAction(position: SquareCoordinate): RnWGameAction {
     };
 }
 
-type MoveAction = {
+type PieceMovementAction = {
     pieceId: number;
     position: SquareCoordinate;
+};
+
+type WallPlacementAction = {
     wallPosition: EdgeCoordinate;
 };
+
+type MoveAction = {
+    pieceMovement: PieceMovementAction | null;
+    wallPlacement: WallPlacementAction;
+};
+
 export function moveAction(
-    pieceId: number,
-    destination: SquareCoordinate,
     wallPosition: EdgeCoordinate,
+    pieceMovement?: { pieceId: number; position: SquareCoordinate },
 ): RnWGameAction {
     return {
         move: {
-            pieceId: pieceId,
-            position: destination,
-            wallPosition: wallPosition,
+            pieceMovement: pieceMovement ?? null,
+            wallPlacement: { wallPosition },
         },
     };
 }
