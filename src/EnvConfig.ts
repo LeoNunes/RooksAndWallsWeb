@@ -1,6 +1,9 @@
 type EnvConfig = {
     apiBaseUrl: string;
     wsBaseUrl: string;
+    cognitoUserPoolId: string;
+    cognitoUserPoolClientId: string;
+    cognitoDomain: string; // e.g. "games-beta.auth.us-west-2.amazoncognito.com"
 };
 
 let _config: EnvConfig | null = null;
