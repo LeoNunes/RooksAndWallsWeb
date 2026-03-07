@@ -9,8 +9,8 @@ export type RnWBaseAction =
     | AddWallActionType
     | MovePieceActionType
     | UpdateFromServerActionType
-    | SetNextMovePiece
-    | SetNextMoveWall
+    | SetNextMovePieceMovement
+    | SetNextMoveWallPlacement
     | ResetNextMove;
 
 export type RnWAction = AsyncAction<RnWBaseAction, RnWState>;
@@ -22,11 +22,11 @@ export function createAction(dispatch: RnWDispatch) {
         addPiece: (owner: Player, position: SquareCoordinate, websocketDispatch: Dispatch<ServerGameAction>) => {
             dispatch(addPiece(owner, position, websocketDispatch));
         },
-        setNextMovePiece: (piece: Piece, position: SquareCoordinate) => {
-            dispatch(setNextMovePiece(piece, position));
+        setNextMovePieceMovement: (piece: Piece, position: SquareCoordinate) => {
+            dispatch(setNextMovePieceMovement(piece, position));
         },
-        setNextMoveWall: (position: EdgeCoordinate) => {
-            dispatch(setNextMoveWall(position));
+        setNextMoveWallPlacement: (position: EdgeCoordinate) => {
+            dispatch(setNextMoveWallPlacement(position));
         },
         commitMove: (websocketDispatch: Dispatch<ServerGameAction>) => {
             dispatch(commitMove(websocketDispatch));
@@ -84,27 +84,27 @@ function addWall(position: EdgeCoordinate): AddWallActionType {
     };
 }
 
-export type SetNextMovePiece = {
-    type: "set-next-move-piece";
+export type SetNextMovePieceMovement = {
+    type: "set-next-move-piece-movement";
     piece: Piece;
     position: SquareCoordinate;
 };
-export function setNextMovePiece(piece: Piece, position: SquareCoordinate): SetNextMovePiece {
+export function setNextMovePieceMovement(piece: Piece, position: SquareCoordinate): SetNextMovePieceMovement {
     return {
-        type: "set-next-move-piece",
-        piece: piece,
-        position: position,
+        type: "set-next-move-piece-movement",
+        piece,
+        position,
     };
 }
 
-export type SetNextMoveWall = {
-    type: "set-next-move-wall";
+export type SetNextMoveWallPlacement = {
+    type: "set-next-move-wall-placement";
     position: EdgeCoordinate;
 };
-export function setNextMoveWall(position: EdgeCoordinate): SetNextMoveWall {
+export function setNextMoveWallPlacement(position: EdgeCoordinate): SetNextMoveWallPlacement {
     return {
-        type: "set-next-move-wall",
-        position: position,
+        type: "set-next-move-wall-placement",
+        position,
     };
 }
 
@@ -121,20 +121,28 @@ export function commitMove(websocketDispatch: Dispatch<ServerGameAction>): RnWAc
     return (dispatch, getState) => {
         const { nextMove } = getState();
 
-        if (
-            nextMove === undefined ||
-            nextMove.piece === undefined ||
-            nextMove.piecePosition === undefined ||
-            nextMove.wallPosition === undefined
-        ) {
-            console.error("Cannot proccess commitMove action: Invalid state");
+        if (nextMove.wallPlacement === undefined) {
+            console.error("Cannot process commitMove action: wall placement is missing");
             return;
         }
 
-        dispatch(movePiece(nextMove.piece, nextMove.piecePosition));
-        dispatch(addWall(nextMove.wallPosition));
-        dispatch(resetNextMove());
-        websocketDispatch(moveAction(nextMove.piece.id, nextMove.piecePosition, nextMove.wallPosition));
+        const wallPosition = nextMove.wallPlacement.position;
+
+        if (nextMove.pieceMovement !== undefined) {
+            dispatch(movePiece(nextMove.pieceMovement.piece, nextMove.pieceMovement.position));
+            dispatch(addWall(wallPosition));
+            dispatch(resetNextMove());
+            websocketDispatch(
+                moveAction(wallPosition, {
+                    pieceId: nextMove.pieceMovement.piece.id,
+                    position: nextMove.pieceMovement.position,
+                }),
+            );
+        } else {
+            dispatch(addWall(wallPosition));
+            dispatch(resetNextMove());
+            websocketDispatch(moveAction(wallPosition));
+        }
     };
 }
 

@@ -2,7 +2,7 @@ import ActivePlayerSlot from "Components/PlayerSlot/ActivePlayerSlot";
 import GameResultPlayerSlot from "Components/PlayerSlot/GameResultPlayerSlot";
 import LobbyPlayerSlot from "Components/PlayerSlot/LobbyPlayerSlot";
 import WaitingForPlayerSlot from "Components/PlayerSlot/WaitingForPlayerSlot";
-import { gameResult, isPlayerEliminated, type Player } from "Domain/RnW/Model";
+import { currentMoveType, gameResult, isPlayerEliminated, type Player } from "Domain/RnW/Model";
 import { useRnWState } from "Domain/RnW/RnWStateProvider";
 import { rnwAssets } from "RnWAssets";
 import { rnwConfig } from "RnWConfig";
@@ -60,9 +60,10 @@ export default function RnWPlayerSlotController({ player }: RnWPlayerSlotControl
 
     const isCurrentTurn = state.currentPlayer?.id === player.id;
     const displayName = isLocal ? "You" : colorLabel;
+    const moveType = isCurrentTurn && isLocal ? currentMoveType(state) : undefined;
     let badge: string | undefined;
     if (isCurrentTurn && isLocal) {
-        badge = "Your turn";
+        badge = moveType === "wall_only" ? "Place a wall" : "Your turn";
     } else if (isCurrentTurn) {
         badge = "Playing";
     }

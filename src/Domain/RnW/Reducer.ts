@@ -71,33 +71,28 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
             };
         }
         /** biome-ignore-end lint/style/noNonNullAssertion: It is expected that all players are in the players array */
-        case "set-next-move-piece": {
+        case "set-next-move-piece-movement": {
             return {
                 ...state,
                 nextMove: {
                     ...state.nextMove,
-                    piece: action.piece,
-                    piecePosition: action.position,
+                    pieceMovement: { piece: action.piece, position: action.position },
                 },
             };
         }
-        case "set-next-move-wall": {
+        case "set-next-move-wall-placement": {
             return {
                 ...state,
                 nextMove: {
                     ...state.nextMove,
-                    wallPosition: action.position,
+                    wallPlacement: { position: action.position },
                 },
             };
         }
         case "reset-next-move": {
             return {
                 ...state,
-                nextMove: {
-                    piece: undefined,
-                    piecePosition: undefined,
-                    wallPosition: undefined,
-                },
+                nextMove: {},
             };
         }
     }

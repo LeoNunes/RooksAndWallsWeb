@@ -19,7 +19,7 @@ export default function useWallPlacement(
     const placeableCoordinates = rnwModel.availableEdgesForPlacingWalls();
 
     function onPlace(coord: EdgeCoordinate) {
-        getRnWActions().setNextMoveWall(coord);
+        getRnWActions().setNextMoveWallPlacement(coord);
         getRnWActions().commitMove(websocketDispatch);
     }
 

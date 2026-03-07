@@ -6,8 +6,8 @@ export default function useWalls(getRnWModel: () => RnWModel) {
     const wallsData: WallData[] = rnwModel.walls.map((wall) => ({
         coordinate: wall.position,
     }));
-    if (rnwModel.nextMove.wallPosition !== undefined) {
-        wallsData.push({ coordinate: rnwModel.nextMove.wallPosition });
+    if (rnwModel.nextMove.wallPlacement !== undefined) {
+        wallsData.push({ coordinate: rnwModel.nextMove.wallPlacement.position });
     }
 
     return {
