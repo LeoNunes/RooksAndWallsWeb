@@ -1,24 +1,36 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
+import Header from "./Components/Header/Header";
 import RnWGameManager from "./Controllers/RnWManager";
+import { AuthProvider } from "./Domain/Auth/AuthContext";
+import ChooseDisplayNamePage from "./Pages/ChooseDisplayNamePage";
 import GamePage from "./Pages/GamePage";
+import OAuthCallbackHandler from "./Pages/OAuthCallbackHandler";
+import SignInPage from "./Pages/SignInPage";
+import SignUpPage from "./Pages/SignUpPage";
 import "./App.css";
+
+function Layout() {
+    return (
+        <AuthProvider>
+            <div className="App">
+                <Header />
+                <Outlet />
+            </div>
+        </AuthProvider>
+    );
+}
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: (
-            <div className="App">
-                <RnWGameManager />
-            </div>
-        ),
-    },
-    {
-        path: "/game/rw/:gameId",
-        element: (
-            <div className="App">
-                <GamePage />
-            </div>
-        ),
+        element: <Layout />,
+        children: [
+            { path: "/", element: <RnWGameManager /> },
+            { path: "/game/rw/:gameId", element: <GamePage /> },
+            { path: "/sign-in", element: <SignInPage /> },
+            { path: "/sign-up", element: <SignUpPage /> },
+            { path: "/choose-display-name", element: <ChooseDisplayNamePage /> },
+            { path: "/oauth/callback", element: <OAuthCallbackHandler /> },
+        ],
     },
 ]);
 
