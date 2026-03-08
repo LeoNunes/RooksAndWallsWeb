@@ -1,7 +1,7 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch, useUserState } from "Domain/User/UserStateProvider";
 import { getEnvConfig } from "EnvConfig";
-import { getIdToken } from "Services/Auth/AuthService";
+import { getAuthToken } from "Services/User/UserService";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
@@ -24,7 +24,7 @@ export default function OAuthCallbackHandler() {
         }
 
         async function checkProfile() {
-            const token = await getIdToken();
+            const token = await getAuthToken();
             const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users/me`, {
                 headers: { Authorization: `Bearer ${token}` },
             });

@@ -1,5 +1,5 @@
 import type { AsyncAction, Dispatch } from "Domain/Common/DataTypes";
-import { getCurrentUserInfo, getIdToken, getUserProfile, signOut as signOutService } from "Services/Auth/AuthService";
+import { getAuthToken, getUserProfile, signOut as signOutService } from "Services/User/UserService";
 import type { CurrentUser, UserState } from "./Model";
 
 export type UserBaseAction = UserLoading | UserLoaded;
@@ -25,20 +25,17 @@ function userLoaded(user: CurrentUser): UserLoaded {
 export function loadUser(): UserAction {
     return async (dispatch) => {
         dispatch(userLoading());
-        const cognitoUser = await getCurrentUserInfo();
-        if (cognitoUser.isGuest) {
+        const token = await getAuthToken();
+        if (!token) {
             dispatch(userLoaded({ isGuest: true, displayName: "Guest" }));
             return;
         }
-        const token = await getIdToken();
-        const profile = token ? await getUserProfile(token) : null;
-        dispatch(
-            userLoaded({
-                userId: cognitoUser.userId,
-                isGuest: false,
-                displayName: profile?.displayName ?? "",
-            }),
-        );
+        const profile = await getUserProfile(token);
+        if (!profile) {
+            dispatch(userLoaded({ isGuest: true, displayName: "Guest" }));
+            return;
+        }
+        dispatch(userLoaded({ userId: profile.userId, isGuest: false, displayName: profile.displayName }));
     };
 }
 

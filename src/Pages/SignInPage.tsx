@@ -1,6 +1,6 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch } from "Domain/User/UserStateProvider";
-import { signIn, signInWithRedirect } from "Services/Auth/AuthService";
+import { signIn, signInWithRedirect } from "Services/User/UserService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignInPage.css";

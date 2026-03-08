@@ -1,7 +1,7 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch } from "Domain/User/UserStateProvider";
 import { getEnvConfig } from "EnvConfig";
-import { getIdToken } from "Services/Auth/AuthService";
+import { getAuthToken } from "Services/User/UserService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -14,7 +14,7 @@ export default function ChooseDisplayNamePage() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
-        const token = await getIdToken();
+        const token = await getAuthToken();
         const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

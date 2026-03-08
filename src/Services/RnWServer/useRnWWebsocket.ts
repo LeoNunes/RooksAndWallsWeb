@@ -1,6 +1,6 @@
 import type { Dispatch } from "Domain/Common/DataTypes";
 import { webSocketConfig } from "RnWConfig";
-import { getIdToken } from "Services/Auth/AuthService";
+import { getAuthToken } from "Services/User/UserService";
 import { useCallback, useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import type { RnWGameAction } from "./Actions";
@@ -10,7 +10,7 @@ export function useRnWWebsocket(gameId: number, onUpdate: (state: RnWGameState) 
     const [wsUrl, setWsUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        getIdToken().then((token) => {
+        getAuthToken().then((token) => {
             setWsUrl(webSocketConfig.urlForGame(gameId, token));
         });
     }, [gameId]);

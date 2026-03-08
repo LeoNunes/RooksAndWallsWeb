@@ -1,7 +1,7 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch } from "Domain/User/UserStateProvider";
 import { getEnvConfig } from "EnvConfig";
-import { confirmSignUp, getIdToken, signIn, signUp } from "Services/Auth/AuthService";
+import { confirmSignUp, getAuthToken, signIn, signUp } from "Services/User/UserService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignUpPage.css";
@@ -34,7 +34,7 @@ export default function SignUpPage() {
             await confirmSignUp({ username: email, confirmationCode: code });
             await signIn({ username: email, password });
 
-            const token = await getIdToken();
+            const token = await getAuthToken();
             const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

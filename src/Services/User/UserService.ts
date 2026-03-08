@@ -3,14 +3,14 @@ import {
     confirmSignUp,
     fetchAuthSession,
     fetchUserAttributes,
-    getCurrentUser,
     signIn,
     signInWithRedirect,
     signOut,
     signUp,
 } from "@aws-amplify/auth";
+import type { UserProfile } from "./Data";
 
-export async function getIdToken(): Promise<string | null> {
+export async function getAuthToken(): Promise<string | null> {
     try {
         const session = await fetchAuthSession();
         return session.tokens?.idToken?.toString() ?? null;
@@ -19,18 +19,7 @@ export async function getIdToken(): Promise<string | null> {
     }
 }
 
-export type CognitoUser = { userId: string; isGuest: false } | { isGuest: true };
-
-export async function getCurrentUserInfo(): Promise<CognitoUser> {
-    try {
-        const user = await getCurrentUser();
-        return { userId: user.userId, isGuest: false };
-    } catch {
-        return { isGuest: true };
-    }
-}
-
-export async function getUserProfile(token: string): Promise<{ displayName: string } | null> {
+export async function getUserProfile(token: string): Promise<UserProfile | null> {
     try {
         const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users/me`, {
             headers: { Authorization: `Bearer ${token}` },
