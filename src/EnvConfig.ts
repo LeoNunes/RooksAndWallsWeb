@@ -1,6 +1,9 @@
 type EnvConfig = {
     apiBaseUrl: string;
     wsBaseUrl: string;
+    cognitoUserPoolId: string;
+    cognitoUserPoolClientId: string;
+    cognitoDomain: string;
 };
 
 let _config: EnvConfig | null = null;

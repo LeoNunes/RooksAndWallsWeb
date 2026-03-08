@@ -40,6 +40,7 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
             const players = serverState.players.map((p, index) => ({
                 id: p.id,
                 number: index,
+                displayName: p.displayName,
             }));
             const playersById = new Map(players.map((p) => [p.id, p]));
             const currentPlayerIndex = serverState.players.findIndex((p) => p.id === serverState.currentTurn);

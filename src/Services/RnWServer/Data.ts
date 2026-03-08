@@ -21,8 +21,8 @@ export type RnWGameState = Immutable<{
     gameId: number;
     config: GameConfig;
     stage: GameStage;
-    currentTurn?: number;
-    playerId: number;
+    currentTurn?: string;
+    playerId: string;
     players: Player[];
     remainingPlayers: Player[];
     pieces: Piece[];
@@ -41,12 +41,13 @@ const gameStages = ["waiting_for_players", "piece_placement", "moves", "complete
 type GameStage = (typeof gameStages)[number];
 
 type Player = {
-    id: number;
+    id: string;
+    displayName: string;
 };
 
 type Piece = {
     id: number;
-    owner: number;
+    owner: string;
     position: SquareCoordinate;
 };
 
@@ -61,7 +62,7 @@ export function isRnWGameState(obj: unknown): obj is RnWGameState {
         typeof gameState.gameId === "number" &&
         isGameConfig(gameState.config) &&
         isGameStage(gameState.stage) &&
-        typeof gameState.playerId === "number" &&
+        typeof gameState.playerId === "string" &&
         isArrayOf<Player>(gameState.players, isPlayer) &&
         isArrayOf<Player>(gameState.remainingPlayers, isPlayer) &&
         isArrayOf<Piece>(gameState.pieces, isPiece) &&
@@ -88,7 +89,7 @@ function isGameStage(obj: unknown): obj is GameStage {
 
 function isPlayer(obj: unknown): obj is Player {
     const player = obj as Player;
-    return typeof player === "object" && typeof player.id === "number";
+    return typeof player === "object" && typeof player.id === "string" && typeof player.displayName === "string";
 }
 
 function isPiece(obj: unknown): obj is Piece {
@@ -96,7 +97,7 @@ function isPiece(obj: unknown): obj is Piece {
     return (
         typeof piece === "object" &&
         typeof piece.id === "number" &&
-        typeof piece.owner === "number" &&
+        typeof piece.owner === "string" &&
         isSquareCoordinate(piece.position)
     );
 }
