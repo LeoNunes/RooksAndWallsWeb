@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
 import Header from "./Components/Header/Header";
 import RnWGameManager from "./Controllers/RnWManager";
-import { AuthStateProvider } from "./Domain/Auth/AuthStateProvider";
+import { UserStateProvider } from "./Domain/User/UserStateProvider";
 import ChooseDisplayNamePage from "./Pages/ChooseDisplayNamePage";
 import GamePage from "./Pages/GamePage";
 import OAuthCallbackHandler from "./Pages/OAuthCallbackHandler";
@@ -11,12 +11,12 @@ import "./App.css";
 
 function Layout() {
     return (
-        <AuthStateProvider>
+        <UserStateProvider>
             <div className="App">
                 <Header />
                 <Outlet />
             </div>
-        </AuthStateProvider>
+        </UserStateProvider>
     );
 }
 

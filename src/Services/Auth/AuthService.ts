@@ -1,4 +1,4 @@
-import type { CurrentUser } from "Domain/Auth/Model";
+import { getEnvConfig } from "EnvConfig";
 import {
     confirmSignUp,
     fetchAuthSession,
@@ -19,12 +19,26 @@ export async function getIdToken(): Promise<string | null> {
     }
 }
 
-export async function getCurrentUserInfo(): Promise<CurrentUser> {
+export type CognitoUser = { userId: string; isGuest: false } | { isGuest: true };
+
+export async function getCurrentUserInfo(): Promise<CognitoUser> {
     try {
         const user = await getCurrentUser();
         return { userId: user.userId, isGuest: false };
     } catch {
         return { isGuest: true };
+    }
+}
+
+export async function getUserProfile(token: string): Promise<{ displayName: string } | null> {
+    try {
+        const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return null;
+        return await res.json();
+    } catch {
+        return null;
     }
 }
 

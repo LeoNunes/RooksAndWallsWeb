@@ -1,5 +1,5 @@
-import { loadUser } from "Domain/Auth/Actions";
-import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
+import { loadUser } from "Domain/User/Actions";
+import { useUserDispatch } from "Domain/User/UserStateProvider";
 import { getEnvConfig } from "EnvConfig";
 import { getIdToken } from "Services/Auth/AuthService";
 import { useState } from "react";
@@ -9,7 +9,7 @@ export default function ChooseDisplayNamePage() {
     const [displayName, setDisplayName] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const dispatch = useAuthDispatch();
+    const dispatch = useUserDispatch();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();

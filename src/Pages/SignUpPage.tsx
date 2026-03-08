@@ -1,5 +1,5 @@
-import { loadUser } from "Domain/Auth/Actions";
-import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
+import { loadUser } from "Domain/User/Actions";
+import { useUserDispatch } from "Domain/User/UserStateProvider";
 import { getEnvConfig } from "EnvConfig";
 import { confirmSignUp, getIdToken, signIn, signUp } from "Services/Auth/AuthService";
 import { useState } from "react";
@@ -14,7 +14,7 @@ export default function SignUpPage() {
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const dispatch = useAuthDispatch();
+    const dispatch = useUserDispatch();
 
     async function handleSignUp(e: React.FormEvent) {
         e.preventDefault();

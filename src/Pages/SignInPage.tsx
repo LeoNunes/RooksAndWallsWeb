@@ -1,5 +1,5 @@
-import { loadUser } from "Domain/Auth/Actions";
-import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
+import { loadUser } from "Domain/User/Actions";
+import { useUserDispatch } from "Domain/User/UserStateProvider";
 import { signIn, signInWithRedirect } from "Services/Auth/AuthService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -10,7 +10,7 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const dispatch = useAuthDispatch();
+    const dispatch = useUserDispatch();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
