@@ -2,6 +2,7 @@ export type RegisteredUser = {
     userId: string;
     isGuest: false;
     displayName: string;
+    token: string;
 };
 
 export type GuestUser = {

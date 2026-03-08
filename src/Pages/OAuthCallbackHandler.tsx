@@ -1,7 +1,6 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch, useUserState } from "Domain/User/UserStateProvider";
-import { getEnvConfig } from "EnvConfig";
-import { getAuthToken } from "Services/User/UserService";
+import { registrationStatus } from "Services/User/UserService";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
@@ -23,19 +22,13 @@ export default function OAuthCallbackHandler() {
             return;
         }
 
+        const { user } = userState;
         async function checkProfile() {
-            const token = await getAuthToken();
-            const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users/me`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (res.status === 404) {
-                navigate("/register-user");
-            } else {
-                navigate("/");
-            }
+            const status = await registrationStatus(user.token);
+            navigate(status === "unregistered" ? "/register-user" : "/");
         }
         checkProfile();
-    }, [userState.user, userState.loading, navigate]);
+    }, [userState.user, userState.loading, navigate, userState]);
 
     return <p>Signing you in...</p>;
 }

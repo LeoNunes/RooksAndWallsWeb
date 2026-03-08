@@ -1,7 +1,6 @@
 import { loadUser } from "Domain/User/Actions";
 import { useUserDispatch } from "Domain/User/UserStateProvider";
-import { getEnvConfig } from "EnvConfig";
-import { getAuthToken } from "Services/User/UserService";
+import { getAuthToken, registerUser } from "Services/User/UserService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -15,17 +14,13 @@ export default function RegisterUserPage() {
         e.preventDefault();
         setError("");
         const token = await getAuthToken();
-        const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-            body: JSON.stringify({ displayName }),
-        });
-        if (res.status === 409) {
-            setError("Name taken, try another");
+        if (!token) {
+            setError("Failed to save name");
             return;
         }
-        if (!res.ok) {
-            setError("Failed to save name");
+        const result = await registerUser(token, displayName);
+        if (!result.success) {
+            setError(result.error === "name-taken" ? "Name taken, try another" : "Failed to save name");
             return;
         }
         dispatch(loadUser());

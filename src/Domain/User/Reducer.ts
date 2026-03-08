@@ -7,5 +7,8 @@ export function userReducer(state: UserState, action: UserBaseAction): UserState
             return { ...state, loading: true };
         case "user-loaded":
             return { ...state, user: action.user, loading: false };
+        case "token-refreshed":
+            if (state.user.isGuest) return state;
+            return { ...state, user: { ...state.user, token: action.token } };
     }
 }
