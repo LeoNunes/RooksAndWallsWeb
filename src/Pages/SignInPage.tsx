@@ -1,4 +1,5 @@
-import { useAuth } from "Domain/Auth/AuthContext";
+import { loadUser } from "Domain/Auth/Actions";
+import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
 import { signIn, signInWithRedirect } from "Services/Auth/AuthService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -9,14 +10,14 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const { refresh } = useAuth();
+    const dispatch = useAuthDispatch();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
         try {
             await signIn({ username: email, password });
-            await refresh();
+            dispatch(loadUser());
             navigate("/");
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : "Sign in failed");

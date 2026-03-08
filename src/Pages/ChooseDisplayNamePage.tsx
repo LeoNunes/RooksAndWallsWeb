@@ -1,4 +1,5 @@
-import { useAuth } from "Domain/Auth/AuthContext";
+import { loadUser } from "Domain/Auth/Actions";
+import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
 import { getEnvConfig } from "EnvConfig";
 import { getIdToken } from "Services/Auth/AuthService";
 import { useState } from "react";
@@ -8,7 +9,7 @@ export default function ChooseDisplayNamePage() {
     const [displayName, setDisplayName] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const { refresh } = useAuth();
+    const dispatch = useAuthDispatch();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -27,7 +28,7 @@ export default function ChooseDisplayNamePage() {
             setError("Failed to save name");
             return;
         }
-        await refresh();
+        dispatch(loadUser());
         navigate("/");
     }
 

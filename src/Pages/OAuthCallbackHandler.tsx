@@ -1,4 +1,5 @@
-import { useAuth } from "Domain/Auth/AuthContext";
+import { loadUser } from "Domain/Auth/Actions";
+import { useAuthDispatch, useAuthState } from "Domain/Auth/AuthStateProvider";
 import { getEnvConfig } from "EnvConfig";
 import { getIdToken } from "Services/Auth/AuthService";
 import { useEffect } from "react";
@@ -6,19 +7,17 @@ import { useNavigate } from "react-router";
 
 export default function OAuthCallbackHandler() {
     const navigate = useNavigate();
-    const { user, refresh } = useAuth();
+    const authState = useAuthState();
+    const dispatch = useAuthDispatch();
 
     useEffect(() => {
-        async function handleCallback() {
-            await refresh();
-        }
-        handleCallback();
-    }, [refresh]);
+        dispatch(loadUser());
+    }, [dispatch]);
 
     useEffect(() => {
-        if (user === null) return; // still loading
+        if (authState.user === null) return; // still loading
 
-        if (user.isGuest) {
+        if (authState.user.isGuest) {
             // Auth failed or was cancelled
             navigate("/sign-in");
             return;
@@ -36,7 +35,7 @@ export default function OAuthCallbackHandler() {
             }
         }
         checkProfile();
-    }, [user, navigate]);
+    }, [authState.user, navigate]);
 
     return <p>Signing you in...</p>;
 }

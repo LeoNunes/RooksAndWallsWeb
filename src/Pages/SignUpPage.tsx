@@ -1,7 +1,7 @@
-import { useAuth } from "Domain/Auth/AuthContext";
+import { loadUser } from "Domain/Auth/Actions";
+import { useAuthDispatch } from "Domain/Auth/AuthStateProvider";
 import { getEnvConfig } from "EnvConfig";
-import { confirmSignUp, signIn, signUp } from "Services/Auth/AuthService";
-import { fetchAuthSession } from "@aws-amplify/auth";
+import { confirmSignUp, getIdToken, signIn, signUp } from "Services/Auth/AuthService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignUpPage.css";
@@ -14,7 +14,7 @@ export default function SignUpPage() {
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const { refresh } = useAuth();
+    const dispatch = useAuthDispatch();
 
     async function handleSignUp(e: React.FormEvent) {
         e.preventDefault();
@@ -34,8 +34,7 @@ export default function SignUpPage() {
             await confirmSignUp({ username: email, confirmationCode: code });
             await signIn({ username: email, password });
 
-            const session = await fetchAuthSession();
-            const token = session.tokens?.idToken?.toString();
+            const token = await getIdToken();
             const res = await fetch(`${getEnvConfig().apiBaseUrl}/rw/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -48,7 +47,7 @@ export default function SignUpPage() {
             }
             if (!res.ok) throw new Error("Failed to create profile");
 
-            await refresh();
+            dispatch(loadUser());
             navigate("/");
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : "Verification failed");

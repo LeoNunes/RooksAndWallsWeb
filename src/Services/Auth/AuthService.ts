@@ -1,3 +1,4 @@
+import type { CurrentUser } from "Domain/Auth/Model";
 import {
     confirmSignUp,
     fetchAuthSession,
@@ -8,17 +9,6 @@ import {
     signOut,
     signUp,
 } from "@aws-amplify/auth";
-
-export type AuthUser = {
-    userId: string;
-    isGuest: false;
-};
-
-export type GuestUser = {
-    isGuest: true;
-};
-
-export type CurrentUser = AuthUser | GuestUser;
 
 export async function getIdToken(): Promise<string | null> {
     try {

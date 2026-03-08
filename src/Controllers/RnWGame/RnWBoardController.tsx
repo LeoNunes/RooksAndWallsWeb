@@ -37,6 +37,7 @@ export default function RnWBoardController(props: RnWBoardControllerProps) {
     const rnwDispatch = useRnWDispatch();
     const rnwModel = useMemo(() => createModel(rnwState), [rnwState]);
     const rnwActions = useMemo(() => createAction(rnwDispatch), [rnwDispatch]);
+    // TODO: is useGetter needed?
     const getRnWModel = useGetter(rnwModel);
     const getRnWActions = useGetter(rnwActions);
 

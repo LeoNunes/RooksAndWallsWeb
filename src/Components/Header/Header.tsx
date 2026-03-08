@@ -1,16 +1,18 @@
-import { useAuth } from "Domain/Auth/AuthContext";
+import { signOut } from "Domain/Auth/Actions";
+import { useAuthDispatch, useAuthState } from "Domain/Auth/AuthStateProvider";
 import { getEnvConfig } from "EnvConfig";
-import { getIdToken, signOut } from "Services/Auth/AuthService";
+import { getIdToken } from "Services/Auth/AuthService";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import "./Header.css";
 
 export default function Header() {
-    const { user, refresh } = useAuth();
+    const authState = useAuthState();
+    const dispatch = useAuthDispatch();
     const [displayName, setDisplayName] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!user || user.isGuest) {
+        if (!authState.user || authState.user.isGuest) {
             setDisplayName(null);
             return;
         }
@@ -22,18 +24,17 @@ export default function Header() {
                 .then((r) => (r.ok ? r.json() : null))
                 .then((data) => setDisplayName(data?.displayName ?? null));
         });
-    }, [user]);
+    }, [authState.user]);
 
-    async function handleSignOut() {
-        await signOut();
-        await refresh();
+    function handleSignOut() {
+        dispatch(signOut());
     }
 
     return (
         <header className="app-header">
             <span className="app-header__title">Rooks &amp; Walls</span>
             <nav className="app-header__nav">
-                {user === null || user.isGuest ? (
+                {authState.user === null || authState.user.isGuest ? (
                     <>
                         <Link to="/sign-in">Sign In</Link>
                         <Link to="/sign-up">Sign Up</Link>
