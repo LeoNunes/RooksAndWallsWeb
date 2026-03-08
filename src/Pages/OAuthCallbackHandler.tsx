@@ -29,7 +29,7 @@ export default function OAuthCallbackHandler() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (res.status === 404) {
-                navigate("/choose-display-name");
+                navigate("/register-user");
             } else {
                 navigate("/");
             }

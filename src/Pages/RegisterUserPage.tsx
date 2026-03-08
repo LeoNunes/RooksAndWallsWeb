@@ -5,7 +5,7 @@ import { getAuthToken } from "Services/User/UserService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-export default function ChooseDisplayNamePage() {
+export default function RegisterUserPage() {
     const [displayName, setDisplayName] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();

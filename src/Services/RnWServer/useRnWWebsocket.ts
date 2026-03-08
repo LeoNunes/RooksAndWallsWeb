@@ -11,7 +11,7 @@ export function useRnWWebsocket(gameId: number, onUpdate: (state: RnWGameState) 
 
     useEffect(() => {
         getAuthToken().then((token) => {
-            setWsUrl(webSocketConfig.urlForGame(gameId, token));
+            setWsUrl(webSocketConfig.urlForGame(gameId, token ?? undefined));
         });
     }, [gameId]);
 

@@ -46,7 +46,7 @@ export const apiConfig = {
 
 const wsGamePath = "/rw/game/{gameId}";
 export const webSocketConfig = {
-    urlForGame: (gameId: number, token?: string | null) => {
+    urlForGame: (gameId: number, token?: string) => {
         const base = `${getEnvConfig().wsBaseUrl}${wsGamePath.replace("{gameId}", gameId.toString())}`;
         return token ? `${base}?token=${encodeURIComponent(token)}` : base;
     },
