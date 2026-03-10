@@ -1,11 +1,6 @@
-* {
-    box-sizing: border-box;
-}
-
 .App {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 40px);
-    width: calc(100vw - 40px);
-    margin: 20px;
+    min-height: 100vh;
+    background-color: var(--bg);
 }

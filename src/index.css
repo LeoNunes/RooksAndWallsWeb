@@ -1,12 +1,58 @@
+:root {
+    --bg: #f5efe0;
+    --surface: #ede4cc;
+    --accent-1: #7c2d3e;
+    --accent-2: #2d5a3d;
+    --text: #1a1208;
+    --text-muted: #6b5744;
+    --board-light: #d4b896;
+    --board-dark: #8b6343;
+    --border: #1a1208;
+    --player-blue: #7c2d3e;
+    --player-green: #2d5a3d;
+    --player-red: #1e3a5f;
+    --player-yellow: #b5651d;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-        "Droid Sans", "Helvetica Neue", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Courier Prime", "Courier New", monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Playfair Display", Georgia, serif;
+}
+
+a {
+    color: var(--accent-1);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    font-family: "Courier Prime", "Courier New", monospace;
+    cursor: pointer;
+}
+
+input,
+select {
+    font-family: "Courier Prime", "Courier New", monospace;
 }
