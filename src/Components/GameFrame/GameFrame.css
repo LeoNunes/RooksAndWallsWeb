@@ -4,17 +4,21 @@
     min-height: 0;
     --sidebar-width: 220px;
     margin: 1rem;
+}
+
+.game-frame-board-area {
+    flex: 1;
+    display: flex;
     justify-content: center;
+    min-width: 0;
+    min-height: 0;
 }
 
 .game-frame-board {
     position: relative;
     display: flex;
-    flex: 0 0 auto;
     height: 100%;
     aspect-ratio: 1 / 1;
-    min-width: 0;
-    min-height: 0;
     border: 2px solid var(--border);
     box-shadow: 4px 4px 0 var(--text-muted);
 }
