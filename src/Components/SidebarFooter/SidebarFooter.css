@@ -1,34 +1,39 @@
 .sidebar-footer-message {
     font-size: 0.75rem;
-    color: #666;
+    color: var(--text-muted);
     text-align: center;
+    font-style: italic;
 }
 
 .sidebar-footer-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--border);
+    font-family: "Courier Prime", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     cursor: pointer;
-    text-align: center;
+    width: 100%;
 }
 
 .sidebar-footer-btn.primary {
-    background-color: #8a8a8a;
-    color: #fff;
+    background: var(--accent-1);
+    color: var(--bg);
+    border-color: var(--accent-1);
 }
 
 .sidebar-footer-btn.primary:hover {
-    background-color: #7a7a7a;
+    background: #5e2130;
+    border-color: #5e2130;
 }
 
 .sidebar-footer-btn.secondary {
-    background-color: transparent;
-    color: #183b09;
-    border: 1px solid #ccc;
+    background: transparent;
+    color: var(--text);
 }
 
 .sidebar-footer-btn.secondary:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background: var(--text);
+    color: var(--bg);
 }

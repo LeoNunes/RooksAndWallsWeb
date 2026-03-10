@@ -1,12 +1,12 @@
 .board-square {
     display: flex;
     flex: 10;
+}
 
-    &.white {
-        background-color: #eeeed2;
-    }
+.board-square.white {
+    background: var(--board-light);
+}
 
-    &.black {
-        background-color: #769656;
-    }
+.board-square.black {
+    background: var(--board-dark);
 }

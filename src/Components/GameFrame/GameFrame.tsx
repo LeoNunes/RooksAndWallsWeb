@@ -12,9 +12,11 @@ export type GameFrameProps = PropsWithChildren<{
 export default function GameFrame({ children, sidebarHeader, playerSlots, sidebarFooter, winner }: GameFrameProps) {
     return (
         <div className="game-frame">
-            <div className="game-frame-board">
-                {children}
-                {winner && <WinnerOverlay {...winner} />}
+            <div className="game-frame-board-area">
+                <div className="game-frame-board">
+                    {children}
+                    {winner && <WinnerOverlay {...winner} />}
+                </div>
             </div>
             <aside className="game-frame-sidebar">
                 <h2 className="game-frame-sidebar-header">{sidebarHeader}</h2>

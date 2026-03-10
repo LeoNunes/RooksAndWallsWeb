@@ -25,26 +25,47 @@ export default function SignInPage() {
     }
 
     return (
-        <div className="sign-in-page">
-            <h2>Sign In</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Email
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </label>
-                <label>
-                    Password
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </label>
-                {error && <p className="error">{error}</p>}
-                <button type="submit">Sign In</button>
-            </form>
-            <button type="button" onClick={() => signInWithRedirect({ provider: "Google" })}>
-                Sign in with Google
-            </button>
-            <p>
-                No account? <a href="/sign-up">Sign up</a>
-            </p>
+        <div className="auth-page">
+            <div className="auth-card">
+                <h2 className="auth-card__title">Sign In</h2>
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <div className="auth-field">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="auth-field">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {error && <p className="auth-error">{error}</p>}
+                    <button type="submit" className="auth-btn">
+                        Sign In
+                    </button>
+                </form>
+                <div className="auth-divider">or</div>
+                <button
+                    type="button"
+                    className="auth-btn auth-btn--google"
+                    onClick={() => signInWithRedirect({ provider: "Google" })}
+                >
+                    Sign In with Google
+                </button>
+                <p className="auth-footer">
+                    No account? <a href="/sign-up">Sign up</a>
+                </p>
+            </div>
         </div>
     );
 }

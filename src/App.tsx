@@ -4,6 +4,7 @@ import RnWGameManager from "./Controllers/RnWManager";
 import { UserStateProvider } from "./Domain/User/UserStateProvider";
 import GamePage from "./Pages/GamePage";
 import OAuthCallbackHandler from "./Pages/OAuthCallbackHandler";
+import ProfilePage from "./Pages/ProfilePage";
 import RegisterUserPage from "./Pages/RegisterUserPage";
 import SignInPage from "./Pages/SignInPage";
 import SignUpPage from "./Pages/SignUpPage";
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
             { path: "/sign-up", element: <SignUpPage /> },
             { path: "/register-user", element: <RegisterUserPage /> },
             { path: "/oauth/callback", element: <OAuthCallbackHandler /> },
+            { path: "/profile", element: <ProfilePage /> },
         ],
     },
 ]);

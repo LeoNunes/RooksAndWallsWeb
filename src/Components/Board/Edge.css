@@ -1,12 +1,13 @@
 .board-edge {
     display: flex;
-    background-color: #d5d5c6;
+    background: var(--board-dark);
+    opacity: 0.4;
+}
 
-    &.vertical {
-        flex: 1;
-    }
+.board-edge.vertical {
+    flex: 1;
+}
 
-    &.horizontal {
-        flex: 10;
-    }
+.board-edge.horizontal {
+    flex: 10;
 }

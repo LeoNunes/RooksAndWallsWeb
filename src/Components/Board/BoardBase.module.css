@@ -39,5 +39,5 @@
 
 .boardCornerSpace {
     flex: 1;
-    background-color: #769656;
+    background-color: var(--board-dark);
 }
