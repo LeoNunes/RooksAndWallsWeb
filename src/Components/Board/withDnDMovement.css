@@ -1,12 +1,11 @@
 .dnd {
-    display: flex;
     flex: 1;
+}
 
-    &.droppable {
-        background-color: #aaaaaa88;
+.dnd.droppable {
+    background: rgba(124, 45, 62, 0.15);
+}
 
-        &.over {
-            background-color: #aaaaaacc;
-        }
-    }
+.dnd.droppable.over {
+    background: rgba(124, 45, 62, 0.3);
 }
