@@ -1,12 +1,9 @@
 .wall {
-    display: flex;
     flex: 1;
-    background-color: #183b09;
+    background: var(--border);
+    border-radius: 2px;
 }
 
-/* TODO: Is this the best approach to highlight the wall? */
-.edge-highlight {
-    .wall {
-        background-color: #d55e5e;
-    }
+.edge-highlight .wall {
+    background: var(--accent-1);
 }
