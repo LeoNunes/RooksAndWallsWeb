@@ -1,6 +1,6 @@
 import { getEnvConfig } from "./EnvConfig";
 
-export type PieceColor = "blue" | "green" | "red" | "yellow";
+export type PieceColor = "red" | "green" | "blue" | "yellow";
 
 type PlayerConfig = {
     color: PieceColor;
@@ -29,9 +29,9 @@ export const rnwConfig: RnWConfig = {
         columns: 8,
     },
     players: {
-        0: { color: "blue" },
+        0: { color: "red" },
         1: { color: "green" },
-        2: { color: "red" },
+        2: { color: "blue" },
         3: { color: "yellow" },
     },
 };
