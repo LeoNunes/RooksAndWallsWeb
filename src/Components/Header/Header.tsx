@@ -13,17 +13,26 @@ export default function Header() {
 
     return (
         <header className="app-header">
-            <span className="app-header__title">Rooks &amp; Walls</span>
+            <Link to="/" className="app-header__logo">
+                <span className="app-header__logo-icon">♜</span>
+                <span className="app-header__logo-text">LeoGames</span>
+            </Link>
             <nav className="app-header__nav">
                 {userState.user.isGuest ? (
                     <>
-                        <Link to="/sign-in">Sign In</Link>
-                        <Link to="/sign-up">Sign Up</Link>
+                        <Link to="/sign-in" className="app-header__nav-link">
+                            Sign In
+                        </Link>
+                        <Link to="/sign-up" className="app-header__nav-link app-header__nav-link--cta">
+                            Sign Up
+                        </Link>
                     </>
                 ) : (
                     <>
-                        <span>{userState.user.displayName}</span>
-                        <button type="button" onClick={handleSignOut}>
+                        <Link to="/profile" className="app-header__nav-link">
+                            {userState.user.displayName}
+                        </Link>
+                        <button type="button" className="app-header__signout" onClick={handleSignOut}>
                             Sign Out
                         </button>
                     </>
