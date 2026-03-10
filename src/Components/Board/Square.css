@@ -1,5 +1,5 @@
 .board-square {
-    flex: 1;
+    flex: 10;
 }
 
 .board-square.white {
