@@ -1,4 +1,5 @@
 .board-square {
+    display: flex;
     flex: 10;
 }
 

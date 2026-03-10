@@ -1,11 +1,12 @@
 .click-movement {
+    display: flex;
     flex: 1;
 }
 
 .click-movement.selected {
-    background: rgba(124, 45, 62, 0.3);
+    background: rgba(124, 45, 62, 0.6);
 }
 
 .click-movement.highlighted {
-    background: rgba(124, 45, 62, 0.15);
+    background: rgba(124, 45, 62, 0.3);
 }
