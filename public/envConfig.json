@@ -1,7 +1,7 @@
 {
     "apiBaseUrl": "http://127.0.0.1:5000",
     "wsBaseUrl": "ws://127.0.0.1:5000",
-    "cognitoUserPoolId": "us-west-2_XXXXXXXXX",
-    "cognitoUserPoolClientId": "XXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "cognitoUserPoolId": "us-west-2_kYcQEufcf",
+    "cognitoUserPoolClientId": "4vl3dp8oo60dc2ortpt71hi42l",
     "cognitoDomain": "games-beta.auth.us-west-2.amazoncognito.com"
 }
