@@ -6,7 +6,7 @@ import useWebSocket from "react-use-websocket";
 import type { RnWGameAction } from "./Actions";
 import { isRnWGameState, type RnWGameState } from "./Data";
 
-export function useRnWWebsocket(gameId: number, onUpdate: (state: RnWGameState) => void): Dispatch<RnWGameAction> {
+export function useRnWWebsocket(gameId: string, onUpdate: (state: RnWGameState) => void): Dispatch<RnWGameAction> {
     const { user } = useUserState();
 
     // If user token changes, we don't want to close the WS connection and open a new one.

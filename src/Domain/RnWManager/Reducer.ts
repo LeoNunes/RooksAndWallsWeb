@@ -6,7 +6,7 @@ export function rnwManagerReducer(state: RnWManagerState, action: RnWManagerBase
         case "start-game-creation": {
             return {
                 ...state,
-                games: [...state.games, { tempId: action.tempId, gameId: -1, isCreating: true }],
+                games: [...state.games, { tempId: action.tempId, gameId: "", isCreating: true }],
             };
         }
         case "game-created": {

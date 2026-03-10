@@ -37,7 +37,7 @@ function RnWGameManagerController(_props: RnWGameManagerControllerProps) {
         rnwManagerDispatch(createGame(players, piecesPerPlayer));
     }
 
-    function handleJoinGame(gameId: number): void {
+    function handleJoinGame(gameId: string): void {
         rnwManagerDispatch(joinGame(gameId));
     }
 

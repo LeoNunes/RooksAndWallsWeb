@@ -14,11 +14,11 @@ export type CreateGameRequest = {
 };
 
 export type CreateGameResponse = {
-    gameId: number;
+    gameId: string;
 };
 
 export type RnWGameState = Immutable<{
-    gameId: number;
+    gameId: string;
     config: GameConfig;
     stage: GameStage;
     currentTurn?: string;
@@ -59,7 +59,7 @@ export function isRnWGameState(obj: unknown): obj is RnWGameState {
     const gameState = obj as RnWGameState;
     return (
         typeof gameState === "object" &&
-        typeof gameState.gameId === "number" &&
+        typeof gameState.gameId === "string" &&
         isGameConfig(gameState.config) &&
         isGameStage(gameState.stage) &&
         typeof gameState.playerId === "string" &&

@@ -43,6 +43,7 @@ type NextMove = {
 };
 
 export type RnWState = {
+    gameId: string;
     stage: Stage;
     localPlayer: Player;
     currentPlayer: Player | undefined;
@@ -56,6 +57,7 @@ export type RnWState = {
 };
 
 export const rnwStateInitialValue: RnWState = {
+    gameId: "",
     stage: "waiting_for_players",
     localPlayer: { id: "", number: 0, displayName: "" },
     currentPlayer: undefined,

@@ -40,9 +40,9 @@ function startGameCreation(tempId: string): StartGameCreation {
 export type GameCreated = {
     type: "game-created";
     tempId: string;
-    gameId: number;
+    gameId: string;
 };
-function gameCreated(tempId: string, gameId: number): GameCreated {
+function gameCreated(tempId: string, gameId: string): GameCreated {
     return {
         type: "game-created",
         tempId,
@@ -63,9 +63,9 @@ function gameCreationFailed(tempId: string): GameCreationFailed {
 
 export type JoinGame = {
     type: "join-game";
-    gameId: number;
+    gameId: string;
 };
-export function joinGame(gameId: number): JoinGame {
+export function joinGame(gameId: string): JoinGame {
     // TODO: check if game exists and get metadata before joining
     return {
         type: "join-game",

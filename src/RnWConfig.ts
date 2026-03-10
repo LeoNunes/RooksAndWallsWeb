@@ -42,11 +42,15 @@ export const apiConfig = {
         endpoint: () => `${getEnvConfig().apiBaseUrl}${apiPrefix}/game`,
         method: "POST",
     },
+    addAi: {
+        endpoint: (gameId: string) => `${getEnvConfig().apiBaseUrl}${apiPrefix}/game/${gameId}/ai`,
+        method: "POST",
+    },
 };
 
 const wsGamePath = "/rw/game/{gameId}";
 export const webSocketConfig = {
-    urlForGame: (gameId: number, token?: string | null) => {
+    urlForGame: (gameId: string, token?: string | null) => {
         const base = `${getEnvConfig().wsBaseUrl}${wsGamePath.replace("{gameId}", gameId.toString())}`;
         return token ? `${base}?token=${encodeURIComponent(token)}` : base;
     },

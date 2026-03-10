@@ -5,16 +5,9 @@ import { Navigate, useParams } from "react-router";
 export default function GamePage() {
     const { gameId } = useParams<{ gameId: string }>();
 
-    const gameIdNumber = parseInt(gameId ?? "", 10);
-
-    if (!gameId || Number.isNaN(gameIdNumber)) {
+    if (gameId === undefined) {
         return <Navigate to="/" replace />;
     }
 
-    return (
-        <RnWGame
-            gameId={gameIdNumber}
-            board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }}
-        />
-    );
+    return <RnWGame gameId={gameId} board={{ rows: rnwConfig.boardSize.rows, columns: rnwConfig.boardSize.columns }} />;
 }

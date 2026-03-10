@@ -1,6 +1,11 @@
 import type { EdgeCoordinate, SquareCoordinate } from "Domain/Common/Coordinates";
 import type { AsyncAction, Dispatch } from "Domain/Common/DataTypes";
-import { addPieceAction, moveAction, type RnWGameAction as ServerGameAction } from "Services/RnWServer/Actions";
+import {
+    addAiToGame,
+    addPieceAction,
+    moveAction,
+    type RnWGameAction as ServerGameAction,
+} from "Services/RnWServer/Actions";
 import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
 import type { Piece, Player, RnWState } from "./Model";
 
@@ -33,6 +38,9 @@ export function createAction(dispatch: RnWDispatch) {
         },
         updateFromServer: (state: ServerGameState) => {
             dispatch(updateFromServer(state));
+        },
+        addAi: (gameId: string) => {
+            dispatch(addAi(gameId));
         },
     };
 }
@@ -143,6 +151,12 @@ export function commitMove(websocketDispatch: Dispatch<ServerGameAction>): RnWAc
             dispatch(resetNextMove());
             websocketDispatch(moveAction(wallPosition));
         }
+    };
+}
+
+export function addAi(gameId: string): RnWAction {
+    return async () => {
+        await addAiToGame(gameId);
     };
 }
 

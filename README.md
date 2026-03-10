@@ -11,7 +11,7 @@ Page navigation is handled by [React Router v7](https://reactrouter.com) in libr
 | `/` | `RnWGameManager` | Home page — create or join a game |
 | `/game/rw/:gameId` | `GamePage` | Active game board |
 
-Navigating to `/game/rw/:gameId` with a missing or non-numeric `gameId` redirects back to `/`.
+Navigating to `/game/rw/:gameId` with a missing `gameId` redirects back to `/`.
 
 ## Available Scripts
 

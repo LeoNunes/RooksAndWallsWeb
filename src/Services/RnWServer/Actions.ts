@@ -45,6 +45,15 @@ export function moveAction(
     };
 }
 
+export async function addAiToGame(gameId: string): Promise<void> {
+    const response = await fetch(apiConfig.addAi.endpoint(gameId), {
+        method: apiConfig.addAi.method,
+    });
+    if (!response.ok) {
+        throw new Error("Failed to add AI to game");
+    }
+}
+
 export async function createGame(request: CreateGameRequest): Promise<CreateGameResponse> {
     const response = await fetch(apiConfig.createGame.endpoint(), {
         method: apiConfig.createGame.method,

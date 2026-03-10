@@ -4,7 +4,7 @@ export type RnWManagerState = {
 
 export type Game = {
     tempId?: string;
-    gameId: number;
+    gameId: string;
     isCreating: boolean;
 };
 

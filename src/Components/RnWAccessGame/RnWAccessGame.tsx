@@ -1,4 +1,4 @@
-import { isInt, range } from "Util";
+import { range } from "Util";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import "./RnWAccessGame.css";
 
@@ -10,13 +10,13 @@ type RnWAccessGameProps = {
     maxPiecesPerPlayer: number;
     defaultPiecesPerPlayer: number;
     createGame: (players: number, piecesPerPlayer: number) => void;
-    joinGame: (gameId: number) => void;
+    joinGame: (gameId: string) => void;
 };
 export default function RnWAccessGame(props: RnWAccessGameProps) {
     const [state, setState] = useState({
         players: props.defaultPlayers,
         piecesPerPlayer: props.defaultPiecesPerPlayer,
-        gameId: undefined as number | undefined,
+        gameId: undefined as string | undefined,
     });
 
     function handlePlayersChange(event: ChangeEvent<HTMLSelectElement>): void {
@@ -38,15 +38,7 @@ export default function RnWAccessGame(props: RnWAccessGameProps) {
     function handleGameIdChange(event: ChangeEvent<HTMLInputElement>): void {
         const s = event.target.value;
 
-        let gameId: number | undefined;
-        if (isInt(s)) {
-            gameId = Number.parseInt(s, 10);
-            gameId = Math.max(0, gameId);
-        } else {
-            gameId = undefined;
-        }
-
-        setState((state) => ({ ...state, gameId }));
+        setState((state) => ({ ...state, gameId: s }));
     }
 
     function handleCreateGameSubmit(event: FormEvent<HTMLFormElement>): void {
@@ -56,7 +48,12 @@ export default function RnWAccessGame(props: RnWAccessGameProps) {
 
     function handleJoinGameSubmit(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        props.joinGame(state.gameId || 0);
+
+        if (state.gameId === undefined) {
+            return;
+        }
+
+        props.joinGame(state.gameId);
     }
 
     return (

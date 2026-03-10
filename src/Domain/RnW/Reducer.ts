@@ -46,6 +46,7 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
             const currentPlayerIndex = serverState.players.findIndex((p) => p.id === serverState.currentTurn);
             return {
                 ...state,
+                gameId: serverState.gameId,
                 stage: serverState.stage,
                 localPlayer: playersById.get(serverState.playerId)!,
                 currentPlayer: currentPlayerIndex >= 0 ? players[currentPlayerIndex] : undefined,

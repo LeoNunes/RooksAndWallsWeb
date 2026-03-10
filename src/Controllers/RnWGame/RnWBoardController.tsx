@@ -25,7 +25,7 @@ import useWallPlacement from "./useWallPlacement";
 import useWalls from "./useWalls";
 
 export type RnWBoardControllerProps = {
-    gameId: number;
+    gameId: string;
     board: {
         rows: number;
         columns: number;
