@@ -5,25 +5,25 @@
     padding: 8px 10px;
     border-radius: 6px;
     border-left: 4px solid transparent;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--surface);
 }
 
 .player-slot.blue {
-    border-left-color: #4185bf;
+    border-left-color: var(--player-blue);
 }
 .player-slot.green {
-    border-left-color: #4e9161;
+    border-left-color: var(--player-green);
 }
 .player-slot.red {
-    border-left-color: #bf3b43;
+    border-left-color: var(--player-red);
 }
 .player-slot.yellow {
-    border-left-color: #c09526;
+    border-left-color: var(--player-yellow);
 }
 
 .player-slot.current-turn {
-    outline: 2px solid #d5bb5e;
-    background-color: rgba(213, 187, 94, 0.15);
+    outline: 2px solid var(--player-yellow);
+    background-color: rgba(181, 101, 29, 0.1);
 }
 
 .player-slot.eliminated {
@@ -59,7 +59,7 @@
 .player-slot-name {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #183b09;
+    color: var(--text);
     line-height: 1.2;
 }
 
@@ -67,7 +67,7 @@
     font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: #c09526;
+    color: var(--player-yellow);
 }
 
 .player-slot-color-bar {
@@ -78,19 +78,19 @@
 }
 
 .player-slot-color-bar.blue {
-    background-color: #4185bf;
+    background-color: var(--player-blue);
 }
 .player-slot-color-bar.green {
-    background-color: #4e9161;
+    background-color: var(--player-green);
 }
 .player-slot-color-bar.red {
-    background-color: #bf3b43;
+    background-color: var(--player-red);
 }
 .player-slot-color-bar.yellow {
-    background-color: #c09526;
+    background-color: var(--player-yellow);
 }
 .player-slot-color-bar.gold {
-    background-color: #c09526;
+    background-color: var(--player-yellow);
 }
 
 .player-slot-waiting-text {
@@ -103,7 +103,7 @@
     width: 20px;
     height: 20px;
     border: 3px solid #ddd;
-    border-top-color: #999;
+    border-top-color: var(--text-muted);
     border-radius: 50%;
     animation: slot-spin 0.8s linear infinite;
 }
