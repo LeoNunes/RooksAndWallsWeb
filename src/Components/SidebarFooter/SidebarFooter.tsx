@@ -14,7 +14,6 @@ export type SidebarFooterProps = {
 export default function SidebarFooter({ message, buttons }: SidebarFooterProps) {
     return (
         <>
-            {message && <span className="sidebar-footer-message">{message}</span>}
             {buttons.map((btn) => (
                 <button
                     key={btn.label}
@@ -25,6 +24,7 @@ export default function SidebarFooter({ message, buttons }: SidebarFooterProps) 
                     {btn.label}
                 </button>
             ))}
+            {message && <span className="sidebar-footer-message">{message}</span>}
         </>
     );
 }
