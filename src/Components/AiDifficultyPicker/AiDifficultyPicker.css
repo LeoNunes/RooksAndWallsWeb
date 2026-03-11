@@ -1,0 +1,58 @@
+.ai-difficulty-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.ai-difficulty-label {
+    font-family: "Courier Prime", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.ai-difficulty-options {
+    display: flex;
+    width: 100%;
+}
+
+.ai-difficulty-option {
+    flex: 1;
+    padding: 0.4rem 0.25rem;
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-right-width: 0;
+    font-family: "Courier Prime", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition:
+        background 0.1s,
+        color 0.1s;
+}
+
+.ai-difficulty-option:last-child {
+    border-right-width: 2px;
+}
+
+.ai-difficulty-option:hover:not(.selected) {
+    background: var(--surface);
+    color: var(--accent-1);
+    border-color: var(--accent-1);
+    /* keep adjacent borders intact */
+    position: relative;
+    z-index: 1;
+}
+
+.ai-difficulty-option.selected {
+    background: var(--accent-1);
+    color: var(--bg);
+    border-color: var(--accent-1);
+    position: relative;
+    z-index: 1;
+}

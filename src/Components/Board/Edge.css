@@ -1,7 +1,6 @@
 .board-edge {
     display: flex;
-    background: var(--board-dark);
-    opacity: 0.4;
+    background: rgb(177, 138, 106);
 }
 
 .board-edge.vertical {

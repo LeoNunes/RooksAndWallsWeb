@@ -6,6 +6,8 @@ import {
 } from "Domain/Common/Coordinates";
 import { type Immutable, isArrayOf } from "Util";
 
+export type AiDifficulty = "EASY" | "MEDIUM" | "HARD" | "MAXIMUM";
+
 export type CreateGameRequest = {
     numberOfPlayers: number;
     piecesPerPlayer: number;

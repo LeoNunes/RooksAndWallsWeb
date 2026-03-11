@@ -1,7 +1,7 @@
 import type { EdgeCoordinate, SquareCoordinate } from "Domain/Common/Coordinates";
 import { apiConfig } from "RnWConfig";
 import type { Immutable } from "Util";
-import type { CreateGameRequest, CreateGameResponse } from "./Data";
+import type { AiDifficulty, CreateGameRequest, CreateGameResponse } from "./Data";
 
 export type RnWGameAction = Immutable<{
     addPiece?: AddPieceAction;
@@ -45,9 +45,11 @@ export function moveAction(
     };
 }
 
-export async function addAiToGame(gameId: string): Promise<void> {
+export async function addAiToGame(gameId: string, difficulty: AiDifficulty): Promise<void> {
     const response = await fetch(apiConfig.addAi.endpoint(gameId), {
         method: apiConfig.addAi.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ difficulty }),
     });
     if (!response.ok) {
         throw new Error("Failed to add AI to game");

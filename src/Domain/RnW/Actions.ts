@@ -6,7 +6,7 @@ import {
     moveAction,
     type RnWGameAction as ServerGameAction,
 } from "Services/RnWServer/Actions";
-import type { RnWGameState as ServerGameState } from "Services/RnWServer/Data";
+import type { AiDifficulty, RnWGameState as ServerGameState } from "Services/RnWServer/Data";
 import type { Piece, Player, RnWState } from "./Model";
 
 export type RnWBaseAction =
@@ -39,8 +39,8 @@ export function createAction(dispatch: RnWDispatch) {
         updateFromServer: (state: ServerGameState) => {
             dispatch(updateFromServer(state));
         },
-        addAi: (gameId: string) => {
-            dispatch(addAi(gameId));
+        addAi: (gameId: string, difficulty: AiDifficulty) => {
+            dispatch(addAi(gameId, difficulty));
         },
     };
 }
@@ -154,9 +154,9 @@ export function commitMove(websocketDispatch: Dispatch<ServerGameAction>): RnWAc
     };
 }
 
-export function addAi(gameId: string): RnWAction {
+export function addAi(gameId: string, difficulty: AiDifficulty): RnWAction {
     return async () => {
-        await addAiToGame(gameId);
+        await addAiToGame(gameId, difficulty);
     };
 }
 
