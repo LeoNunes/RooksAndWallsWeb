@@ -23,10 +23,10 @@ export type RnWGameState = Immutable<{
     gameId: string;
     config: GameConfig;
     stage: GameStage;
-    currentTurn?: string;
+    currentTurn?: number;
     playerId: string;
     players: Player[];
-    remainingPlayers: Player[];
+    remainingPlayers: number[];
     pieces: Piece[];
     walls: Wall[];
     deadPieces: Piece[];
@@ -39,17 +39,18 @@ type GameConfig = {
     boardColumns: number;
 };
 
-const gameStages = ["waiting_for_players", "piece_placement", "moves", "completed"] as const;
+const gameStages = ["not_started", "piece_placement", "moves", "completed"] as const;
 type GameStage = (typeof gameStages)[number];
 
 type Player = {
     id: string;
     displayName: string;
+    connectionStatus: "Connected" | "Disconnected";
 };
 
 type Piece = {
     id: number;
-    owner: string;
+    owner: number;
     position: SquareCoordinate;
 };
 
@@ -66,7 +67,7 @@ export function isRnWGameState(obj: unknown): obj is RnWGameState {
         isGameStage(gameState.stage) &&
         typeof gameState.playerId === "string" &&
         isArrayOf<Player>(gameState.players, isPlayer) &&
-        isArrayOf<Player>(gameState.remainingPlayers, isPlayer) &&
+        isArrayOf<number>(gameState.remainingPlayers, (x) => typeof x === "number") &&
         isArrayOf<Piece>(gameState.pieces, isPiece) &&
         isArrayOf<Wall>(gameState.walls, isWall) &&
         isArrayOf<Piece>(gameState.deadPieces, isPiece)
@@ -91,7 +92,12 @@ function isGameStage(obj: unknown): obj is GameStage {
 
 function isPlayer(obj: unknown): obj is Player {
     const player = obj as Player;
-    return typeof player === "object" && typeof player.id === "string" && typeof player.displayName === "string";
+    return (
+        typeof player === "object" &&
+        typeof player.id === "string" &&
+        typeof player.displayName === "string" &&
+        (player.connectionStatus === "Connected" || player.connectionStatus === "Disconnected")
+    );
 }
 
 function isPiece(obj: unknown): obj is Piece {
@@ -99,7 +105,7 @@ function isPiece(obj: unknown): obj is Piece {
     return (
         typeof piece === "object" &&
         typeof piece.id === "number" &&
-        typeof piece.owner === "string" &&
+        typeof piece.owner === "number" &&
         isSquareCoordinate(piece.position)
     );
 }

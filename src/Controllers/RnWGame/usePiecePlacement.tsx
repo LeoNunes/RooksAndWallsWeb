@@ -24,7 +24,7 @@ export default function usePiecePlacement(
     function onPlace(coord: SquareCoordinate) {
         if (!rnwModel.canPlacePiece(coord)) return;
 
-        getRnWActions().addPiece(rnwModel.localPlayer, coord, websocketDispatch);
+        getRnWActions().addPiece(rnwModel.localPlayer.number, coord, websocketDispatch);
     }
 
     return {

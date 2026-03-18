@@ -10,13 +10,13 @@ export default function usePieces(getRnWModel: () => RnWModel) {
         .map((piece) => ({
             coordinate:
                 nextMove.pieceMovement?.piece.id === piece.id ? nextMove.pieceMovement.position : piece.position,
-            color: rnwConfig.players[piece.owner.number].color,
+            color: rnwConfig.players[piece.owner].color,
             type: "rook" as ChessPieceTypes,
         }))
         .concat(
             rnwModel.deadPieces.map((piece) => ({
                 coordinate: piece.position,
-                color: rnwConfig.players[piece.owner.number].color,
+                color: rnwConfig.players[piece.owner].color,
                 type: "rook" as ChessPieceTypes,
                 disabled: true,
             })),

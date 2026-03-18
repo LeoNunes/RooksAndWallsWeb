@@ -18,7 +18,7 @@ export default function RnWPlayerSlotController({ player }: RnWPlayerSlotControl
 
     if (player === undefined) return <WaitingForPlayerSlot />;
 
-    const playerEliminated = isPlayerEliminated(state, player);
+    const playerEliminated = isPlayerEliminated(state, player.number);
 
     const playerNumber = player.number;
     const color = rnwConfig.players[playerNumber].color;
@@ -26,12 +26,12 @@ export default function RnWPlayerSlotController({ player }: RnWPlayerSlotControl
     const isLocal = player.id === state.localPlayer.id;
     const nameLabel = isLocal ? "You" : player.displayName;
 
-    if (state.stage === "waiting_for_players") {
+    if (state.stage === "not_started") {
         return <LobbyPlayerSlot color={color} iconUrl={iconUrl} displayName={nameLabel} />;
     }
 
     if (state.stage === "completed") {
-        const isWinner = result.type === "winner" && result.player.id === player.id;
+        const isWinner = result.type === "winner" && result.playerNumber === player.number;
         const displayName =
             isLocal && isWinner ? "You \u2013 Winner!" : isWinner ? `${player.displayName} \u2013 Winner!` : nameLabel;
         const badge = isWinner ? "Winner!" : "Eliminated";
@@ -59,7 +59,7 @@ export default function RnWPlayerSlotController({ player }: RnWPlayerSlotControl
         );
     }
 
-    const isCurrentTurn = state.currentPlayer?.id === player.id;
+    const isCurrentTurn = state.currentPlayer === player.number;
     const displayName = nameLabel;
     const moveType = isCurrentTurn && isLocal ? currentMoveType(state) : undefined;
     let badge: string | undefined;

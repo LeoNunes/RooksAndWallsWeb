@@ -7,7 +7,7 @@ import {
     type RnWGameAction as ServerGameAction,
 } from "Services/RnWServer/Actions";
 import type { AiDifficulty, RnWGameState as ServerGameState } from "Services/RnWServer/Data";
-import type { Piece, Player, RnWState } from "./Model";
+import type { Piece, PlayerNumber, RnWState } from "./Model";
 
 export type RnWBaseAction =
     | AddPieceActionType
@@ -24,7 +24,7 @@ export type RnWDispatch = Dispatch<RnWAction>;
 export type RnWActions = ReturnType<typeof createAction>;
 export function createAction(dispatch: RnWDispatch) {
     return {
-        addPiece: (owner: Player, position: SquareCoordinate, websocketDispatch: Dispatch<ServerGameAction>) => {
+        addPiece: (owner: PlayerNumber, position: SquareCoordinate, websocketDispatch: Dispatch<ServerGameAction>) => {
             dispatch(addPiece(owner, position, websocketDispatch));
         },
         setNextMovePieceMovement: (piece: Piece, position: SquareCoordinate) => {
@@ -47,10 +47,10 @@ export function createAction(dispatch: RnWDispatch) {
 
 export type AddPieceActionType = {
     type: "add-piece";
-    owner: Player;
+    owner: PlayerNumber;
     position: SquareCoordinate;
 };
-function addPieceBase(owner: Player, position: SquareCoordinate): AddPieceActionType {
+function addPieceBase(owner: PlayerNumber, position: SquareCoordinate): AddPieceActionType {
     return {
         type: "add-piece",
         owner: owner,
@@ -58,7 +58,7 @@ function addPieceBase(owner: Player, position: SquareCoordinate): AddPieceAction
     };
 }
 export function addPiece(
-    owner: Player,
+    owner: PlayerNumber,
     position: SquareCoordinate,
     websocketDispatch: Dispatch<ServerGameAction>,
 ): RnWAction {

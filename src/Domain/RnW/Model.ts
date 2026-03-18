@@ -8,19 +8,20 @@ import {
 } from "Domain/Common/Coordinates";
 import { rnwConfig } from "RnWConfig";
 
-export type Stage = "waiting_for_players" | "piece_placement" | "moves" | "completed";
+export type Stage = "not_started" | "piece_placement" | "moves" | "completed";
 
 export type PlayerId = string;
+export type PlayerNumber = number;
 
 export type Player = {
     id: PlayerId;
-    number: number;
+    number: PlayerNumber;
     displayName: string;
 };
 
 export type Piece = {
     id: number;
-    owner: Player;
+    owner: PlayerNumber;
     position: SquareCoordinate;
 };
 
@@ -46,10 +47,10 @@ export type RnWState = {
     gameId: string;
     stage: Stage;
     localPlayer: Player;
-    currentPlayer: Player | undefined;
+    currentPlayer: PlayerNumber | undefined;
     numberOfPlayers: number;
     players: Player[];
-    remainingPlayers: Player[];
+    remainingPlayers: PlayerNumber[];
     pieces: Piece[];
     walls: Wall[];
     deadPieces: Piece[];
@@ -58,7 +59,7 @@ export type RnWState = {
 
 export const rnwStateInitialValue: RnWState = {
     gameId: "",
-    stage: "waiting_for_players",
+    stage: "not_started",
     localPlayer: { id: "", number: 0, displayName: "" },
     currentPlayer: undefined,
     numberOfPlayers: 0,
@@ -70,7 +71,7 @@ export const rnwStateInitialValue: RnWState = {
     nextMove: {},
 };
 
-export type GameResult = { type: "in_progress" } | { type: "draw" } | { type: "winner"; player: Player };
+export type GameResult = { type: "in_progress" } | { type: "draw" } | { type: "winner"; playerNumber: PlayerNumber };
 
 export type RnWModel = ReturnType<typeof createModel>;
 export const createModel = (state: RnWState) => ({
@@ -78,7 +79,7 @@ export const createModel = (state: RnWState) => ({
     playerCurrentAction: () => localPlayerCurrentAction(state),
     moveType: () => currentMoveType(state),
     gameResult: () => gameResult(state),
-    isPlayerEliminated: (player: Player) => isPlayerEliminated(state, player),
+    isPlayerEliminated: (playerNumber: PlayerNumber) => isPlayerEliminated(state, playerNumber),
     getPieceById: (id: number) => getPieceById(state, id),
     getPieceFromPosition: (position: SquareCoordinate) => getPieceFromPosition(state, position),
     getWallFromPosition: (position: EdgeCoordinate) => getWallFromPosition(state, position),
@@ -92,7 +93,7 @@ export const createModel = (state: RnWState) => ({
 });
 
 function isPlayersTurn(state: RnWState) {
-    return state.currentPlayer?.id === state.localPlayer.id;
+    return state.currentPlayer === state.localPlayer.number;
 }
 
 export type MoveType = "normal" | "wall_only";
@@ -100,7 +101,7 @@ export type MoveType = "normal" | "wall_only";
 export function currentMoveType(state: RnWState): MoveType | undefined {
     if (!isPlayersTurn(state) || state.stage !== "moves") return undefined;
     const canMove = state.pieces
-        .filter((p) => p.owner.id === state.localPlayer.id)
+        .filter((p) => p.owner === state.localPlayer.number)
         .some((p) => possibleDestinations(state, p).length > 0);
     return canMove ? "normal" : "wall_only";
 }
@@ -129,15 +130,15 @@ export function getWallFromPosition(state: RnWState, position: EdgeCoordinate) {
     return state.walls.find((w) => areEdgeCoordinatesEqual(w.position, position));
 }
 
-export function getPiecesFromPlayer(state: RnWState, playerNumber: number) {
-    return state.pieces.filter((p) => p.owner.number === playerNumber);
+export function getPiecesFromPlayer(state: RnWState, playerNumber: PlayerNumber) {
+    return state.pieces.filter((p) => p.owner === playerNumber);
 }
 
 export function getPiecesThatCanMove(state: RnWState) {
     if (localPlayerCurrentAction(state) !== "move_piece") return [];
 
     return state.pieces
-        .filter((p) => p.owner.id === state.localPlayer.id)
+        .filter((p) => p.owner === state.localPlayer.number)
         .filter((piece) => possibleDestinations(state, piece).length > 0);
 }
 
@@ -225,14 +226,12 @@ export function canMoveTo(state: RnWState, piece: Piece, destination: SquareCoor
 export function gameResult(state: RnWState): GameResult {
     if (state.stage !== "completed") return { type: "in_progress" };
     if (state.remainingPlayers.length === 0) return { type: "draw" };
-    const winner = state.remainingPlayers[0];
-    return { type: "winner", player: winner };
+    return { type: "winner", playerNumber: state.remainingPlayers[0] };
 }
 
-export function isPlayerEliminated(state: RnWState, player: Player): boolean {
-    if (state.stage === "waiting_for_players") return false;
-    if (!state.players.some((p) => p.id === player.id)) return false;
-    return !state.remainingPlayers.some((p) => p.id === player.id);
+export function isPlayerEliminated(state: RnWState, playerNumber: PlayerNumber): boolean {
+    if (state.stage === "not_started") return false;
+    return !state.remainingPlayers.includes(playerNumber);
 }
 
 function isSquareInsideBoard(coordinate: SquareCoordinate) {

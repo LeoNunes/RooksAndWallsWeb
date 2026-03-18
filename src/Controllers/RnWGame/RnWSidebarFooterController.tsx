@@ -13,7 +13,7 @@ export default function RnWSidebarFooterController() {
     const [difficulty, setDifficulty] = useState<AiDifficulty>("MEDIUM");
 
     const waitingProps = useMemo(() => {
-        if (state.stage !== "waiting_for_players") return undefined;
+        if (state.stage !== "not_started") return undefined;
         const rnwActions = createAction(dispatch);
         const waitingCount = state.numberOfPlayers - state.players.length;
         const message =
@@ -27,7 +27,7 @@ export default function RnWSidebarFooterController() {
         return { message, buttons };
     }, [state.gameId, state.stage, state.numberOfPlayers, state.players.length, navigate, dispatch, difficulty]);
 
-    if (state.stage === "waiting_for_players" && waitingProps) {
+    if (state.stage === "not_started" && waitingProps) {
         return (
             <>
                 <AiDifficultyPicker value={difficulty} onChange={setDifficulty} />

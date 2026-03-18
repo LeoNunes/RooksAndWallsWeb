@@ -49,7 +49,7 @@ export default function RnWFrameController({ children }: PropsWithChildren) {
 
 function deriveSidebarHeader(stage: Stage): string {
     switch (stage) {
-        case "waiting_for_players":
+        case "not_started":
             return "Lobby";
         case "completed":
             return "Player Standings";
@@ -70,10 +70,10 @@ function deriveWinner(
         return { visible: !overlayDismissed, outcome: "draw", subtitle: "No one wins!", onDismiss };
     }
 
-    const winnerColor = rnwConfig.players[result.player.number].color;
+    const winnerColor = rnwConfig.players[result.playerNumber].color;
     const winnerName = winnerColor.charAt(0).toUpperCase() + winnerColor.slice(1);
     const subtitle = `${winnerName} wins the game!`;
-    const localWins = result.player.id === state.localPlayer.id;
+    const localWins = result.playerNumber === state.localPlayer.number;
 
     if (localWins) {
         return { visible: !overlayDismissed, outcome: "local_wins", subtitle, onDismiss };
