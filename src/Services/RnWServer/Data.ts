@@ -24,7 +24,7 @@ export type RnWGameState = Immutable<{
     config: GameConfig;
     stage: GameStage;
     currentTurn?: number;
-    playerId: string;
+    playerNumber: number;
     players: Player[];
     remainingPlayers: number[];
     pieces: Piece[];
@@ -44,6 +44,7 @@ type GameStage = (typeof gameStages)[number];
 
 type Player = {
     id: string;
+    playerNumber: number;
     displayName: string;
     connectionStatus: "Connected" | "Disconnected";
 };
@@ -63,9 +64,9 @@ export function isRnWGameState(obj: unknown): obj is RnWGameState {
     return (
         typeof gameState === "object" &&
         typeof gameState.gameId === "string" &&
+        typeof gameState.playerNumber === "number" &&
         isGameConfig(gameState.config) &&
         isGameStage(gameState.stage) &&
-        typeof gameState.playerId === "string" &&
         isArrayOf<Player>(gameState.players, isPlayer) &&
         isArrayOf<number>(gameState.remainingPlayers, (x) => typeof x === "number") &&
         isArrayOf<Piece>(gameState.pieces, isPiece) &&
@@ -95,6 +96,7 @@ function isPlayer(obj: unknown): obj is Player {
     return (
         typeof player === "object" &&
         typeof player.id === "string" &&
+        typeof player.playerNumber === "number" &&
         typeof player.displayName === "string" &&
         (player.connectionStatus === "Connected" || player.connectionStatus === "Disconnected")
     );

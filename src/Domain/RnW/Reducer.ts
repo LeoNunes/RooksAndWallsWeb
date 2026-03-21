@@ -36,18 +36,17 @@ export function rnwReducer(state: RnWState, action: RnWBaseAction): RnWState {
         }
         case "update-from-server": {
             const { serverState } = action;
-            const players = serverState.players.map((p, index) => ({
+            const players = serverState.players.map((p) => ({
                 id: p.id,
-                number: index,
+                number: p.playerNumber,
                 displayName: p.displayName,
             }));
-            const playersById = new Map(players.map((p) => [p.id, p]));
             return {
                 ...state,
                 gameId: serverState.gameId,
                 stage: serverState.stage,
                 // biome-ignore lint/style/noNonNullAssertion: The local player is always in the players list
-                localPlayer: playersById.get(serverState.playerId)!,
+                localPlayer: players.find((p) => p.number === serverState.playerNumber)!,
                 currentPlayer: serverState.currentTurn,
                 numberOfPlayers: serverState.config.numberOfPlayers,
                 players,
